@@ -115,8 +115,14 @@
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" href="<?php echo base_url(); ?>admin/students">
-                                    <i class="mdi mdi-google-pages mr-2"></i>Students
+                                <a class="nav-link" href="<?php echo base_url(); ?>admin/courses">
+                                    <i class="mdi mdi-google-pages mr-2"></i>Courses
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?php echo base_url(); ?>admin/add_newcourse">
+                                    <i class="nav-icon fas fa-plus mr-2"></i>Add Course
                                 </a>
                             </li>
 
