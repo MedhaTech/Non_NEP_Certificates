@@ -102,6 +102,7 @@ class Admin_model extends CI_Model
     $this->db->update($tableName, $details);
     return $this->db->affected_rows();
   }
+
   function sliders_count($dept_id)
   {
     $this->db->where('dept_id', $dept_id);
@@ -157,5 +158,21 @@ class Admin_model extends CI_Model
 
     return $this->db->get_where($tableName, array($fieldId => $id))->row_array();
   }
+
+  public function updateDetails1($id, $details, $tableName)
+  {
+      if (empty($id)) {
+          return false;  
+      }
+      $this->db->where('id', $id);
+      $this->db->update($tableName, $details);
+      return $this->db->affected_rows() > 0;
+  }
   
+  public function deleteCourse($id)
+  {
+      $this->db->where('id', $id);
+      $this->db->delete('courses');
+      return $this->db->affected_rows() > 0;
+  }
 }
