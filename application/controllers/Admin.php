@@ -90,7 +90,7 @@ class Admin extends CI_Controller
 			$data['full_name'] = $session_data['full_name'];
 			$data['role'] = $session_data['role'];
 
-			$data['page_title'] = "Students";
+			$data['page_title'] = "Courses";
 			$data['menu'] = "students";
 
 			$data['currentAcademicYear'] = $this->globals->currentAcademicYear();
@@ -111,7 +111,7 @@ class Admin extends CI_Controller
 			$data['username'] = $session_data['username'];
 			$data['full_name'] = $session_data['full_name'];
 			$data['role'] = $session_data['role'];
-			$data['page_title'] = "New Course";
+			$data['page_title'] = "Add New Course";
 			$data['menu'] = "newcourse";
 
 			// Set validation rules
@@ -169,6 +169,8 @@ public function editcourse($id)
         $data['username'] = $session_data['username'];
         $data['full_name'] = $session_data['full_name'];
         $data['role'] = $session_data['role'];
+		$data['page_title'] = "Edit Course";
+		$data['menu'] = "editcourse";
 
         // Get the current course details using the provided ID
         $data['admissionDetails'] = $this->admin_model->getDetails('courses', $id)->row();
@@ -183,8 +185,8 @@ public function editcourse($id)
         $this->form_validation->set_rules('branch', 'Branch', 'required');
         $this->form_validation->set_rules('semester', 'Semester', 'required');
         $this->form_validation->set_rules('year', 'Year', 'required');
-        $this->form_validation->set_rules('crhrs', 'Course Hours', 'required');
-        $this->form_validation->set_rules('course_order', 'Course Order', 'required');
+        $this->form_validation->set_rules('crhrs', 'Course Hours');
+        $this->form_validation->set_rules('course_order', 'Course Order');
 
         // If form validation fails
         if ($this->form_validation->run() === FALSE) {
@@ -215,7 +217,7 @@ public function editcourse($id)
             }
 
             // Redirect to the same page to refresh the form
-            redirect('admin/editcourse/' . $id);
+            redirect('admin/courses/' . $id);
         }
     } else {
         // Redirect to the login page if user is not logged in

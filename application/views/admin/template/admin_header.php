@@ -14,6 +14,16 @@
     <link href="<?php echo base_url(); ?>assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url(); ?>assets/css/theme.min.css" rel="stylesheet" type="text/css" />
 
+    <!-- Plugins css -->
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/datatables/dataTables.bootstrap4.css"
+        rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/datatables/responsive.bootstrap4.css"
+        rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/datatables/buttons.bootstrap4.css"
+        rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/datatables/select.bootstrap4.css"
+        rel="stylesheet" type="text/css">
+    <script src="<?php echo base_url(); ?>assets/js/jquery.min.js"></script>
 </head>
 
 <!-- Begin page -->
