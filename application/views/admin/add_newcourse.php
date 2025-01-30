@@ -9,7 +9,7 @@
                  </div>
         </div>
         <div class="row">
-            <div class="col-md-7 col-12 m-2">
+            <div class="col-md-7 col-12">
                 <!-- <div class="card"> -->
                 <div class="card card-body">
                     <!-- Flash Message for success or error -->
