@@ -46,7 +46,7 @@ $config['base_url'] = $base_url;
 | variable so that it is blank.
 |
 */
-$config['index_page'] = 'https://certify2008.bmsce.in/';
+$config['index_page'] = '';
 
 /*
 |--------------------------------------------------------------------------

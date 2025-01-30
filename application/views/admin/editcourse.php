@@ -8,7 +8,7 @@
                  </div>
               </div>
               <div class="row">
-                <div class="col-md-7 col-12 m-2">
+                <div class="col-md-7 col-12">
                     <div class="card card-body">
 
                         <!-- Display Flash Message -->
@@ -16,7 +16,7 @@
                         <div class="alert <?php echo $this->session->flashdata('status'); ?> mt-3">
                             <?php echo $this->session->flashdata('message'); ?>
                         </div>
-                        <?php endif; ?>
+                    <?php endif; ?>
 
                         <!-- Start Form -->
                         <?php echo form_open('admin/editcourse/' . $admissionDetails->id, 'class="form-horizontal"'); ?>
@@ -28,30 +28,35 @@
                                     <label for="course_code">Course Code<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="course_code" id="course_code"
                                         value="<?php echo set_value('course_code', $admissionDetails->course_code); ?>">
+                                        <span class="text-danger"><?php echo form_error('course_code'); ?></span>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="course_name">Course Name<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="course_name" id="course_name"
                                         value="<?php echo set_value('course_name', $admissionDetails->course_name); ?>">
+                                        <span class="text-danger"><?php echo form_error('course_name'); ?></span>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="branch">Branch<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="branch" id="branch"
                                         value="<?php echo set_value('branch', $admissionDetails->branch); ?>">
+                                        <span class="text-danger"><?php echo form_error('branch'); ?></span>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="semester">Semester<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="semester" id="semester"
                                         value="<?php echo set_value('semester', $admissionDetails->semester); ?>">
+                                        <span class="text-danger"><?php echo form_error('semester'); ?></span>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="year">Year<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="year" id="year"
                                         value="<?php echo set_value('year', $admissionDetails->year); ?>">
+                                        <span class="text-danger"><?php echo form_error('year'); ?></span>
                                 </div>
 
                                 <div class="form-group">
