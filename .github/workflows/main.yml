@@ -1,27 +1,22 @@
-
-name: Deploy to Productioon
-
-on:
+name: Deploy to FTP
+on: 
   push:
-    branches: main
+    branches:
+      - main
+
 jobs:
-  
-  
-  Deploy:
+  ftp-deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Deploy to Development
-        if: github.ref == 'refs/heads/main'
-        env:
-          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
-          HOSTNAME: ${{ secrets.HOSTNAME }}
-        run: |
-          echo "$PRIVATE_KEY" > private_key && chmod 400 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@${{secrets.HOSTNAME}} '
-            cd /var/www/html/campus &&
-            sudo git pull origin main '
-            
+      - name: Checkout
+        uses: actions/checkout@v2
 
-      
-  
+      - name: FTP Deploy
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./
+          server-dir: /
+          
