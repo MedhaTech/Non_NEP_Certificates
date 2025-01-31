@@ -86,7 +86,7 @@
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
 
-                            <a class="dropdown-item d-flex align-items-center justify-content-between"
+                            <!-- <a class="dropdown-item d-flex align-items-center justify-content-between"
                                 href="javascript:void(0)">
                                 <span>Profile</span>
                                 <span>
@@ -100,6 +100,10 @@
                             <a class="dropdown-item d-flex align-items-center justify-content-between"
                                 href="javascript:void(0)">
                                 <span>Lock Account</span>
+                            </a> -->
+                            <a class="dropdown-item d-flex align-items-center justify-content-between"
+                                href="<?php echo base_url(); ?>admin/changepassword">
+                                <span>Change Password</span>
                             </a>
                             <a class="dropdown-item d-flex align-items-center justify-content-between"
                                 href="<?php echo base_url(); ?>admin/logout">
