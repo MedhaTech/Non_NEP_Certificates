@@ -45,8 +45,10 @@
                     <div class="form-group row">
                         <label for="branch" class="col-sm-4 col-form-label">Branch<span class="text-danger">*</span></label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="branch" name="branch"
-                                value="<?php echo (set_value('branch')) ? set_value('branch') : $branch; ?>">
+                            <!-- <input type="text" class="form-control" id="branch" name="branch"
+                                value="<?php echo (set_value('branch')) ? set_value('branch') : $branch; ?>"> -->
+                                <?php 
+                                echo form_dropdown('branch', $branch_options, (set_value('branch')) ? set_value('branch') : '', 'class="form-control" id="branch"'); ?>
                             <span class="text-danger"><?php echo form_error('branch'); ?></span>
                         </div>
                     </div>
@@ -54,8 +56,8 @@
                     <div class="form-group row">
                         <label for="semester" class="col-sm-4 col-form-label">Semester<span class="text-danger">*</span></label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="semester" name="semester"
-                                value="<?php echo (set_value('semester')) ? set_value('semester') : $semester; ?>">
+                            <?php 
+                            echo form_dropdown('semester', $semester_options, (set_value('semester')) ? set_value('semester') : '', 'class="form-control" id="semester"'); ?>
                             <span class="text-danger"><?php echo form_error('semester'); ?></span>
                         </div>
                     </div>
@@ -63,14 +65,14 @@
                     <div class="form-group row">
                         <label for="year" class="col-sm-4 col-form-label">Year<span class="text-danger">*</span></label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="year" name="year"
-                                value="<?php echo (set_value('year')) ? set_value('year') : $year; ?>">
+                        <?php 
+                            echo form_dropdown('year', $year_options, (set_value('year')) ? set_value('year') : '', 'class="form-control" id="year"'); ?>
                             <span class="text-danger"><?php echo form_error('year'); ?></span>
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label for="crhrs" class="col-sm-4 col-form-label">Course hours</label>
+                        <label for="crhrs" class="col-sm-4 col-form-label">Course Hours</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" id="crhrs" name="crhrs"
                                 value="<?php echo (set_value('crhrs')) ? set_value('crhrs') : $crhrs; ?>">
