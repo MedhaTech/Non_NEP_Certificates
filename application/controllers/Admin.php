@@ -158,6 +158,9 @@ class Admin extends CI_Controller
 			$data['role'] = $session_data['role'];
 			$data['page_title'] = "Add New Course";
 			$data['menu'] = "newcourse";
+			$data['branch_options'] = array(" " => "Select Branch") + $this->globals->branch();
+			$data['semester_options'] = array(" " => "Select Semester") + $this->globals->semester();
+			$data['year_options'] = array(" " => "Select Year") + $this->globals->year();
 
 			// Set validation rules
 			$this->form_validation->set_rules('course_code', 'Course Code', 'required');
@@ -188,7 +191,7 @@ class Admin extends CI_Controller
 
 				// Set success or failure message
 				if ($result) {
-					$this->session->set_flashdata('message', 'Course Details added successfully!');
+					$this->session->set_flashdata('message', 'Course details have been successfully updated!');
 					$this->session->set_flashdata('status', 'alert-success');
 				} else {
 					$this->session->set_flashdata('message', 'Oops! Something went wrong, please try again.');
@@ -196,7 +199,7 @@ class Admin extends CI_Controller
 				}
 
 				// Redirect to the same page after processing
-				redirect('admin/add_newcourse', 'refresh');
+				redirect('admin/courses', 'refresh');
 			}
 		} else {
 			// Redirect if the user is not logged in
@@ -216,11 +219,13 @@ public function editcourse($id)
         $data['role'] = $session_data['role'];
 		$data['page_title'] = "Edit Course";
 		$data['menu'] = "editcourse";
+		$data['branch_options'] = array(" " => "Select Branch") + $this->globals->branch();
+		$data['semester_options'] = array(" " => "Select Semester") + $this->globals->semester();
+		$data['year_options'] = array(" " => "Select Year") + $this->globals->year();
 
         // Get the current course details using the provided ID
         $data['admissionDetails'] = $this->admin_model->getDetails('courses', $id)->row();
 
-        // Load the form_validation library for validation
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
 
@@ -297,6 +302,29 @@ public function deleteCourse($id)
     } else {
         // Redirect to the login page if not logged in
         redirect('admin');
+    }
+}
+
+public function viewcourseDetails($id)
+{
+    if ($this->session->userdata('logged_in')) {
+        $session_data = $this->session->userdata('logged_in');
+        $data['id'] = $session_data['id'];
+        $data['username'] = $session_data['username'];
+        $data['full_name'] = $session_data['full_name'];
+        $data['role'] = $session_data['role'];
+
+        $data['page_title'] = "Course Details";
+        $data['menu'] = "students";
+
+		$decoded_id = base64_decode($id);
+
+        // Fetch course details for the given course ID
+        $data['students'] = $this->admin_model->getDetails('courses', $decoded_id)->row(); // Using row() for a single course
+
+        $this->admin_template->show('admin/view_coursedetails', $data);
+    } else {
+        redirect('admin', 'refresh');
     }
 }
 

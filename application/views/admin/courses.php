@@ -36,27 +36,23 @@
                                         $this->table->set_template($table_setup);
 
                                         // Table headings
-                                        $print_fields = array('S.NO', 'Course Code', 'Course Name', 'Actions', 'Branch');
+                                        $print_fields = array('S.NO', 'Course Code', 'Course Name', 'Actions');
                                         $this->table->set_heading($print_fields);
 
                                         $i = 1;
                                         foreach ($students as $admissions1) {
                                             $edit_url = base_url('admin/editcourse/' . $admissions1->id);  // Adjust URL if necessary
-                                            $encryptId = base64_encode($course->id);
+                                            $encryptId = base64_encode($admissions1->id);
             
                                             $delete_url = base_url('admin/deleteCourse/' . $encryptId); // Delete URL with encrypted ID
-
-                                            // Encrypting ID
-                                            $encryptId = base64_encode($admissions1->id);
 
                                             // Filling table rows dynamically
                                             $result_array = array(
                                                 $i++,
-                                                $admissions1->course_code,
+                                                anchor('admin/viewcourseDetails/'.$encryptId,  $admissions1->course_code),
                                                 $admissions1->course_name,
                                                 "<a href='{$edit_url}' class='btn btn-primary btn-sm'><i class='fa fa-edit'></i> Edit</a> 
-                                                 <a href='{$delete_url}' class='btn btn-danger btn-sm' onclick='return confirm(\"Are you sure you want to delete this course?\")'><i class='fa fa-trash'></i> Delete</a>",
-                                                 $admissions1->branch
+                                                 <a href='{$delete_url}' class='btn btn-danger btn-sm' onclick='return confirm(\"Are you sure you want to delete this course?\")'><i class='fa fa-trash'></i> Delete</a>"
                                             );
                                             $this->table->add_row($result_array);
                                         }

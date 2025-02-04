@@ -39,24 +39,30 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="branch">Branch<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="branch" id="branch"
-                                        value="<?php echo set_value('branch', $admissionDetails->branch); ?>">
-                                        <span class="text-danger"><?php echo form_error('branch'); ?></span>
+                                 <label for="branch">Branch<span class="text-danger">*</span></label>
+                                    <?php 
+                                        $selected_branch = isset($admissionDetails->branch) ? $admissionDetails->branch : (set_value('branch') ? set_value('branch') : '');
+                                        echo form_dropdown('branch', $branch_options, $selected_branch, 'class="form-control" id="branch"');
+                                    ?>
+                                    <span class="text-danger"><?php echo form_error('branch'); ?></span>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="semester">Semester<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="semester" id="semester"
-                                        value="<?php echo set_value('semester', $admissionDetails->semester); ?>">
-                                        <span class="text-danger"><?php echo form_error('semester'); ?></span>
+                                    <?php 
+                                        $selected_semester = isset($admissionDetails->semester) ? $admissionDetails->semester : (set_value('semester') ? set_value('semester') : '');
+                                        echo form_dropdown('semester', $semester_options, $selected_semester, 'class="form-control" id="semester"');
+                                    ?>
+                                    <span class="text-danger"><?php echo form_error('semester'); ?></span>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="year">Year<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="year" id="year"
-                                        value="<?php echo set_value('year', $admissionDetails->year); ?>">
-                                        <span class="text-danger"><?php echo form_error('year'); ?></span>
+                                    <?php 
+                                        $selected_year = isset($admissionDetails->year) ? $admissionDetails->year : (set_value('year') ? set_value('year') : '');
+                                        echo form_dropdown('year', $year_options, $selected_year, 'class="form-control" id="year"');
+                                    ?>
+                                    <span class="text-danger"><?php echo form_error('year'); ?></span>
                                 </div>
 
                                 <div class="form-group">

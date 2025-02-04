@@ -1476,4 +1476,62 @@ class Globals
     {
         return array("1" => "Cash", "2" => "Bank DD", "3" => "Online", "4" => "Bank Transfer", "5" => "DD");
     }
+
+    public function branch()
+    {
+        return array(
+
+            "AE" => "Aeronautical Engineering",
+            "AI" => "Artificial Intelligence",
+            "AS" => "Applied Sciences / Aerospace Engineering",
+            "AT" => "Automobile Engineering",
+            "BT" => "Biotechnology Engineering",
+            "CH" => "Chemical Engineering",
+            "CS" => "Computer Science and Engineering",
+            "CV" => "Civil Engineering",
+            "EC" => "Electronics and Communication Engineering",
+            "EE" => "Electrical Engineering",
+            "EI" => "Electronics and Instrumentation Engineering",
+            "ET" => "Electronics and Telecommunication Engineering",
+            "IM" => "Industrial and Manufacturing Engineering",
+            "IS" => "Information Science and Engineering",
+            "IT" => "Information Technology",
+            "MB" => "Marine Biotechnology / Molecular Biology",
+            "MBA" => "Master of Business Administration (Not an engineering branch, but commonly offered in engineering colleges)",
+            "ME" => "Mechanical Engineering",
+            "ML" => "Machine Learning",
+            "OE" => "Ocean Engineering / Open Electives",
+            "TE" => "Textile Engineering",
+            "WE" => "Water Engineering",
+         );
+    }
+
+    public function semester()
+    {
+        return array(
+
+           "1" => "1",
+           "2" => "2",
+           "3" => "3",
+           "4" => "4",
+           "5" => "5",
+           "6" => "6",
+           "7" => "7",
+           "8" => "8",
+           "9" => "9",
+           "10" => "10",
+         );
+    }
+
+    public function year()
+    {
+        return array(
+
+           "1" => "1",
+           "2" => "2",
+           "3" => "3",
+           "4" => "4",
+           "5" => "5",
+         );
+    }
 }

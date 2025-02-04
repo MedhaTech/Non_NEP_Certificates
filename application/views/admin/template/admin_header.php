@@ -37,7 +37,7 @@
                 <div class="navbar-brand-box d-flex align-items-left">
                     <a href="<?php echo base_url(); ?>admin/dashboard" class="logo">
                         <span>
-                        BMSCE CAMPUS
+                        BMSCE CERTIFY 2008
                         </span>
                     </a>
 
@@ -133,13 +133,6 @@
                                     <i class="mdi mdi-google-pages mr-2"></i>Courses
                                 </a>
                             </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="<?php echo base_url(); ?>admin/add_newcourse">
-                                    <i class="nav-icon fas fa-plus mr-2"></i>Add Course
-                                </a>
-                            </li>
-
 
 
                         </ul>
