@@ -127,7 +127,7 @@ class Admin extends CI_Controller
 		}
 	}
 
-	function courses()
+public function courses()
 	{
 		if ($this->session->userdata('logged_in')) {
 			$session_data = $this->session->userdata('logged_in');
@@ -158,6 +158,7 @@ class Admin extends CI_Controller
 			$data['role'] = $session_data['role'];
 			$data['page_title'] = "Add New Course";
 			$data['menu'] = "newcourse";
+			$data['programme_options'] = array(" " => "Select Year") + $this->globals->programme();
 			$data['branch_options'] = array(" " => "Select Branch") + $this->globals->branch();
 			$data['semester_options'] = array(" " => "Select Semester") + $this->globals->semester();
 			$data['year_options'] = array(" " => "Select Year") + $this->globals->year();
@@ -165,6 +166,7 @@ class Admin extends CI_Controller
 			// Set validation rules
 			$this->form_validation->set_rules('course_code', 'Course Code', 'required');
 			$this->form_validation->set_rules('course_name', 'Course Name', 'required');
+			$this->form_validation->set_rules('programme', 'Programme', 'required');
 			$this->form_validation->set_rules('branch', 'Branch', 'required');
 			$this->form_validation->set_rules('semester', 'Semester', 'required');
 			$this->form_validation->set_rules('year', 'Year', 'required');
@@ -179,6 +181,7 @@ class Admin extends CI_Controller
 				$insertDetails = array(
 					'course_code' => $this->input->post('course_code'),
 					'course_name' => $this->input->post('course_name'),
+					'programme' => $this->input->post('programme'),
 					'branch' => $this->input->post('branch'),
 					'semester' => $this->input->post('semester'),
 					'year' => strtolower($this->input->post('year')),
@@ -219,6 +222,7 @@ public function editcourse($id)
         $data['role'] = $session_data['role'];
 		$data['page_title'] = "Edit Course";
 		$data['menu'] = "editcourse";
+		$data['programme_options'] = array(" " => "Select Year") + $this->globals->programme();
 		$data['branch_options'] = array(" " => "Select Branch") + $this->globals->branch();
 		$data['semester_options'] = array(" " => "Select Semester") + $this->globals->semester();
 		$data['year_options'] = array(" " => "Select Year") + $this->globals->year();
@@ -232,6 +236,7 @@ public function editcourse($id)
         // Set form validation rules
         $this->form_validation->set_rules('course_code', 'Course Code', 'required');
         $this->form_validation->set_rules('course_name', 'Course Name', 'required');
+		$this->form_validation->set_rules('programme', 'Programme', 'required');
         $this->form_validation->set_rules('branch', 'Branch', 'required');
         $this->form_validation->set_rules('semester', 'Semester', 'required');
         $this->form_validation->set_rules('year', 'Year', 'required');
@@ -247,6 +252,7 @@ public function editcourse($id)
             $updateDetails = array(
                 'course_code' => $this->input->post('course_code'),
                 'course_name' => $this->input->post('course_name'),
+				'programme' => $this->input->post('programme'),
                 'branch' => $this->input->post('branch'),
                 'semester' => $this->input->post('semester'),
                 'year' => $this->input->post('year'),
@@ -323,6 +329,222 @@ public function viewcourseDetails($id)
         $data['students'] = $this->admin_model->getDetails('courses', $decoded_id)->row(); // Using row() for a single course
 
         $this->admin_template->show('admin/view_coursedetails', $data);
+    } else {
+        redirect('admin', 'refresh');
+    }
+}
+
+public function students()
+{
+	if ($this->session->userdata('logged_in')) {
+		$session_data = $this->session->userdata('logged_in');
+		$data['id'] = $session_data['id'];
+		$data['username'] = $session_data['username'];
+		$data['full_name'] = $session_data['full_name'];
+		$data['role'] = $session_data['role'];
+
+		$data['page_title'] = "Students";
+		$data['menu'] = "students";
+
+		$data['students'] = $this->admin_model->getDetails('students', $id)->result();
+		// var_dump($data['students']); die();
+
+		$this->admin_template->show('admin/students', $data);
+	} else {
+		redirect('admin', 'refresh');
+	}
+}
+
+ public function add_newstudent()
+	{
+		if ($this->session->userdata('logged_in')) {
+			$session_data = $this->session->userdata('logged_in');
+			$data['id'] = $session_data['id'];
+			$data['username'] = $session_data['username'];
+			$data['full_name'] = $session_data['full_name'];
+			$data['role'] = $session_data['role'];
+			$data['page_title'] = "Add New Student";
+			$data['menu'] = "newstudent";
+			$data['programme_options'] = array(" " => "Select Year") + $this->globals->programme();
+			$data['branch_options'] = array(" " => "Select Branch") + $this->globals->branch();
+
+			// Set validation rules
+			$this->form_validation->set_rules('usn', 'Usn', 'required');
+			$this->form_validation->set_rules('student_name', 'Student Name', 'required');
+			$this->form_validation->set_rules('admission_year', 'Admission Year', 'required');
+			$this->form_validation->set_rules('programme', 'Programme', 'required');
+			$this->form_validation->set_rules('branch', 'Branch', 'required');
+			$this->form_validation->set_rules('date_of_birth', 'Date of Birth', 'required');
+			$this->form_validation->set_rules('gender', 'Gender', 'required');
+			$this->form_validation->set_rules('category', 'Category', 'required');
+			$this->form_validation->set_rules('mobile', 'Mobile', 'required');
+			$this->form_validation->set_rules('parent_mobile', 'Parent Mobile', 'required');
+			$this->form_validation->set_rules('father_name', 'Father Name', 'required');
+			$this->form_validation->set_rules('mother_name', 'Mother Name', 'required');
+
+			if ($this->form_validation->run() === FALSE) {
+				$data['action'] = 'admin/add_newstudent';
+				$this->admin_template->show('admin/add_newstudent', $data);
+			} else {
+				// Prepare data to insert
+				$insertDetails = array(
+					'usn' => $this->input->post('usn'),
+					'student_name' => $this->input->post('student_name'),
+					'admission_year' => $this->input->post('admission_year'),
+					'programme' => $this->input->post('programme'),
+					'branch' => $this->input->post('branch'),
+					'date_of_birth' => $this->input->post('date_of_birth'),
+					'gender' => strtolower($this->input->post('gender')),
+					'category' => $this->input->post('category'),
+					'mobile' => $this->input->post('mobile'),
+					'parent_mobile' => $this->input->post('parent_mobile'),
+					'father_name' => $this->input->post('father_name'),
+					'mother_name' => $this->input->post('mother_name'),
+				);
+
+				// Insert the data into the 'students' table
+				$result = $this->admin_model->insertDetails('students', $insertDetails);
+
+				// Set success or failure message
+				if ($result) {
+					$this->session->set_flashdata('message', 'Student details have been successfully updated!');
+					$this->session->set_flashdata('status', 'alert-success');
+				} else {
+					$this->session->set_flashdata('message', 'Oops! Something went wrong, please try again.');
+					$this->session->set_flashdata('status', 'alert-warning');
+				}
+
+				// Redirect to the same page after processing
+				redirect('admin/students', 'refresh');
+			}
+		} else {
+			// Redirect if the user is not logged in
+			redirect('admin', 'refresh');
+		}
+	}
+
+	public function editstudent($id)
+{
+    // Check if the user is logged in
+    if ($this->session->userdata('logged_in')) {
+        // Get session data
+        $session_data = $this->session->userdata('logged_in');
+        $data['id'] = $session_data['id'];
+        $data['username'] = $session_data['username'];
+        $data['full_name'] = $session_data['full_name'];
+        $data['role'] = $session_data['role'];
+		$data['page_title'] = "Edit Student";
+		$data['menu'] = "editstudent";
+		$data['programme_options'] = array(" " => "Select Year") + $this->globals->programme();
+		$data['branch_options'] = array(" " => "Select Branch") + $this->globals->branch();
+
+        // Get the current course details using the provided ID
+        $data['admissionDetails'] = $this->admin_model->getDetails('students', $id)->row();
+
+        $this->load->library('form_validation');
+        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+
+        // Set validation rules
+		$this->form_validation->set_rules('usn', 'Usn', 'required');
+		$this->form_validation->set_rules('student_name', 'Student Name', 'required');
+		$this->form_validation->set_rules('admission_year', 'Admission Year', 'required');
+		$this->form_validation->set_rules('programme', 'Programme', 'required');
+		$this->form_validation->set_rules('branch', 'Branch', 'required');
+		$this->form_validation->set_rules('date_of_birth', 'Date of Birth', 'required');
+		$this->form_validation->set_rules('gender', 'Gender', 'required');
+		$this->form_validation->set_rules('category', 'Category', 'required');
+		$this->form_validation->set_rules('mobile', 'Mobile', 'required');
+		$this->form_validation->set_rules('parent_mobile', 'Parent Mobile', 'required');
+		$this->form_validation->set_rules('father_name', 'Father Name', 'required');
+		$this->form_validation->set_rules('mother_name', 'Mother Name', 'required');
+
+        // If form validation fails
+        if ($this->form_validation->run() === FALSE) {
+            // Show form again if validation fails
+            $this->admin_template->show('admin/editstudent', $data);
+        } else {
+            // If form validation passed, prepare data for update
+            $updateDetails = array(
+                'usn' => $this->input->post('usn'),
+				'student_name' => $this->input->post('student_name'),
+				'admission_year' => $this->input->post('admission_year'),
+				'programme' => $this->input->post('programme'),
+				'branch' => $this->input->post('branch'),
+				'date_of_birth' => $this->input->post('date_of_birth'),
+				'gender' => strtolower($this->input->post('gender')),
+				'category' => $this->input->post('category'),
+				'mobile' => $this->input->post('mobile'),
+				'parent_mobile' => $this->input->post('parent_mobile'),
+				'father_name' => $this->input->post('father_name'),
+				'mother_name' => $this->input->post('mother_name'),
+            );
+
+            $result = $this->admin_model->updateDetails1($id, $updateDetails, 'students');
+
+            if ($result) {
+                $this->session->set_flashdata('message', 'Student details updated successfully!');
+                $this->session->set_flashdata('status', 'alert-success');
+            } else {
+                $this->session->set_flashdata('message', 'Something went wrong, please try again!');
+                $this->session->set_flashdata('status', 'alert-danger');
+            }
+
+            // Redirect to the same page to refresh the form
+            redirect('admin/students/' . $id);
+        }
+    } else {
+        redirect('admin');
+    }
+}
+
+public function deletestudent($id)
+{
+    // Check if the user is logged in
+    if ($this->session->userdata('logged_in')) {
+		$session_data = $this->session->userdata('logged_in');
+        $data['id'] = $session_data['id'];
+        $data['username'] = $session_data['username'];
+        $data['full_name'] = $session_data['full_name'];
+        $data['role'] = $session_data['role'];
+        // Decode the ID (since you base64-encoded it for security)
+        $decoded_id = base64_decode($id);
+
+        $result = $this->admin_model->deleteStudent($decoded_id);
+
+        if ($result) {
+            $this->session->set_flashdata('message', 'Student deleted successfully!');
+            $this->session->set_flashdata('status', 'alert-success');
+        } else {
+            $this->session->set_flashdata('message', 'Something went wrong, please try again!');
+            $this->session->set_flashdata('status', 'alert-danger');
+        }
+
+        // Redirect to the course list page
+        redirect('admin/students');
+    } else {
+        // Redirect to the login page if not logged in
+        redirect('admin');
+    }
+}
+
+public function viewstudentDetails($id)
+{
+    if ($this->session->userdata('logged_in')) {
+        $session_data = $this->session->userdata('logged_in');
+        $data['id'] = $session_data['id'];
+        $data['username'] = $session_data['username'];
+        $data['full_name'] = $session_data['full_name'];
+        $data['role'] = $session_data['role'];
+
+        $data['page_title'] = "Student Details";
+        $data['menu'] = "students";
+
+		$decoded_id = base64_decode($id);
+
+        // Fetch course details for the given course ID
+        $data['students'] = $this->admin_model->getDetails('students', $decoded_id)->row(); // Using row() for a single course
+
+        $this->admin_template->show('admin/view_studentdetails', $data);
     } else {
         redirect('admin', 'refresh');
     }

@@ -20,7 +20,7 @@
                                                 <div class="input-group mb-3">
                                                     <input type="text" class="form-control" placeholder="Enter Username" name="username">
                                                     <div class="input-group-append">
-                                                        <div class="input-group-text bg-secondary text-white">@mcehassan.ac.in
+                                                        <div class="input-group-text bg-secondary text-white">@bmsce.ac.in
                                                             <!-- <i class="fas fa-envelope ml-2"></i> -->
                                                         </div>
                                                     </div>

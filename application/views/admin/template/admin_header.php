@@ -7,7 +7,7 @@
     <title><?= $page_title; ?> | BMSCE Campus Portal</title>
 
     <!-- App favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>assets/images/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>assets/images/BMS_College_of_Engineering.png">
 
     <!-- App css -->
     <link href="<?php echo base_url(); ?>assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -131,6 +131,12 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="<?php echo base_url(); ?>admin/courses">
                                     <i class="mdi mdi-google-pages mr-2"></i>Courses
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?php echo base_url(); ?>admin/students">
+                                    <i class="nav-icon fas fa-users mr-2"></i>Students
                                 </a>
                             </li>
 

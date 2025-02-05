@@ -39,6 +39,15 @@
                                 </div>
 
                                 <div class="form-group">
+                                 <label for="programme">Programme<span class="text-danger">*</span></label>
+                                    <?php 
+                                        $selected_programme = isset($admissionDetails->programme) ? $admissionDetails->programme : (set_value('programme') ? set_value('programme') : '');
+                                        echo form_dropdown('programme', $programme_options, $selected_programme, 'class="form-control" id="programme"');
+                                    ?>
+                                    <span class="text-danger"><?php echo form_error('branch'); ?></span>
+                                </div>
+
+                                <div class="form-group">
                                  <label for="branch">Branch<span class="text-danger">*</span></label>
                                     <?php 
                                         $selected_branch = isset($admissionDetails->branch) ? $admissionDetails->branch : (set_value('branch') ? set_value('branch') : '');
