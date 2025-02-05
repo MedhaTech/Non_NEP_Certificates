@@ -1497,7 +1497,7 @@ class Globals
             "IS" => "Information Science and Engineering",
             "IT" => "Information Technology",
             "MB" => "Marine Biotechnology / Molecular Biology",
-            "MBA" => "Master of Business Administration (Not an engineering branch, but commonly offered in engineering colleges)",
+            "MBA" => "Master of Business Administration",
             "ME" => "Mechanical Engineering",
             "ML" => "Machine Learning",
             "OE" => "Ocean Engineering / Open Electives",
@@ -1532,6 +1532,15 @@ class Globals
            "3" => "3",
            "4" => "4",
            "5" => "5",
+         );
+    }
+
+    public function programme()
+    {
+        return array(
+
+           "UG" => "UG",
+           "PG" => "PG",
          );
     }
 }

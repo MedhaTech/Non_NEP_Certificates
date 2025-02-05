@@ -175,4 +175,11 @@ class Admin_model extends CI_Model
       $this->db->delete('courses');
       return $this->db->affected_rows() > 0;
   }
+
+  public function deleteStudent($id)
+  {
+      $this->db->where('id', $id);
+      $this->db->delete('students');
+      return $this->db->affected_rows() > 0;
+  }
 }

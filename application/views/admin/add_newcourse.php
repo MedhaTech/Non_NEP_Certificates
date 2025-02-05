@@ -43,6 +43,15 @@
                     </div>
 
                     <div class="form-group row">
+                        <label for="programme" class="col-sm-4 col-form-label">Programme<span class="text-danger">*</span></label>
+                        <div class="col-sm-8">
+                            <?php 
+                            echo form_dropdown('programme', $programme_options, (set_value('programme')) ? set_value('programme') : '', 'class="form-control" id="programme"'); ?>
+                            <span class="text-danger"><?php echo form_error('programme'); ?></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
                         <label for="branch" class="col-sm-4 col-form-label">Branch<span class="text-danger">*</span></label>
                         <div class="col-sm-8">
                             <!-- <input type="text" class="form-control" id="branch" name="branch"

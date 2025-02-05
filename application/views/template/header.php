@@ -12,7 +12,7 @@
     <!-- Favicon -->
     
     <!-- App favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url();?>assets/images/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url();?>assets/images/BMS_College_of_Engineering.png">
       
     <!-- App css -->
     <link href="<?php echo base_url();?>assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
