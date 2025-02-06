@@ -30,7 +30,7 @@
                                         $this->table->set_template($table_setup);
 
                                         // Table headings
-                                        $print_fields = array('S.NO', 'Usn', 'Student Name', 'Actions', 'Branch');
+                                        $print_fields = array('S.NO', 'USN', 'Student Name', 'Actions', 'Branch');
                                         $this->table->set_heading($print_fields);
 
                                         $i = 1;

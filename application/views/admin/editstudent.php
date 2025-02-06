@@ -42,6 +42,7 @@
                                     <label for="admission_year">Admission Year</label>
                                     <input type="text" class="form-control" name="admission_year" id="admission_year"
                                         value="<?php echo set_value('admission_year', $admissionDetails->admission_year); ?>">
+                                        <span class="text-danger"><?php echo form_error('admission_year'); ?></span>
                                 </div>
 
                                 <div class="form-group">
@@ -66,42 +67,49 @@
                                     <label for="date_of_birth">Date of Birth</label>
                                     <input type="date" class="form-control" name="date_of_birth" id="date_of_birth"
                                         value="<?php echo set_value('date_of_birth', $admissionDetails->date_of_birth); ?>">
+                                        <span class="text-danger"><?php echo form_error('date_of_birth'); ?></span>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="gender">Gender</label>
                                     <input type="text" class="form-control" name="gender" id="gender"
                                         value="<?php echo set_value('gender', $admissionDetails->gender); ?>">
+                                        <span class="text-danger"><?php echo form_error('gender'); ?></span>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="category">Category</label>
                                     <input type="text" class="form-control" name="category" id="category"
                                         value="<?php echo set_value('category', $admissionDetails->category); ?>">
+                                        <span class="text-danger"><?php echo form_error('category'); ?></span>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="mobile">Mobile</label>
                                     <input type="text" class="form-control" name="mobile" id="mobile"
                                         value="<?php echo set_value('mobile', $admissionDetails->mobile); ?>">
+                                        <span class="text-danger"><?php echo form_error('mobile'); ?></span>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="parent_mobile">Parent Mobile</label>
                                     <input type="text" class="form-control" name="parent_mobile" id="parent_mobile"
                                         value="<?php echo set_value('parent_mobile', $admissionDetails->parent_mobile); ?>">
+                                        <span class="text-danger"><?php echo form_error('parent_mobile'); ?></span>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="father_name">Father Name</label>
                                     <input type="text" class="form-control" name="father_name" id="father_name"
                                         value="<?php echo set_value('father_name', $admissionDetails->father_name); ?>">
+                                        <span class="text-danger"><?php echo form_error('father_name'); ?></span>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="mother_name">Mother Name</label>
                                     <input type="text" class="form-control" name="mother_name" id="mother_name"
                                         value="<?php echo set_value('mother_name', $admissionDetails->mother_name); ?>">
+                                        <span class="text-danger"><?php echo form_error('mother_name'); ?></span>
                                 </div>
 
                             <!-- Save and Back buttons -->

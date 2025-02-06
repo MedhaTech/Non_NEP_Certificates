@@ -550,4 +550,65 @@ public function viewstudentDetails($id)
     }
 }
 
+public function view_studentdetails()
+{
+    if ($this->session->userdata('logged_in')) {
+        $session_data = $this->session->userdata('logged_in');
+        $data['id'] = $session_data['id'];
+        $data['username'] = $session_data['username'];
+        $data['full_name'] = $session_data['full_name'];
+        $data['role'] = $session_data['role'];
+
+        $data['page_title'] = "Student Details";
+        $data['menu'] = "students";
+        
+        // If form validation fails
+        $this->form_validation->set_rules('usn', 'USN', 'required');
+        if ($this->form_validation->run() === FALSE) {
+            $data['action'] = 'admin/view_studentdetails';
+            $this->admin_template->show('admin/view_studentdetails', $data);
+        } else {
+            // If form is valid, look for the USN and fetch details
+            $usn = $this->input->post('usn');
+            $details = $this->admin_model->getDetailsbyfield($usn, 'usn', 'students')->row();
+            if ($details) {
+                $id = $details->id;
+                $encryptId = base64_encode($id);
+                // Check if the redirection path is valid
+                redirect('admin/studentdetails/' . $encryptId, 'refresh');
+            } else {
+                redirect('admin/students', 'refresh');
+            }
+        }
+    } else {
+        redirect('admin/timeout');
+    }
+}
+
+public function studentdetails($encryptId)
+{
+	if ($this->session->userdata('logged_in')) {
+        $session_data = $this->session->userdata('logged_in');
+        $data['id'] = $session_data['id'];
+        $data['username'] = $session_data['username'];
+        $data['full_name'] = $session_data['full_name'];
+        $data['role'] = $session_data['role'];
+
+        $data['page_title'] = "Student Details";
+        $data['menu'] = "students";
+
+		$data['encryptId'] = $encryptId;
+		$id = base64_decode($encryptId);
+		// $data['stud_id'] = $id;
+	
+		$data['students'] = $this->admin_model->getDetails('students', $id)->row();
+
+
+		$this->admin_template->show('admin/studentdetails', $data);
+	} else {
+		redirect('admin/timeout');
+	}
+}
+
+
 }
