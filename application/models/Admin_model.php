@@ -182,4 +182,13 @@ class Admin_model extends CI_Model
       $this->db->delete('students');
       return $this->db->affected_rows() > 0;
   }
+
+  public function getstudentDetail($table, $conditions = [])
+{
+    if (!empty($conditions)) {
+        $this->db->where($conditions);
+    }
+    return $this->db->get($table);
+}
+
 }

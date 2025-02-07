@@ -334,25 +334,82 @@ public function viewcourseDetails($id)
     }
 }
 
+// public function students()
+// {
+// 	if ($this->session->userdata('logged_in')) {
+// 		$session_data = $this->session->userdata('logged_in');
+// 		$data['id'] = $session_data['id'];
+// 		$data['username'] = $session_data['username'];
+// 		$data['full_name'] = $session_data['full_name'];
+// 		$data['role'] = $session_data['role'];
+
+// 		$data['page_title'] = "Students";
+// 		$data['menu'] = "students";
+
+// 		$data['students'] = $this->admin_model->getDetails('students', $id)->result();
+
+// 		$this->admin_template->show('admin/students', $data);
+// 	} else {
+// 		redirect('admin', 'refresh');
+// 	}
+// }
+
 public function students()
 {
-	if ($this->session->userdata('logged_in')) {
-		$session_data = $this->session->userdata('logged_in');
-		$data['id'] = $session_data['id'];
-		$data['username'] = $session_data['username'];
-		$data['full_name'] = $session_data['full_name'];
-		$data['role'] = $session_data['role'];
+    if ($this->session->userdata('logged_in')) {
+        // Retrieve session data
+        $session_data = $this->session->userdata('logged_in');
+        $data['id'] = $session_data['id'];
+        $data['username'] = $session_data['username'];
+        $data['full_name'] = $session_data['full_name'];
+        $data['role'] = $session_data['role'];
 
-		$data['page_title'] = "Students";
-		$data['menu'] = "students";
+        $data['page_title'] = "Students";
+        $data['menu'] = "students";
 
-		$data['students'] = $this->admin_model->getDetails('students', $id)->result();
-		// var_dump($data['students']); die();
+        // Adding "All" options for filters
+        $data['admission_options'] = array("All Admission Years" => "All Admission Years") + $this->globals->admissionyear();
+        $data['programme_options'] = array("All Programmes" => "All Programmes") + $this->globals->programme();
+        $data['branch_options'] = array("All Branches" => "All Branches") + $this->globals->branch();
 
-		$this->admin_template->show('admin/students', $data);
-	} else {
-		redirect('admin', 'refresh');
-	}
+        // Get selected filters from the URL
+        $admission_year = $this->input->get('admission_year');
+        $programme = $this->input->get('programme');
+        $branch = $this->input->get('branch');
+
+        // Initialize filter conditions
+        $filter_conditions = [];
+
+        // Apply filter conditions if selected (only non-'All' values)
+        if ($admission_year && $admission_year !== 'All Admission Years') {
+            $filter_conditions['admission_year'] = $admission_year;
+        }
+        if ($programme && $programme !== 'All Programmes') {
+            $filter_conditions['programme'] = $programme;
+        }
+        if ($branch && $branch !== 'All Branches') {
+            $filter_conditions['branch'] = $branch;
+        }
+
+        // If no filter is set (all are "All"), fetch all students
+        if (empty($filter_conditions)) {
+            // When no filter is set, we should show all students
+            $data['students'] = $this->admin_model->getstudentDetail('students')->result();
+        } else {
+            // Get the filtered student list
+            $data['students'] = $this->admin_model->getstudentDetail('students', $filter_conditions)->result();
+        }
+
+        // Pass selected filter values to the view
+        $data['selected_admission_year'] = $admission_year;
+        $data['selected_programme'] = $programme;
+        $data['selected_branch'] = $branch;
+
+        // Render the view
+        $this->admin_template->show('admin/students', $data);
+    } else {
+        redirect('admin', 'refresh');
+    }
 }
 
  public function add_newstudent()
@@ -365,7 +422,8 @@ public function students()
 			$data['role'] = $session_data['role'];
 			$data['page_title'] = "Add New Student";
 			$data['menu'] = "newstudent";
-			$data['programme_options'] = array(" " => "Select Year") + $this->globals->programme();
+			$data['admission_options'] = array(" " => "Select Admission Year") + $this->globals->admissionyear();
+			$data['programme_options'] = array(" " => "Select Programme") + $this->globals->programme();
 			$data['branch_options'] = array(" " => "Select Branch") + $this->globals->branch();
 
 			// Set validation rules
@@ -435,7 +493,8 @@ public function students()
         $data['role'] = $session_data['role'];
 		$data['page_title'] = "Edit Student";
 		$data['menu'] = "editstudent";
-		$data['programme_options'] = array(" " => "Select Year") + $this->globals->programme();
+		$data['admission_options'] = array(" " => "Select Admission Year") + $this->globals->admissionyear();
+		$data['programme_options'] = array(" " => "Select Programme") + $this->globals->programme();
 		$data['branch_options'] = array(" " => "Select Branch") + $this->globals->branch();
 
         // Get the current course details using the provided ID
