@@ -51,11 +51,24 @@
                 <div class="d-flex align-items-center">
 
                     <div class="dropdown d-inline-block ml-2">
-                        <button type="button" class="btn header-item noti-icon waves-effect waves-light"
+                        <!-- <button type="button" class="btn header-item noti-icon waves-effect waves-light"
                             id="page-header-search-dropdown" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false">
                             <i class="mdi mdi-magnify"></i>
-                        </button>
+                        </button> -->
+                        <?php echo form_open_multipart('admin/view_studentdetails', 'class="user"'); ?>
+                            <div class="input-group">
+                                <input type="text" class="form-control bg-light border-0 small" placeholder="Enter USN"
+                                    aria-label="Search" id="usn" name="usn" aria-describedby="basic-addon2"
+                                    value="<?php echo (set_value('usn')) ? set_value('usn') : $usn; ?>">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="fas fa-search fa-sm"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        <?php echo form_close(); ?>
+
                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-0"
                             aria-labelledby="page-header-search-dropdown">
 
@@ -80,7 +93,7 @@
                             id="page-header-user-dropdown" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false">
                             <img class="rounded-circle header-profile-user"
-                                src="<?php echo base_url(); ?>assets/images/users/avatar-3.jpg" alt="Header Avatar">
+                                src="<?php echo base_url(); ?>assets/images/BMS_College_of_Engineering.png" alt="Header Avatar">
                             <span class="d-none d-sm-inline-block ml-1">Welcome <?= $full_name; ?></span>
                             <i class="mdi mdi-chevron-down d-none d-sm-inline-block"></i>
                         </button>
