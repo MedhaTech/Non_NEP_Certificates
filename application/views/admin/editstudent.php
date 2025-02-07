@@ -25,7 +25,7 @@
                                     value="<?php echo $admissionDetails->id; ?>">
 
                                 <div class="form-group">
-                                    <label for="usn">Usn<span class="text-danger">*</span></label>
+                                    <label for="usn">USN<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="usn" id="usn"
                                         value="<?php echo set_value('usn', $admissionDetails->usn); ?>">
                                         <span class="text-danger"><?php echo form_error('usn'); ?></span>
@@ -40,8 +40,10 @@
 
                                 <div class="form-group">
                                     <label for="admission_year">Admission Year</label>
-                                    <input type="text" class="form-control" name="admission_year" id="admission_year"
-                                        value="<?php echo set_value('admission_year', $admissionDetails->admission_year); ?>">
+                                    <?php 
+                                        $selected_admission = isset($admissionDetails->admission_year) ? $admissionDetails->admission_year : (set_value('admission_year') ? set_value('admission_year') : '');
+                                        echo form_dropdown('admission_year', $admission_options, $selected_admission, 'class="form-control" id="admission_year"');
+                                    ?>
                                         <span class="text-danger"><?php echo form_error('admission_year'); ?></span>
                                 </div>
 

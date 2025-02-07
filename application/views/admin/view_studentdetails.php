@@ -12,7 +12,7 @@
                         <div class="card card-body">
                             <form class="form-horizontal">
                                 <div class="form-group row mb-0">
-                                    <label for="inputEmail3" class="col-3 col-form-label">Usn</label>
+                                    <label for="inputEmail3" class="col-3 col-form-label">USN</label>
                                     <div class="col-9 col-form-label">
                                         <?php
                                 if ($students->usn != NULL) {

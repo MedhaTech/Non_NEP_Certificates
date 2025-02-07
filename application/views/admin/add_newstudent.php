@@ -25,7 +25,7 @@
                     <?php echo form_open_multipart($action, 'class="user"'); ?>
 
                     <div class="form-group row">
-                        <label for="usn" class="col-sm-4 col-form-label">Usn<span class="text-danger">*</span></label>
+                        <label for="usn" class="col-sm-4 col-form-label">USN<span class="text-danger">*</span></label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" id="usn" name="usn"
                                 value="<?php echo (set_value('usn')) ? set_value('usn') : $usn; ?>">
@@ -45,8 +45,8 @@
                     <div class="form-group row">
                         <label for="admission_year" class="col-sm-4 col-form-label">Admission Year<span class="text-danger">*</span></label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="admission_year" name="admission_year"
-                                value="<?php echo (set_value('admission_year')) ? set_value('admission_year') : $admission_year; ?>">
+                        <?php 
+                            echo form_dropdown('admission_year', $admission_options, (set_value('admission_year')) ? set_value('admission_year') : '', 'class="form-control" id="admission_year"'); ?>
                             <span class="text-danger"><?php echo form_error('admission_year'); ?></span>
                         </div>
                     </div>
