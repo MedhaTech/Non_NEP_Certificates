@@ -83,8 +83,10 @@
                     <div class="form-group row">
                         <label for="gender" class="col-sm-4 col-form-label">Gender<span class="text-danger">*</span></label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="gender" name="gender"
-                                value="<?php echo (set_value('gender')) ? set_value('gender') : $gender; ?>">
+                            <!-- <input type="text" class="form-control" id="gender" name="gender"
+                                value="<?php echo (set_value('gender')) ? set_value('gender') : $gender; ?>"> -->
+                                <?php 
+                                echo form_dropdown('gender', $gender_options, (set_value('gender')) ? set_value('gender') : '', 'class="form-control" id="gender"'); ?>
                             <span class="text-danger"><?php echo form_error('gender'); ?></span>
                         </div>
                     </div>
