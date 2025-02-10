@@ -74,8 +74,12 @@
 
                                 <div class="form-group">
                                     <label for="gender">Gender</label>
-                                    <input type="text" class="form-control" name="gender" id="gender"
-                                        value="<?php echo set_value('gender', $admissionDetails->gender); ?>">
+                                    <!-- <input type="text" class="form-control" name="gender" id="gender"
+                                        value="<?php echo set_value('gender', $admissionDetails->gender); ?>"> -->
+                                        <?php 
+                                        $selected_gender = isset($admissionDetails->gender) ? $admissionDetails->gender : (set_value('gender') ? set_value('gender') : '');
+                                        echo form_dropdown('gender', $gender_options, $selected_gender, 'class="form-control" id="gender"');
+                                    ?>
                                         <span class="text-danger"><?php echo form_error('gender'); ?></span>
                                 </div>
 
