@@ -706,9 +706,33 @@ public function view_studentdetails()
     }
 }
 
+// public function studentdetails($encryptId)
+// {
+// 	if ($this->session->userdata('logged_in')) {
+//         $session_data = $this->session->userdata('logged_in');
+//         $data['id'] = $session_data['id'];
+//         $data['username'] = $session_data['username'];
+//         $data['full_name'] = $session_data['full_name'];
+//         $data['role'] = $session_data['role'];
+
+//         $data['page_title'] = "Student Details";
+//         $data['menu'] = "students";
+
+// 		$data['encryptId'] = $encryptId;
+// 		$id = base64_decode($encryptId);
+// 		// $data['student'] = $id;
+	
+// 		$data['students'] = $this->admin_model->getDetails('students', $id)->row();
+
+// 		$this->admin_template->show('admin/studentdetails', $data);
+// 	} else {
+// 		redirect('admin/timeout');
+// 	}
+// }
+
 public function studentdetails($encryptId)
 {
-	if ($this->session->userdata('logged_in')) {
+    if ($this->session->userdata('logged_in')) {
         $session_data = $this->session->userdata('logged_in');
         $data['id'] = $session_data['id'];
         $data['username'] = $session_data['username'];
@@ -718,17 +742,78 @@ public function studentdetails($encryptId)
         $data['page_title'] = "Student Details";
         $data['menu'] = "students";
 
-		$data['encryptId'] = $encryptId;
-		$id = base64_decode($encryptId);
-		// $data['student'] = $id;
-	
-		$data['students'] = $this->admin_model->getDetails('students', $id)->row();
+        $data['encryptId'] = $encryptId;
+        $id = base64_decode($encryptId);
 
+        // Fetch student details
+        $data['students'] = $this->admin_model->getDetails('students', $id)->row();
 
-		$this->admin_template->show('admin/studentdetails', $data);
-	} else {
-		redirect('admin/timeout');
-	}
+        // Fetch marks and course data for each semester (1 to 8)
+        for ($semester = 1; $semester <= 8; $semester++) {
+            $data["semester_$semester"] = $this->admin_model->getStudentMarksBySemester($data['students']->usn, $semester);
+        }
+
+        // Show the view
+        $this->admin_template->show('admin/studentdetails', $data);
+    } else {
+        redirect('admin/timeout');
+    }
+}
+
+public function edit_marks($course_code)
+{
+    // Check if the user is logged in
+    if ($this->session->userdata('logged_in')) {
+        // Get session data
+        $session_data = $this->session->userdata('logged_in');
+        $data['id'] = $session_data['id'];
+        $data['username'] = $session_data['username'];
+        $data['full_name'] = $session_data['full_name'];
+        $data['role'] = $session_data['role'];
+		$data['page_title'] = "Edit Student";
+		$data['menu'] = "editstudent";
+
+        // Get the current course details using the provided ID
+        $data['course'] = $this->admin_model->getDetails('students_marks', $id)->row();
+
+        $this->load->library('form_validation');
+        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+
+        // Set validation rules
+		$this->form_validation->set_rules('cie', 'Cie', 'required');
+		$this->form_validation->set_rules('see', 'See', 'required');
+		$this->form_validation->set_rules('grade', 'Grade', 'required');
+		$this->form_validation->set_rules('grade_points', 'Grade Points', 'required');
+
+        // If form validation fails
+        if ($this->form_validation->run() === FALSE) {
+            // Show form again if validation fails
+            $this->admin_template->show('admin/edit_marks', $data);
+        } else {
+            // If form validation passed, prepare data for update
+            $updateDetails = array(
+                'cie' => $this->input->post('cie'),
+				'see' => $this->input->post('see'),
+				'grade' => $this->input->post('grade'),
+				'grade_points' => $this->input->post('grade_points'),
+            );
+
+            $result = $this->admin_model->updateDetails1($id, $updateDetails, 'students_marks');
+
+            if ($result) {
+                $this->session->set_flashdata('message', 'Marks updated successfully!');
+                $this->session->set_flashdata('status', 'alert-success');
+            } else {
+                $this->session->set_flashdata('message', 'Something went wrong, please try again!');
+                $this->session->set_flashdata('status', 'alert-danger');
+            }
+
+            // Redirect to the same page to refresh the form
+            redirect('admin/students/' . $id);
+        }
+    } else {
+        redirect('admin');
+    }
 }
 
 }
