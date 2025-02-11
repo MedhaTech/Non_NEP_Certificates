@@ -191,4 +191,18 @@ class Admin_model extends CI_Model
     return $this->db->get($table);
 }
 
+public function getStudentMarksBySemester($usn, $semester)
+{
+    // Query to fetch student marks and course details for the specific semester
+    $this->db->select('c.course_code, c.course_name, sm.cie, sm.see, sm.grade, sm.grade_points');
+    $this->db->from('students_marks sm');
+    $this->db->join('courses c', 'sm.id = c.id'); // Assuming 'students_marks' has 'course_id' linking to 'courses'
+    $this->db->where('sm.usn', $usn); // Filter by the student's USN
+    $this->db->where('sm.semester', $semester); // Filter by the specific semester
+    $query = $this->db->get();
+    return $query->result();
+}
+
+
+
 }
