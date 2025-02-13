@@ -154,7 +154,7 @@ echo anchor('admin/generate_student_pdf/' . $students->id . '/' . $semester,
                                     <td><?= $course->see; ?></td>
                                     <td><?= $course->grade; ?></td>
                                     <td><?= $course->grade_points; ?></td>
-                                    <td><?= $course->result_year ; ?></td>
+                                    <!-- <td></td> -->
                                     <!-- <td>
                                         <a href="<?= site_url('admin/edit_marks/' . $course->usn); ?>"
                                             class="btn btn-warning btn-sm">Edit</a>
