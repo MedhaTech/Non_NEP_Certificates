@@ -52,3 +52,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'student';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+$route['admin/generate_student_pdf/(:any)'] = 'admin/generate_student_pdf/$1';
+
+// Route for generating PDF for all semesters
+$route['admin/generate_student_pdf/(:num)'] = 'admin/generate_student_pdf/$1';
+
+// Route for generating PDF for specific semester
+$route['admin/generate_student_pdf/(:num)/(:num)'] = 'admin/generate_student_pdf/$1/$2';
+$route['admin/update_certificate_log'] = 'admin/update_certificate_log';

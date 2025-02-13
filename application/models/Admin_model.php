@@ -193,16 +193,52 @@ class Admin_model extends CI_Model
 
 public function getStudentMarksBySemester($usn, $semester)
 {
-    // Query to fetch student marks and course details for the specific semester
-    $this->db->select('c.course_code, c.course_name, sm.cie, sm.see, sm.grade, sm.grade_points');
+    $this->db->select('c.course_code, c.course_name, sm.cie, sm.see, sm.grade, sm.grade_points, sm.sgpa, sm.credits_earned, sm.credits_actual, sm.cgpa, sm.result_year,sm.grade,sm.barcode, sm.exam_period');
     $this->db->from('students_marks sm');
-    $this->db->join('courses c', 'sm.id = c.id'); // Assuming 'students_marks' has 'course_id' linking to 'courses'
-    $this->db->where('sm.usn', $usn); // Filter by the student's USN
-    $this->db->where('sm.semester', $semester); // Filter by the specific semester
+    $this->db->join('courses c', 'sm.id = c.id');
+    $this->db->where('sm.usn', $usn);
+    $this->db->where('sm.semester', $semester);
     $query = $this->db->get();
     return $query->result();
 }
 
+public function insertCertificateLog($usn, $details) {
+  $data = array(
+      'usn' => $usn,
+      'details' => $details,
+      'download_at' => date('Y-m-d H:i:s') // Current timestamp
+  );
 
+  return $this->db->insert('certificates_logs', $data);
+}
+
+public function get_certificate_logs($usn)
+{
+    $this->db->select('id, details, download_at');
+    $this->db->from('certificates_logs');
+    $this->db->where('usn', $usn);
+    $this->db->order_by('download_at', 'DESC'); // Show latest first
+    return $this->db->get()->result();
+}
+
+public function getStudentCountByYear() {
+    $this->db->select('branch, programme, 
+        COUNT(CASE WHEN admission_year = 2008 THEN id END) AS `2008`, 
+        COUNT(CASE WHEN admission_year = 2009 THEN id END) AS `2009`, 
+        COUNT(CASE WHEN admission_year = 2010 THEN id END) AS `2010`, 
+        COUNT(CASE WHEN admission_year = 2011 THEN id END) AS `2011`, 
+        COUNT(CASE WHEN admission_year = 2012 THEN id END) AS `2012`, 
+        COUNT(CASE WHEN admission_year = 2013 THEN id END) AS `2013`, 
+        COUNT(CASE WHEN admission_year = 2014 THEN id END) AS `2014`, 
+        COUNT(CASE WHEN admission_year = 2015 THEN id END) AS `2015`, 
+        COUNT(CASE WHEN admission_year = 2016 THEN id END) AS `2016`, 
+        COUNT(CASE WHEN admission_year = 2017 THEN id END) AS `2017`, 
+        COUNT(CASE WHEN admission_year = 2018 THEN id END) AS `2018`, 
+        COUNT(CASE WHEN admission_year = 2019 THEN id END) AS `2019`, 
+        COUNT(CASE WHEN admission_year = 2020 THEN id END) AS `2020`');
+    $this->db->from('students');
+    $this->db->group_by('branch, programme');
+    return $this->db->get()->result();
+}
 
 }
