@@ -1130,7 +1130,9 @@ public function generate_transcript_pdf($id)
         }
 
         // $pdf->Output();
-        $pdf->Output('D'.' Transcript' . '.pdf');
+       
+        $pdf->Output('D', $student->student_name . ' Transcript' . '.pdf');
+
 
     } else {
         redirect('admin/timeout');
