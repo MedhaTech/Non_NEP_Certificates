@@ -760,6 +760,11 @@ public function studentdetails($encryptId)
 
         // Fetch student details
         $data['students'] = $this->admin_model->getDetails('students', $id)->row();
+		$data['usn'] = $data['students']->usn;
+        $data['studentmarks'] = $this->admin_model->getDetails('students_marks', $id)->row();
+
+        // var_dump($data['studentmarks']); die();
+
 
         // Fetch marks and course data for each semester (1 to 8)
         for ($semester = 1; $semester <= 8; $semester++) {
@@ -773,61 +778,112 @@ public function studentdetails($encryptId)
     }
 }
 
-public function edit_marks($course_code)
+public function save_marks()
 {
-	 // Enable error reporting
-	 error_reporting(E_ALL);
-	 ini_set('display_errors', 1);
-    // Check if the user is logged in
     if ($this->session->userdata('logged_in')) {
-        // Get session data
         $session_data = $this->session->userdata('logged_in');
         $data['id'] = $session_data['id'];
         $data['username'] = $session_data['username'];
         $data['full_name'] = $session_data['full_name'];
         $data['role'] = $session_data['role'];
-		$data['page_title'] = "Edit Student";
-		$data['menu'] = "editstudent";
 
-        // Get the current course details using the provided ID
-        $data['course'] = $this->admin_model->getDetails('students_marks', $id)->row();
+        $data['page_title'] = "Student Details";
+        $data['menu'] = "students";
 
-        $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $data['studentmarks'] = $this->admin_model->getDetails('students_marks', $id)->row();
+        // var_dump($data['studentmarks']); die();
 
-        // Set validation rules
-		$this->form_validation->set_rules('cie', 'Cie', 'required');
-		$this->form_validation->set_rules('see', 'See', 'required');
-		$this->form_validation->set_rules('grade', 'Grade', 'required');
-		$this->form_validation->set_rules('grade_points', 'Grade Points', 'required');
+        // Get POST data from the form
+        $course_code = $this->input->post('course_code');  // Assuming course_code is being passed
+        $course_name = $this->input->post('course_name');
+        $cie = $this->input->post('cie');
+        $see = $this->input->post('see');
+        $cie_see = $this->input->post('cie_see');
+        $grade = $this->input->post('grade');
+        $sgpa = $this->input->post('sgpa');
+        $cgpa = $this->input->post('cgpa');
+        $semester = $this->input->post('semester');
+        $grade_points = $this->input->post('grade_points');
+        $credits_earned = $this->input->post('credits_earned');
+        $credits_actual = $this->input->post('credits_actual');
+        $ci = $this->input->post('ci');
+        $suborder = $this->input->post('suborder');
+        $reexamyear = $this->input->post('reexamyear');
+        $result_year = $this->input->post('result_year');
+        $exam_period = $this->input->post('exam_period');
+        $barcode = $this->input->post('barcode');
+        $torder = $this->input->post('torder');
+        $texam_period = $this->input->post('texam_period');
+        $usn = $this->input->post('stu_usn'); // Get student unique identifier (usn)
 
-        // If form validation fails
-        if ($this->form_validation->run() === FALSE) {
-            // Show form again if validation fails
-            $this->admin_template->show('admin/edit_marks', $data);
-        } else {
-            // If form validation passed, prepare data for update
+        // Check if the course_code exists in the courses table
+        $this->db->select('*');
+        $this->db->from('courses');
+        $this->db->where('course_code', $course_code);
+        $courseExists = $this->db->get()->row();
+
+        if ($courseExists) {
+            // Prepare the update data for students_marks table
             $updateDetails = array(
-                'cie' => $this->input->post('cie'),
-				'see' => $this->input->post('see'),
-				'grade' => $this->input->post('grade'),
-				'grade_points' => $this->input->post('grade_points'),
+                'course_code' => $course_code,
+                'course_name' => $course_name,
+                'cie' => $cie,
+                'see' => $see,
+                'cie_see' => $cie_see,
+                'grade' => $grade,
+                'sgpa' => $sgpa,
+                'cgpa' => $cgpa,
+                'semester' => $semester,
+                'grade_points' => $grade_points,
+                'credits_earned' => $credits_earned,
+                'credits_actual' => $credits_actual,
+                'ci' => $ci,
+                'suborder' => $suborder,
+                'reexamyear' => $reexamyear,
+                'result_year' => $result_year,
+                'exam_period' => $exam_period,
+                'barcode' => $barcode,
+                'torder' => $torder,
+                'texam_period' => $texam_period,
             );
 
-            $result = $this->admin_model->updateDetails1($id, $updateDetails, 'students_marks');
+            // Check if the student marks for this course exists before updating
+            $this->db->select('*');
+            $this->db->from('students_marks');
+            $this->db->where('usn', $usn);+
+            $this->db->where('course_code', $course_code);  // Use the correct column name
+            $existingRecord = $this->db->get()->row();
 
-            if ($result) {
-                $this->session->set_flashdata('message', 'Marks updated successfully!');
-                $this->session->set_flashdata('status', 'alert-success');
+            if ($existingRecord) {
+                // Record exists, so update it
+                $this->db->where('usn', $usn);
+                $this->db->where('course_code', $course_code);  // Use the correct column name
+                $this->db->update('students_marks', $updateDetails);
+
+                if ($this->db->affected_rows() > 0) {
+                    // Update successful
+                    $this->session->set_flashdata('message', 'Marks updated successfully!');
+                    $this->session->set_flashdata('status', 'alert-success');
+                } else {
+                    // No rows affected (maybe no changes were made)
+                    $this->session->set_flashdata('message', 'No changes were made!');
+                    $this->session->set_flashdata('status', 'alert-warning');
+                }
             } else {
-                $this->session->set_flashdata('message', 'Something went wrong, please try again!');
+                // Record does not exist, maybe an invalid usn or course
+                $this->session->set_flashdata('message', 'No matching record found for the given student and course!');
                 $this->session->set_flashdata('status', 'alert-danger');
             }
-
-            // Redirect to the same page to refresh the form
-            redirect('admin/students/' . $id);
+        } else {
+            // Course code does not exist in the courses table
+            $this->session->set_flashdata('message', 'Invalid course code!');
+            $this->session->set_flashdata('status', 'alert-danger');
         }
+
+        // Redirect back to the student's page
+        redirect('admin/students/' . $data['id']);
     } else {
+        // If the user is not logged in, redirect to the login page
         redirect('admin');
     }
 }
@@ -1109,6 +1165,39 @@ public function fetch_certificate_logs($usn)
     $logs = $this->Admin_model->get_certificate_logs($usn);
 
     echo json_encode($logs);
+}
+
+
+public function delete_marks() {
+    if ($this->session->userdata('logged_in')) {
+        $session_data = $this->session->userdata('logged_in');
+        $data['id'] = $session_data['id'];
+        $data['username'] = $session_data['username'];
+        $data['full_name'] = $session_data['full_name'];
+        $data['role'] = $session_data['role'];
+
+        $data['page_title'] = "Student Details";
+        $data['menu'] = "students";
+
+        log_message('debug', 'USN: ' . $usn . ' Course Code: ' . $course_code);  // Debug log
+
+        // Ensure both parameters are received
+        if (!empty($usn) && !empty($course_code)) {
+            $this->db->where('usn', $usn);
+            $this->db->where('subcode', $course_code);
+            $this->db->delete('students_marks');
+
+            if ($this->db->affected_rows() > 0) {
+                echo json_encode(['status' => 'success']);
+            } else {
+                echo json_encode(['status' => 'error']);
+            }
+        } else {
+            echo json_encode(['status' => 'error']);
+        }
+    } else {
+        echo json_encode(['status' => 'error']);
+    }
 }
 
 
