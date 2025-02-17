@@ -177,7 +177,7 @@ public function courses()
 			$data['year_options'] = array(" " => "Select Year") + $this->globals->year();
 
 			// Set validation rules
-			$this->form_validation->set_rules('course_code', 'Course Code', 'required');
+            $this->form_validation->set_rules('course_code', 'Course Code', 'required|regex_match[/^[a-zA-Z0-9]*$/]');
 			$this->form_validation->set_rules('course_name', 'Course Name', 'required');
 			$this->form_validation->set_rules('programme', 'Programme', 'required');
 			$this->form_validation->set_rules('branch', 'Branch', 'required');
@@ -367,64 +367,6 @@ public function viewcourseDetails($id)
 // 	}
 // }
 
-// public function students()
-// {
-//     if ($this->session->userdata('logged_in')) {
-//         // Retrieve session data
-//         $session_data = $this->session->userdata('logged_in');
-//         $data['id'] = $session_data['id'];
-//         $data['username'] = $session_data['username'];
-//         $data['full_name'] = $session_data['full_name'];
-//         $data['role'] = $session_data['role'];
-
-//         $data['page_title'] = "Students";
-//         $data['menu'] = "students";
-
-//         // Adding "All" options for filters
-//         $data['admission_options'] = array("All Admission Years" => "All Admission Years") + $this->globals->admissionyear();
-//         $data['programme_options'] = array("All Programmes" => "All Programmes") + $this->globals->programme();
-//         $data['branch_options'] = array("All Branches" => "All Branches") + $this->globals->branch();
-
-//         // Get selected filters from the URL
-//         $admission_year = $this->input->get('admission_year');
-//         $programme = $this->input->get('programme');
-//         $branch = $this->input->get('branch');
-
-//         // Initialize filter conditions
-//         $filter_conditions = [];
-
-//         // Apply filter conditions if selected (only non-'All' values)
-//         if ($admission_year && $admission_year !== 'All Admission Years') {
-//             $filter_conditions['admission_year'] = $admission_year;
-//         }
-//         if ($programme && $programme !== 'All Programmes') {
-//             $filter_conditions['programme'] = $programme;
-//         }
-//         if ($branch && $branch !== 'All Branches') {
-//             $filter_conditions['branch'] = $branch;
-//         }
-
-//         // If no filter is set (all are "All"), fetch all students
-//         if (empty($filter_conditions)) {
-//             // When no filter is set, we should show all students
-//             $data['students'] = $this->admin_model->getstudentDetail('students')->result();
-//         } else {
-//             // Get the filtered student list
-//             $data['students'] = $this->admin_model->getstudentDetail('students', $filter_conditions)->result();
-//         }
-
-//         // Pass selected filter values to the view
-//         $data['selected_admission_year'] = $admission_year;
-//         $data['selected_programme'] = $programme;
-//         $data['selected_branch'] = $branch;
-
-//         // Render the view
-//         $this->admin_template->show('admin/students', $data);
-//     } else {
-//         redirect('admin', 'refresh');
-//     }
-// }
-
 public function students() {
     if ($this->session->userdata('logged_in')) {
         // Retrieve session data
@@ -484,76 +426,100 @@ public function students() {
     }
 }
 
+public function add_newstudent()
+{
+    if ($this->session->userdata('logged_in')) {
+        $session_data = $this->session->userdata('logged_in');
+        $data['id'] = $session_data['id'];
+        $data['username'] = $session_data['username'];
+        $data['full_name'] = $session_data['full_name'];
+        $data['role'] = $session_data['role'];
+        $data['page_title'] = "Add New Student";
+        $data['menu'] = "newstudent";
+        $data['admission_options'] = array(" " => "Select Admission Year") + $this->globals->admissionyear();
+        $data['programme_options'] = array(" " => "Select Programme") + $this->globals->programme();
+        $data['branch_options'] = array(" " => "Select Branch") + $this->globals->branch();
+        $data['gender_options'] = array(" " => "Select Gender") + $this->globals->gender();
 
- public function add_newstudent()
-	{
-		if ($this->session->userdata('logged_in')) {
-			$session_data = $this->session->userdata('logged_in');
-			$data['id'] = $session_data['id'];
-			$data['username'] = $session_data['username'];
-			$data['full_name'] = $session_data['full_name'];
-			$data['role'] = $session_data['role'];
-			$data['page_title'] = "Add New Student";
-			$data['menu'] = "newstudent";
-			$data['admission_options'] = array(" " => "Select Admission Year") + $this->globals->admissionyear();
-			$data['programme_options'] = array(" " => "Select Programme") + $this->globals->programme();
-			$data['branch_options'] = array(" " => "Select Branch") + $this->globals->branch();
-			$data['gender_options'] = array(" " => "Select Gender") + $this->globals->gender();
+        // Set validation rules
+        $this->form_validation->set_rules('usn', 'Usn', 'required');
+        $this->form_validation->set_rules('student_name', 'Student Name', 'required'); 
+        $this->form_validation->set_rules('admission_year', 'Admission Year', 'required');
+        $this->form_validation->set_rules('programme', 'Programme', 'required');
+        $this->form_validation->set_rules('branch', 'Branch', 'required');
+        $this->form_validation->set_rules('date_of_birth', 'Date of Birth', 'required');
+        $this->form_validation->set_rules('gender', 'Gender', 'required');
+        $this->form_validation->set_rules('category', 'Category', 'required');
+        $this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]'); 
+        $this->form_validation->set_rules('parent_mobile', 'Parent Mobile', 'required'); 
+        $this->form_validation->set_rules('father_name', 'Father Name', 'required'); 
+        $this->form_validation->set_rules('mother_name', 'Mother Name', 'required');  
 
-			// Set validation rules
-			$this->form_validation->set_rules('usn', 'Usn', 'required');
-			$this->form_validation->set_rules('student_name', 'Student Name', 'required');
-			$this->form_validation->set_rules('admission_year', 'Admission Year', 'required');
-			$this->form_validation->set_rules('programme', 'Programme', 'required');
-			$this->form_validation->set_rules('branch', 'Branch', 'required');
-			$this->form_validation->set_rules('date_of_birth', 'Date of Birth', 'required');
-			$this->form_validation->set_rules('gender', 'Gender', 'required');
-			$this->form_validation->set_rules('category', 'Category', 'required');
-			$this->form_validation->set_rules('mobile', 'Mobile', 'required');
-			$this->form_validation->set_rules('parent_mobile', 'Parent Mobile', 'required');
-			$this->form_validation->set_rules('father_name', 'Father Name', 'required');
-			$this->form_validation->set_rules('mother_name', 'Mother Name', 'required');
+        if ($this->form_validation->run() === FALSE) {
+            $data['action'] = 'admin/add_newstudent';
+            $this->admin_template->show('admin/add_newstudent', $data);
+        } else {
+            // Get Date of Birth from form input
+            $dateOfBirth = $this->input->post('date_of_birth');
+            $today = date("Y-m-d");
+            $diff = date_diff(date_create($dateOfBirth), date_create($today));
 
-			if ($this->form_validation->run() === FALSE) {
-				$data['action'] = 'admin/add_newstudent';
-				$this->admin_template->show('admin/add_newstudent', $data);
-			} else {
-				// Prepare data to insert
-				$insertDetails = array(
-					'usn' => $this->input->post('usn'),
-					'student_name' => $this->input->post('student_name'),
-					'admission_year' => $this->input->post('admission_year'),
-					'programme' => $this->input->post('programme'),
-					'branch' => $this->input->post('branch'),
-					'date_of_birth' => $this->input->post('date_of_birth'),
-					'gender' => strtolower($this->input->post('gender')),
-					'category' => $this->input->post('category'),
-					'mobile' => $this->input->post('mobile'),
-					'parent_mobile' => $this->input->post('parent_mobile'),
-					'father_name' => $this->input->post('father_name'),
-					'mother_name' => $this->input->post('mother_name'),
-				);
+            // Check if the user is less than 16 years old
+            if ($diff->format('%y') < 16) {
+                // Add error message and prevent the form from submitting
+                $this->session->set_flashdata('message', 'You are too young to register. You must be at least 16 years old.');
+                $this->session->set_flashdata('status', 'alert-warning');
+                redirect('admin/add_newstudent', 'refresh');
+                return;
+            }
 
-				// Insert the data into the 'students' table
-				$result = $this->admin_model->insertDetails('students', $insertDetails);
+            // Prepare data to insert
+            $insertDetails = array(
+                'usn' => $this->input->post('usn'),
+                'student_name' => $this->input->post('student_name'),
+                'admission_year' => $this->input->post('admission_year'),
+                'programme' => $this->input->post('programme'),
+                'branch' => $this->input->post('branch'),
+                'date_of_birth' => $this->input->post('date_of_birth'),
+                'gender' => strtolower($this->input->post('gender')),
+                'category' => $this->input->post('category'),
+                'mobile' => $this->input->post('mobile'),
+                'parent_mobile' => $this->input->post('parent_mobile'),
+                'father_name' => $this->input->post('father_name'),
+                'mother_name' => $this->input->post('mother_name'),
+            );
 
-				// Set success or failure message
-				if ($result) {
-					$this->session->set_flashdata('message', 'Student details have been successfully updated!');
-					$this->session->set_flashdata('status', 'alert-success');
-				} else {
-					$this->session->set_flashdata('message', 'Oops! Something went wrong, please try again.');
-					$this->session->set_flashdata('status', 'alert-warning');
-				}
+            // Insert the data into the 'students' table
+            $result = $this->admin_model->insertDetails('students', $insertDetails);
 
-				// Redirect to the same page after processing
-				redirect('admin/students', 'refresh');
-			}
-		} else {
-			// Redirect if the user is not logged in
-			redirect('admin', 'refresh');
-		}
-	}
+            // Set success or failure message
+            if ($result) {
+                $this->session->set_flashdata('message', 'Student details have been successfully updated!');
+                $this->session->set_flashdata('status', 'alert-success');
+            } else {
+                $this->session->set_flashdata('message', 'Oops! Something went wrong, please try again.');
+                $this->session->set_flashdata('status', 'alert-warning');
+            }
+
+            // Redirect to the students page after processing
+            redirect('admin/students', 'refresh');
+        }
+    } else {
+        // Redirect if the user is not logged in
+        redirect('admin', 'refresh');
+    }
+}
+
+    // In your Controller or Custom Validation Library
+    public function alpha_spaces($str)
+    {
+        // Check if the string contains only alphabetic characters and spaces
+        if (!preg_match("/^[a-zA-Z\s]+$/", $str)) {
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
 
 	public function editstudent($id)
 {

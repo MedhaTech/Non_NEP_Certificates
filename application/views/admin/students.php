@@ -25,16 +25,27 @@
                 <?php echo form_open_multipart($action, 'class="user" id="enquiry_list"'); ?>
                 <div class="row">
                     <!-- Admission Year Filter -->
-                    <div class="col-md-3">
+                    <!-- <div class="col-md-3">
                         <div class="form-group">
                             <label for="admission_year">Admission Year <span class="text-danger">*</span></label>
                             <?php 
-                    // Adding "Select Admission Year" as the default value, and "All" as an option
                     $admission_options = array("0" => "Select Admission Year", "All" => "All Admission Years") + $admission_options;
                     echo form_dropdown('admission_year', $admission_options, 
                         set_value('admission_year', $selected_admission_year), 
                         'class="form-control" id="admission_year"'); 
                 ?>
+                            <span class="text-danger"><?php echo form_error('admission_year'); ?></span>
+                        </div>
+                    </div> -->
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="admission_year">Admission Year <span class="text-danger">*</span></label>
+                            <?php 
+                                // Display only the "Select Admission Year" option without "All"
+                                echo form_dropdown('admission_year', $admission_options, 
+                                    set_value('admission_year', $selected_admission_year), 
+                                    'class="form-control" id="admission_year"'); 
+                            ?>
                             <span class="text-danger"><?php echo form_error('admission_year'); ?></span>
                         </div>
                     </div>
