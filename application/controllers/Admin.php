@@ -129,7 +129,7 @@ class Admin extends CI_Controller
 						$this->session->set_flashdata('message', 'Password udpated successfully...!');
 						$this->session->set_flashdata('status', 'alert-success');
 					} else {
-						$this->session->set_flashdata('message', 'Oops something went wrong please try again.!');
+						$this->session->set_flashdata('message', 'Old password was Incorrect!');
 						$this->session->set_flashdata('status', 'alert-warning');
 					}
 				}
@@ -392,26 +392,34 @@ public function students() {
         // Initialize filter conditions
         $filter_conditions = [];
 
-        // Apply filter conditions only if non-"All" values are selected
-        if ($admission_year && $admission_year !== '0' && $admission_year !== 'All') {
-            $filter_conditions['admission_year'] = $admission_year;
-        }
+        // Check if all filters are set to "All"
+        $isAllSelected = $admission_year === 'All' && $programme === 'All' && $branch === 'All';
 
-        if ($programme && $programme !== '0' && $programme !== 'All') {
-            $filter_conditions['programme'] = $programme;
-        }
-
-        if ($branch && $branch !== '0' && $branch !== 'All') {
-            $filter_conditions['branch'] = $branch;
-        }
-
-        // Fetch all student data when no filter is applied (either "All" or default value is selected)
-        if (!empty($filter_conditions)) {
-            // Fetch filtered student list
-            $data['students'] = $this->admin_model->getstudentDetail('students', $filter_conditions)->result();
+        // If all filters are set to "All", fetch all students
+        if ($isAllSelected) {
+            $data['students'] = $this->admin_model->getAllStudents()->result();
         } else {
-            // If no filter is applied (i.e., page is visited for the first time or no filter is selected), set 'students' to an empty array.
-            $data['students'] = [];  // This ensures no data is shown by default
+            // If specific filters are selected, apply them
+            if ($admission_year && $admission_year !== '0' && $admission_year !== 'All') {
+                $filter_conditions['admission_year'] = $admission_year;
+            }
+
+            if ($programme && $programme !== '0' && $programme !== 'All') {
+                $filter_conditions['programme'] = $programme;
+            }
+
+            if ($branch && $branch !== '0' && $branch !== 'All') {
+                $filter_conditions['branch'] = $branch;
+            }
+
+            // If no filter is applied, set 'students' to an empty array (to show no data)
+            if (!empty($filter_conditions)) {
+                // Fetch filtered student list
+                $data['students'] = $this->admin_model->getFilteredStudents($filter_conditions)->result();
+            } else {
+                // If filters are selected but not all "All", show no data initially
+                $data['students'] = [];
+            }
         }
 
         // Pass selected filter values to the view
@@ -481,7 +489,7 @@ public function add_newstudent()
                 'programme' => $this->input->post('programme'),
                 'branch' => $this->input->post('branch'),
                 'date_of_birth' => $this->input->post('date_of_birth'),
-                'gender' => strtolower($this->input->post('gender')),
+                'gender' => $this->input->post('gender'),
                 'category' => $this->input->post('category'),
                 'mobile' => $this->input->post('mobile'),
                 'parent_mobile' => $this->input->post('parent_mobile'),
@@ -571,7 +579,7 @@ public function add_newstudent()
 				'programme' => $this->input->post('programme'),
 				'branch' => $this->input->post('branch'),
 				'date_of_birth' => $this->input->post('date_of_birth'),
-				'gender' => strtolower($this->input->post('gender')),
+				'gender' => $this->input->post('gender'),
 				'category' => $this->input->post('category'),
 				'mobile' => $this->input->post('mobile'),
 				'parent_mobile' => $this->input->post('parent_mobile'),

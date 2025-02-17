@@ -1567,8 +1567,8 @@ class Globals
     {
         return array(
            
-            "male" => "male",
-            "female" => "female"
+            "Male" => "Male",
+            "Female" => "Female"
         );
     }
 }
