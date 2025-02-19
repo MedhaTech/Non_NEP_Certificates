@@ -1200,5 +1200,33 @@ public function delete_marks() {
     }
 }
 
+public function backlogs()
+{
+    if ($this->session->userdata('logged_in')) {
+        $session_data = $this->session->userdata('logged_in');
+        $data['id'] = $session_data['id'];
+        $data['username'] = $session_data['username'];
+        $data['full_name'] = $session_data['full_name'];
+        $data['role'] = $session_data['role'];
+
+        $data['page_title'] = "Student Backlogs";
+        $data['menu'] = "backlogs";
+
+        $data['admission_years'] = $this->admin_model->get_unique_admission_years();
+
+        $this->admin_template->show('admin/backlogs_view', $data);
+    } else {
+        redirect('admin', 'refresh');
+    }
+}
+
+public function fetch_backlogs()
+{
+    $admission_year = $this->input->post('admission_year');
+    $students = $this->admin_model->get_failed_students($admission_year);
+    echo json_encode($students);
+}
+
+
 
 }

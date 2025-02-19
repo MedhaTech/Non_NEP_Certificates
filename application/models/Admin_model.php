@@ -241,4 +241,25 @@ public function getStudentCountByYear() {
     return $this->db->get()->result();
 }
 
+
+ // Model: Admin_model.php
+ public function get_failed_students($admission_year)
+ {
+   $this->db->select('students.usn, students.student_name, students.admission_year, students.programme, students.branch, students_marks.subcode, students_marks.grade');
+   $this->db->from('students');
+   $this->db->join('students_marks', 'students.usn = students_marks.usn');
+   $this->db->where('students_marks.grade', 'B');
+   $this->db->where('students.admission_year', $admission_year);
+   return $this->db->get()->result();
+ }
+
+ public function get_unique_admission_years()
+ {
+   $this->db->distinct();
+   $this->db->select('admission_year');
+   $this->db->from('students');
+   $this->db->order_by('admission_year', 'ASC');
+   return $this->db->get()->result();
+ }
+ 
 }
