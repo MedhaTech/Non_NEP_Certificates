@@ -152,7 +152,11 @@
                                     <i class="nav-icon fas fa-users mr-2"></i>Students
                                 </a>
                             </li>
-
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?= base_url('admin/backlogs') ?>">
+                                    <i class="mdi mdi-file-alert-outline mr-2"></i>Backlogs
+                                </a>
+                            </li>
 
                         </ul>
                     </div>

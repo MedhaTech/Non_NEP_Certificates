@@ -247,7 +247,7 @@ public function getStudentCountByYear() {
    $this->db->select('students.usn, students.student_name, students.admission_year, students.programme, students.branch, students_marks.subcode, students_marks.grade');
    $this->db->from('students');
    $this->db->join('students_marks', 'students.usn = students_marks.usn');
-   $this->db->where('students_marks.grade', 'B');
+   $this->db->where('students_marks.grade', 'F');
    $this->db->where('students.admission_year', $admission_year);
    return $this->db->get()->result();
  }
