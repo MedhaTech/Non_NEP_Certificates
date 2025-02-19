@@ -25,16 +25,27 @@
                 <?php echo form_open_multipart($action, 'class="user" id="enquiry_list"'); ?>
                 <div class="row">
                     <!-- Admission Year Filter -->
-                    <div class="col-md-3">
+                    <!-- <div class="col-md-3">
                         <div class="form-group">
                             <label for="admission_year">Admission Year <span class="text-danger">*</span></label>
                             <?php 
-                    // Adding "Select Admission Year" as the default value, and "All" as an option
                     $admission_options = array("0" => "Select Admission Year", "All" => "All Admission Years") + $admission_options;
                     echo form_dropdown('admission_year', $admission_options, 
                         set_value('admission_year', $selected_admission_year), 
                         'class="form-control" id="admission_year"'); 
                 ?>
+                            <span class="text-danger"><?php echo form_error('admission_year'); ?></span>
+                        </div>
+                    </div> -->
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="admission_year">Admission Year <span class="text-danger">*</span></label>
+                            <?php 
+                                // Display only the "Select Admission Year" option without "All"
+                                echo form_dropdown('admission_year', $admission_options, 
+                                    set_value('admission_year', $selected_admission_year), 
+                                    'class="form-control" id="admission_year"'); 
+                            ?>
                             <span class="text-danger"><?php echo form_error('admission_year'); ?></span>
                         </div>
                     </div>
@@ -106,8 +117,7 @@
                                         $student->programme,
                                         $student->branch,
                                         "<a href='{$edit_url}' class='btn btn-primary btn-sm'><i class='fa fa-edit'></i> Edit</a> 
-                                        <a href='{$delete_url}' class='btn btn-danger btn-sm' onclick='return confirm(\"Are you sure you want to delete this Student?\")'><i class='fa fa-trash'></i> Delete</a>"
-                                    );
+                                         <a href='#' class='btn btn-danger btn-sm' onclick='openDeleteModal(\"{$delete_url}\")'><i class='fa fa-trash'></i> Delete</a>"                                    );
                                     $this->table->add_row($result_array);
                                 }
                                 // Generating and displaying the table
@@ -128,3 +138,35 @@
     </div>
 </div>
 <!-- /.content-wrapper -->
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this student?
+            </div>
+            <div class="modal-footer">
+            <a href="<?= base_url('admin/students'); ?>" class="btn btn-secondary">Cancel</a>
+            <a id="deleteConfirmButton" href="#" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    // Function to open the delete modal and set the action URL
+    function openDeleteModal(deleteUrl) {
+        // Set the href of the confirm button to the delete URL
+        document.getElementById('deleteConfirmButton').setAttribute('href', deleteUrl);
+
+        // Show the modal
+        $('#deleteModal').modal('show');
+    }
+</script>

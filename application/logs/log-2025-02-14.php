@@ -1203,3 +1203,87 @@ DEBUG - 2025-02-14 10:03:01 --> Table class already loaded. Second attempt ignor
 DEBUG - 2025-02-14 10:03:01 --> Form_validation class already loaded. Second attempt ignored.
 INFO - 2025-02-14 14:33:01 --> Final output sent to browser
 DEBUG - 2025-02-14 14:33:01 --> Total execution time: 0.2527
+INFO - 2025-02-14 13:11:30 --> Config Class Initialized
+INFO - 2025-02-14 13:11:30 --> Hooks Class Initialized
+DEBUG - 2025-02-14 13:11:30 --> UTF-8 Support Enabled
+INFO - 2025-02-14 13:11:30 --> Utf8 Class Initialized
+INFO - 2025-02-14 13:11:30 --> URI Class Initialized
+INFO - 2025-02-14 13:11:30 --> Router Class Initialized
+INFO - 2025-02-14 13:11:30 --> Output Class Initialized
+INFO - 2025-02-14 13:11:30 --> Security Class Initialized
+DEBUG - 2025-02-14 13:11:30 --> Global POST, GET and COOKIE data sanitized
+INFO - 2025-02-14 13:11:30 --> Input Class Initialized
+INFO - 2025-02-14 13:11:30 --> Language Class Initialized
+INFO - 2025-02-14 13:11:30 --> Loader Class Initialized
+INFO - 2025-02-14 13:11:30 --> Helper loaded: url_helper
+INFO - 2025-02-14 13:11:30 --> Helper loaded: json_output_helper
+INFO - 2025-02-14 13:11:30 --> Helper loaded: file_helper
+INFO - 2025-02-14 13:11:30 --> Helper loaded: custom_helper
+INFO - 2025-02-14 13:11:30 --> Database Driver Class Initialized
+DEBUG - 2025-02-14 13:11:30 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2025-02-14 13:11:30 --> Session: Class initialized using 'files' driver.
+INFO - 2025-02-14 13:11:30 --> Table Class Initialized
+INFO - 2025-02-14 13:11:30 --> Helper loaded: form_helper
+INFO - 2025-02-14 13:11:30 --> Form Validation Class Initialized
+INFO - 2025-02-14 13:11:30 --> Controller Class Initialized
+INFO - 2025-02-14 13:11:30 --> Model "Admin_model" initialized
+DEBUG - 2025-02-14 13:11:30 --> Table class already loaded. Second attempt ignored.
+DEBUG - 2025-02-14 13:11:30 --> Form_validation class already loaded. Second attempt ignored.
+ERROR - 2025-02-14 17:41:30 --> Severity: Warning --> Undefined variable $id D:\Xampp\htdocs\non\Non_NEP_Certificates\application\controllers\Admin.php 793
+ERROR - 2025-02-14 17:41:30 --> Severity: error --> Exception: Unsupported operand types: CI_DB_mysqli_driver * int D:\Xampp\htdocs\non\Non_NEP_Certificates\application\controllers\Admin.php 854
+INFO - 2025-02-14 13:11:33 --> Config Class Initialized
+INFO - 2025-02-14 13:11:33 --> Hooks Class Initialized
+DEBUG - 2025-02-14 13:11:33 --> UTF-8 Support Enabled
+INFO - 2025-02-14 13:11:33 --> Utf8 Class Initialized
+INFO - 2025-02-14 13:11:33 --> URI Class Initialized
+INFO - 2025-02-14 13:11:33 --> Router Class Initialized
+INFO - 2025-02-14 13:11:33 --> Output Class Initialized
+INFO - 2025-02-14 13:11:33 --> Security Class Initialized
+DEBUG - 2025-02-14 13:11:33 --> Global POST, GET and COOKIE data sanitized
+INFO - 2025-02-14 13:11:33 --> Input Class Initialized
+INFO - 2025-02-14 13:11:33 --> Language Class Initialized
+INFO - 2025-02-14 13:11:33 --> Loader Class Initialized
+INFO - 2025-02-14 13:11:33 --> Helper loaded: url_helper
+INFO - 2025-02-14 13:11:33 --> Helper loaded: json_output_helper
+INFO - 2025-02-14 13:11:33 --> Helper loaded: file_helper
+INFO - 2025-02-14 13:11:33 --> Helper loaded: custom_helper
+INFO - 2025-02-14 13:11:33 --> Database Driver Class Initialized
+DEBUG - 2025-02-14 13:11:33 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2025-02-14 13:11:33 --> Session: Class initialized using 'files' driver.
+INFO - 2025-02-14 13:11:33 --> Table Class Initialized
+INFO - 2025-02-14 13:11:33 --> Helper loaded: form_helper
+INFO - 2025-02-14 13:11:33 --> Form Validation Class Initialized
+INFO - 2025-02-14 13:11:33 --> Controller Class Initialized
+INFO - 2025-02-14 13:11:33 --> Model "Admin_model" initialized
+DEBUG - 2025-02-14 13:11:33 --> Table class already loaded. Second attempt ignored.
+DEBUG - 2025-02-14 13:11:33 --> Form_validation class already loaded. Second attempt ignored.
+ERROR - 2025-02-14 17:41:33 --> Severity: Warning --> Undefined variable $id D:\Xampp\htdocs\non\Non_NEP_Certificates\application\controllers\Admin.php 793
+ERROR - 2025-02-14 17:41:33 --> Severity: error --> Exception: Unsupported operand types: CI_DB_mysqli_driver * int D:\Xampp\htdocs\non\Non_NEP_Certificates\application\controllers\Admin.php 854
+INFO - 2025-02-14 13:11:33 --> Config Class Initialized
+INFO - 2025-02-14 13:11:33 --> Hooks Class Initialized
+DEBUG - 2025-02-14 13:11:33 --> UTF-8 Support Enabled
+INFO - 2025-02-14 13:11:33 --> Utf8 Class Initialized
+INFO - 2025-02-14 13:11:33 --> URI Class Initialized
+INFO - 2025-02-14 13:11:33 --> Router Class Initialized
+INFO - 2025-02-14 13:11:33 --> Output Class Initialized
+INFO - 2025-02-14 13:11:33 --> Security Class Initialized
+DEBUG - 2025-02-14 13:11:33 --> Global POST, GET and COOKIE data sanitized
+INFO - 2025-02-14 13:11:33 --> Input Class Initialized
+INFO - 2025-02-14 13:11:33 --> Language Class Initialized
+INFO - 2025-02-14 13:11:33 --> Loader Class Initialized
+INFO - 2025-02-14 13:11:33 --> Helper loaded: url_helper
+INFO - 2025-02-14 13:11:33 --> Helper loaded: json_output_helper
+INFO - 2025-02-14 13:11:33 --> Helper loaded: file_helper
+INFO - 2025-02-14 13:11:33 --> Helper loaded: custom_helper
+INFO - 2025-02-14 13:11:33 --> Database Driver Class Initialized
+DEBUG - 2025-02-14 13:11:33 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2025-02-14 13:11:33 --> Session: Class initialized using 'files' driver.
+INFO - 2025-02-14 13:11:33 --> Table Class Initialized
+INFO - 2025-02-14 13:11:33 --> Helper loaded: form_helper
+INFO - 2025-02-14 13:11:33 --> Form Validation Class Initialized
+INFO - 2025-02-14 13:11:33 --> Controller Class Initialized
+INFO - 2025-02-14 13:11:33 --> Model "Admin_model" initialized
+DEBUG - 2025-02-14 13:11:33 --> Table class already loaded. Second attempt ignored.
+DEBUG - 2025-02-14 13:11:33 --> Form_validation class already loaded. Second attempt ignored.
+ERROR - 2025-02-14 17:41:33 --> Severity: Warning --> Undefined variable $id D:\Xampp\htdocs\non\Non_NEP_Certificates\application\controllers\Admin.php 793
+ERROR - 2025-02-14 17:41:33 --> Severity: error --> Exception: Unsupported operand types: CI_DB_mysqli_driver * int D:\Xampp\htdocs\non\Non_NEP_Certificates\application\controllers\Admin.php 854

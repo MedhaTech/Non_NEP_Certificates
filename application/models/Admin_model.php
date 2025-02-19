@@ -242,7 +242,6 @@ public function getStudentCountByYear() {
 }
 
 
- // Model: Admin_model.php
  public function get_failed_students($admission_year)
  {
    $this->db->select('students.usn, students.student_name, students.admission_year, students.programme, students.branch, students_marks.subcode, students_marks.grade');
