@@ -148,18 +148,68 @@ class Admin extends CI_Controller
             $data['username'] = $session_data['username'];
             $data['full_name'] = $session_data['full_name'];
             $data['role'] = $session_data['role'];
-
+    
             $data['page_title'] = "Courses";
             $data['menu'] = "students";
-
-            $data['students'] = $this->admin_model->getDetails('courses', $id)->result();
-            // var_dump($data['students']); die();
-
+    
+            $data['students'] = $this->admin_model->getDetails('courses', null)->result();
+            $data['programmes'] = $this->admin_model->getDistinctValues('programme', 'courses');
+            $data['branches'] = $this->admin_model->getDistinctValues('branch', 'courses');
+            $data['semesters'] = $this->admin_model->getDistinctValues('semester', 'courses');
+    
             $this->admin_template->show('admin/courses', $data);
         } else {
             redirect('admin', 'refresh');
         }
     }
+    
+    public function filterCourses()
+{
+    $programme = $this->input->post('programme');
+    $branch = $this->input->post('branch');
+    $semester = $this->input->post('semester');
+
+    $this->db->select('*');
+    $this->db->from('courses');
+
+    if (!empty($programme)) {
+        $this->db->where('programme', $programme);
+    }
+    if (!empty($branch)) {
+        $this->db->where('branch', $branch);
+    }
+    if (!empty($semester)) {
+        $this->db->where('semester', $semester);
+    }
+
+    $query = $this->db->get();
+    $courses = $query->result();
+
+    $output = "";
+    $i = 1;
+    foreach ($courses as $course) {
+        $edit_url = base_url('admin/editcourse/' . $course->id);
+        $encryptId = base64_encode($course->id);
+        $delete_url = base_url('admin/deleteCourse/' . $encryptId);
+
+        $output .= "<tr>
+            <td>{$i}</td>
+            <td><a href='".base_url('admin/viewcourseDetails/'.$encryptId)."'>{$course->course_code}</a></td>
+            <td>{$course->course_name}</td>
+            <td>{$course->branch}</td>
+            <td>
+                <a href='{$edit_url}' class='btn btn-primary btn-sm'><i class='fa fa-edit'></i> Edit</a>
+                <a href='{$delete_url}' class='btn btn-danger btn-sm' onclick='return confirm(\"Are you sure you want to delete this course?\")'><i class='fa fa-trash'></i> Delete</a>
+            </td>
+            <td>{$course->semester}</td>
+        </tr>";
+
+        $i++;
+    }
+
+    echo $output;
+}
+
 
     public function add_newcourse()
     {
@@ -1237,6 +1287,9 @@ class Admin extends CI_Controller
         $students = $this->admin_model->get_failed_students($admission_year);
         echo json_encode($students);
     }
+
+
+    
 
 
     // $this->admin_template->show('admin/studentdetails', $data);

@@ -244,7 +244,7 @@ public function getStudentCountByYear() {
 
  public function get_failed_students($admission_year)
  {
-   $this->db->select('students.usn, students.student_name, students.admission_year, students.programme, students.branch, students_marks.subcode, students_marks.grade');
+   $this->db->select('students.usn, students.student_name, students.admission_year, students.programme, students.branch, students_marks.course_code, students_marks.grade');
    $this->db->from('students');
    $this->db->join('students_marks', 'students.usn = students_marks.usn');
    $this->db->where('students_marks.grade', 'F');
@@ -260,5 +260,12 @@ public function getStudentCountByYear() {
    $this->db->order_by('admission_year', 'ASC');
    return $this->db->get()->result();
  }
- 
+ public function getDistinctValues($column, $table)
+{
+    $this->db->distinct();
+    $this->db->select($column);
+    $this->db->from($table);
+    return $this->db->get()->result();
+}
+
 }
