@@ -7,175 +7,35 @@
                     </div>
                  </div>
               </div>
-              <div class="row">
-                <div class="col-md-7 col-12">
-                        <div class="card card-body">
-                            <form class="form-horizontal">
-                                <div class="form-group row mb-0">
-                                    <label for="inputEmail3" class="col-3 col-form-label">USN</label>
-                                    <div class="col-9 col-form-label">
-                                        <?php
-                                if ($students->usn != NULL) {
-                                    echo $students->usn;
-                                } else {
-                                    echo "--";
-                                }
-                                ?>
-                                    </div>
-                                </div>
+              <div class="row m-5">
+          <div class="col-md-12 col-sm-12">
+    <div class="card shadow mb-4">
+        <div class="card-header">
+            <h6 class="m-0 font-weight-bold text-primary">Search Student Details</h6>
+        </div>
+        <div class="card-body">
+            <?php echo form_open_multipart($action, 'class="user"'); ?>
+            <?php if ($this->session->flashdata('message')) { ?>
+            <div align="center" class="alert <?= $this->session->flashdata('status'); ?>" id="msg">
+                <?php echo $this->session->flashdata('message') ?>
+            </div>
+            <?php } ?>
+            <div class="row">
+                <div class="form-group col-md-12 col-sm-12">
+                    <input type="text" class="form-control" placeholder="Enter Usn Number" id="usn"
+                        name="usn"
+                        value="<?php echo (set_value('usn')) ? set_value('usn') : $usn; ?>">
+                    <span class="text-danger"><?php echo form_error('usn'); ?></span>
+                </div>
+                <div class="form-group col-md-2 col-sm-12">
+                    <button class="btn btn-danger btn-md" type="submit">Search</button>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
 
-                                <div class="form-group row mb-0">
-                                    <label for="inputEmail3" class="col-3 col-form-label">Student Name</label>
-                                    <div class="col-9 col-form-label">
-                                        <?php
-                                if ($students->student_name != NULL) {
-                                    echo $students->student_name;
-                                } else {
-                                    echo "--";
-                                }
-                                ?>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row mb-0">
-                                    <label for="inputEmail3" class="col-3 col-form-label">Admission Year</label>
-                                    <div class="col-9 col-form-label">
-                                        <?php
-                                if ($students->admission_year != NULL) {
-                                    echo $students->admission_year;
-                                } else {
-                                    echo "--";
-                                }
-                                ?>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row mb-0">
-                                    <label for="inputEmail3" class="col-3 col-form-label">Programme</label>
-                                    <div class="col-9 col-form-label">
-                                        <?php
-                                if ($students->programme != NULL) {
-                                    echo $students->programme;
-                                } else {
-                                    echo "--";
-                                }
-                                ?>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row mb-0">
-                                    <label for="inputEmail3" class="col-3 col-form-label">Branch</label>
-                                    <div class="col-9 col-form-label">
-                                        <?php
-                                if ($students->branch != NULL) {
-                                    echo $students->branch;
-                                } else {
-                                    echo "--";
-                                }
-                                ?>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row mb-0">
-                                    <label for="inputEmail3" class="col-3 col-form-label">Date of Birth</label>
-                                    <div class="col-9 col-form-label">
-                                        <?php
-                                if ($students->date_of_birth != NULL) {
-                                    echo $students->date_of_birth;
-                                } else {
-                                    echo "--";
-                                }
-                                ?>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row mb-0">
-                                    <label for="inputEmail3" class="col-3 col-form-label">Gender</label>
-                                    <div class="col-9 col-form-label">
-                                        <?php
-                                if ($students->gender != NULL) {
-                                    echo $students->gender;
-                                } else {
-                                    echo "--";
-                                }
-                                ?>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row mb-0">
-                                    <label for="inputEmail3" class="col-3 col-form-label">Category</label>
-                                    <div class="col-9 col-form-label">
-                                        <?php
-                                if ($students->category != NULL) {
-                                    echo $students->category;
-                                } else {
-                                    echo "--";
-                                }
-                                ?>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row mb-0">
-                                    <label for="inputEmail3" class="col-3 col-form-label">Mobile</label>
-                                    <div class="col-9 col-form-label">
-                                        <?php
-                                if ($students->mobile != NULL) {
-                                    echo $students->mobile;
-                                } else {
-                                    echo "--";
-                                }
-                                ?>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row mb-0">
-                                    <label for="inputEmail3" class="col-3 col-form-label">Parent Mobile</label>
-                                    <div class="col-9 col-form-label">
-                                        <?php
-                                if ($students->parent_mobile != NULL) {
-                                    echo $students->parent_mobile;
-                                } else {
-                                    echo "--";
-                                }
-                                ?>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row mb-0">
-                                    <label for="inputEmail3" class="col-3 col-form-label">Father Name</label>
-                                    <div class="col-9 col-form-label">
-                                        <?php
-                                if ($students->father_name != NULL) {
-                                    echo $students->father_name;
-                                } else {
-                                    echo "--";
-                                }
-                                ?>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row mb-0">
-                                    <label for="inputEmail3" class="col-3 col-form-label">Mother Name</label>
-                                    <div class="col-9 col-form-label">
-                                        <?php
-                                if ($students->mother_name != NULL) {
-                                    echo $students->mother_name;
-                                } else {
-                                    echo "--";
-                                }
-                                ?>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <!-- Back Link -->
-                                    <a href="<?php echo base_url('admin/students/'); ?>"
-                                        class="btn btn-dark mt-3">Cancel</a>
-                                </div>
-
-                            </form>
-                        </div>
-                
-                 </div>
-             </div>
+      </div>
     </div>
 </div>

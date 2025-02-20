@@ -268,4 +268,41 @@ public function getStudentCountByYear() {
     return $this->db->get()->result();
 }
 
+public function getAllStudents() {
+  // Fetch all students from the database without applying any filters
+  $this->db->select('*');
+  $this->db->from('students');
+  $query = $this->db->get();
+
+  return $query;
+}
+
+public function getFilteredStudents($filter_conditions = [])
+{
+    // Start the query for fetching students
+    $this->db->select('*');
+    $this->db->from('students');
+
+    // Apply filters based on the conditions passed
+    if (isset($filter_conditions['admission_year']) && !empty($filter_conditions['admission_year'])) {
+        $this->db->where('admission_year', $filter_conditions['admission_year']);
+    }
+    
+    if (isset($filter_conditions['programme']) && !empty($filter_conditions['programme'])) {
+        $this->db->where('programme', $filter_conditions['programme']);
+    }
+
+    if (isset($filter_conditions['branch']) && !empty($filter_conditions['branch'])) {
+        $this->db->where('branch', $filter_conditions['branch']);
+    }
+
+    // You can also add any other filtering logic based on your requirements
+
+    // Execute the query and return the result
+    $query = $this->db->get();
+
+    // Return the result as an array of students
+    return $query;
+}
+
 }

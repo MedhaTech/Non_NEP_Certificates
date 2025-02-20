@@ -21,30 +21,15 @@
                 </div>
                 <?php endif; ?>
 
-                <!-- Filter Form -->
                 <?php echo form_open_multipart($action, 'class="user" id="enquiry_list"'); ?>
                 <div class="row">
                     <!-- Admission Year Filter -->
-                    <!-- <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="admission_year">Admission Year <span class="text-danger">*</span></label>
-                            <?php 
-                    $admission_options = array("0" => "Select Admission Year", "All" => "All Admission Years") + $admission_options;
-                    echo form_dropdown('admission_year', $admission_options, 
-                        set_value('admission_year', $selected_admission_year), 
-                        'class="form-control" id="admission_year"'); 
-                ?>
-                            <span class="text-danger"><?php echo form_error('admission_year'); ?></span>
-                        </div>
-                    </div> -->
                     <div class="col-md-3">
+                    
                         <div class="form-group">
-                            <label for="admission_year">Admission Year <span class="text-danger">*</span></label>
-                            <?php 
-                                // Display only the "Select Admission Year" option without "All"
-                                echo form_dropdown('admission_year', $admission_options, 
-                                    set_value('admission_year', $selected_admission_year), 
-                                    'class="form-control" id="admission_year"'); 
+                        <label for="admission_year">Admission Year <span class="text-danger">*</span></label>
+                            <?php
+                                echo form_dropdown('admission_year', $admission_options, (set_value('admission_year')) ? set_value('admission_year') : 'admission_year', 'class="form-control " id="admission_year"');
                             ?>
                             <span class="text-danger"><?php echo form_error('admission_year'); ?></span>
                         </div>
@@ -53,14 +38,10 @@
                     <!-- Programme Filter -->
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="programme">Programme <span class="text-danger">*</span></label>
-                            <?php 
-                    // Adding "Select Programme" as the default value, and "All" as an option
-                    $programme_options = array("0" => "Select Programmes", "All" => "All Programmes") + $programme_options;
-                    echo form_dropdown('programme', $programme_options, 
-                        set_value('programme', $selected_programme), 
-                        'class="form-control" id="programme"'); 
-                ?>
+                            <label for="programme">Programme </label>
+                              <?php
+                            echo form_dropdown('programme', $programme_options, (set_value('programme')) ? set_value('programme') : 'programme', 'class="form-control " id="programme"');
+                            ?>
                             <span class="text-danger"><?php echo form_error('programme'); ?></span>
                         </div>
                     </div>
@@ -68,14 +49,11 @@
                     <!-- Branch Filter -->
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="branch">Branch <span class="text-danger">*</span></label>
-                            <?php 
-                    // Adding "Select Branch" as the default value, and "All" as an option
-                    $branch_options = array("0" => "Select Branches", "All" => "All Branches") + $branch_options;
-                    echo form_dropdown('branch', $branch_options, 
-                        set_value('branch', $selected_branch), 
-                        'class="form-control" id="branch"'); 
-                ?>
+                            <label for="branch">Branch </label>
+                         
+                              <?php
+                            echo form_dropdown('branch', $branch_options, (set_value('branch')) ? set_value('branch') : 'branch', 'class="form-control " id="branch"');
+                            ?>
                             <span class="text-danger"><?php echo form_error('branch'); ?></span>
                         </div>
                     </div>
@@ -87,7 +65,6 @@
                     </div>
                 </div>
                 </form>
-
 
                 <div class="row">
                     <div class="col-md-12">

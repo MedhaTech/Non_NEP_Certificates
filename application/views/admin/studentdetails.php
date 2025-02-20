@@ -98,8 +98,7 @@
             <?php for ($semester = 1; $semester <= 8; $semester++): ?>
             <div class="card">
                 <!-- Semester Header Section with Accordion -->
-                <div class="card-header d-flex justify-content-between align-items-center"
-                    style="background-color:#2f4050;">
+                <div class="card-header d-flex justify-content-between align-items-center" style="background-color:#2f4050; padding: 5px 10px; font-size: 14px;">
                     <h4 class="card-title text-white mt-2">Semester <?= $semester; ?></h4>
                     <div class="card-tools d-flex">
                         <!-- Print button for this semester -->
