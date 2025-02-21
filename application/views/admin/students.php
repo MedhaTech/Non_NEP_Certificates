@@ -69,7 +69,8 @@
                 <div class="row">
                     <div class="col-md-12">
                         <?php
-                            if (count($students)) {
+                           if (isset($students)){
+                           if (count($students)) {
                                 // Table setup
                                 $table_setup = array('table_open' => '<table class="table dt-responsive nowrap table-bordered" border="1" id="basic-datatable">');
                                 $this->table->set_template($table_setup);
@@ -103,6 +104,7 @@
                                 // No data available message
                                 echo "<div class='text-center'><img src='" . base_url() . "assets/images/no_data.jpg' class='nodata'></div>";
                             }
+                        }
                         ?>
                     </div><!-- end col-->
                 </div><!-- end row-->

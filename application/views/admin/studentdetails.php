@@ -2,8 +2,8 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center"
-                style="background-color:#2f4050;">
-                <h3 class="card-title text-white"><?= $page_title; ?></h3>
+            style="background-color:#2f4050; padding: 2px 10px; font-size: 14px;">
+                <h3 class="card-title text-white mt-2"><?= $page_title; ?></h3>
                 <div class="card-tools d-flex">
                     <?php echo anchor('admin/editstudent/' . $students->id, '<span class="icon"><i class="fas fa-edit"></i></span> <span class="text">Edit</span>', 'class="btn btn-danger btn-sm btn-icon-split shadow-sm"'); ?>
                     <?php echo anchor('admin/generate_transcript_pdf/' . $students->id, 
@@ -98,7 +98,7 @@
             <?php for ($semester = 1; $semester <= 8; $semester++): ?>
             <div class="card">
                 <!-- Semester Header Section with Accordion -->
-                <div class="card-header d-flex justify-content-between align-items-center" style="background-color:#2f4050; padding: 5px 10px; font-size: 14px;">
+                <div class="card-header d-flex justify-content-between align-items-center" style="background-color:#2f4050; padding: 2px 10px; font-size: 14px;">
                     <h4 class="card-title text-white mt-2">Semester <?= $semester; ?></h4>
                     <div class="card-tools d-flex">
                         <!-- Print button for this semester -->

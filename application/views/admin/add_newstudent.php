@@ -1,3 +1,8 @@
+<style>
+    span p {
+        margin-bottom:0rem !important;
+    }
+</style>
 <div class="page-content">
     <!-- <section class="content-header"> -->
     <div class="container-fluid">
@@ -103,7 +108,7 @@
                     <div class="form-group row">
                         <label for="mobile" class="col-sm-4 col-form-label">Mobile<span class="text-danger">*</span></label>
                         <div class="col-sm-8">
-                            <input type="number" class="form-control" id="mobile" name="mobile"
+                            <input type="number" class="form-control" id="mobile" name="mobile" 
                                 value="<?php echo (set_value('mobile')) ? set_value('mobile') : $mobile; ?>">
                             <span class="text-danger"><?php echo form_error('mobile'); ?></span>
                         </div>
@@ -112,7 +117,7 @@
                     <div class="form-group row">
                         <label for="parent_mobile" class="col-sm-4 col-form-label">Parent Mobile<span class="text-danger">*</span></label>
                         <div class="col-sm-8">
-                            <input type="number" class="form-control" id="parent_mobile" name="parent_mobile"
+                            <input type="number" class="form-control" id="parent_mobile" name="parent_mobile" 
                                 value="<?php echo (set_value('parent_mobile')) ? set_value('parent_mobile') : $parent_mobile; ?>">
                             <span class="text-danger"><?php echo form_error('parent_mobile'); ?></span>
                         </div>
