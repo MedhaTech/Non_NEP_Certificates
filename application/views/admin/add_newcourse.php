@@ -1,3 +1,8 @@
+<style>
+    span p {
+        margin-bottom:0rem !important;
+    }
+</style>
 <div class="page-content">
     <!-- <section class="content-header"> -->
     <div class="container-fluid">

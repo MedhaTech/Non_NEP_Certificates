@@ -227,8 +227,7 @@ class Admin extends CI_Controller
             $data['year_options'] = array(" " => "Select Year") + $this->globals->year();
 
             // Set validation rules
-            $this->form_validation->set_rules('course_code', 'Course Code', 'required|regex_match[/^[a-zA-Z0-9]*$/]');          
-             $this->form_validation->set_rules('course_name', 'Course Name', 'required');
+            $this->form_validation->set_rules('course_code', 'Course Code', 'required|regex_match[/^[a-zA-Z0-9-_]*$/]');
             $this->form_validation->set_rules('programme', 'Programme', 'required');
             $this->form_validation->set_rules('branch', 'Branch', 'required');
             $this->form_validation->set_rules('semester', 'Semester', 'required');
@@ -437,14 +436,14 @@ class Admin extends CI_Controller
             $this->form_validation->set_rules('admission_year', 'Admission Year', 'required');
             if ($this->form_validation->run() === FALSE) {
 				// If validation fails, reload the page with current data
-                // $this->admin_template->show('admin/students', $data);
+                $this->admin_template->show('admin/students', $data);
 			} else {
 
             // Get selected filters from the POST data
             $admission_year = $this->input->post('admission_year');
             $programme = $this->input->post('programme');
             $branch = $this->input->post('branch');
-            }
+            
             
     
             // Initialize filter conditions
@@ -487,6 +486,7 @@ class Admin extends CI_Controller
     
             // Render the view
             $this->admin_template->show('admin/students', $data);
+            }
         } else {
             redirect('admin', 'refresh');
         }
@@ -508,18 +508,42 @@ class Admin extends CI_Controller
             $data['gender_options'] = array(" " => "Select Gender") + $this->globals->gender();
 
             // Set validation rules
-            $this->form_validation->set_rules('usn', 'Usn', 'required');
-            $this->form_validation->set_rules('student_name', 'Student Name', 'required|min_length[4]|alpha');
-            $this->form_validation->set_rules('admission_year', 'Admission Year', 'required');
-            $this->form_validation->set_rules('programme', 'Programme', 'required');
-            $this->form_validation->set_rules('branch', 'Branch', 'required');
-            $this->form_validation->set_rules('date_of_birth', 'Date of Birth', 'required');
-            $this->form_validation->set_rules('gender', 'Gender', 'required');
-            $this->form_validation->set_rules('category', 'Category', 'required');
-            $this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]');
-            $this->form_validation->set_rules('parent_mobile', 'Parent Mobile', 'required|regex_match[/^[0-9]{10}$/]');
-            $this->form_validation->set_rules('father_name', 'Father Name', 'required|min_length[4]|alpha');
-            $this->form_validation->set_rules('mother_name', 'Mother Name', 'required|min_length[4]|alpha');
+            $this->form_validation->set_rules('usn', 'USN', 'required', [
+                'required' => 'Please Enter USN'
+            ]);
+            $this->form_validation->set_rules('student_name', 'Student Name', 'required|min_length[4]|alpha', [
+                'required' => ' Please Enter a Minimum 2 Characters'
+            ]);
+            $this->form_validation->set_rules('admission_year', 'Admission Year', 'required', [
+                'required' => 'Please Select Admission Year'
+            ]);
+            $this->form_validation->set_rules('programme', 'Programme', 'required', [
+                'required' => 'Please Select Programme'
+            ]);
+            $this->form_validation->set_rules('branch', 'Branch', 'required', [
+                'required' => 'Please Select Branch'
+            ]);
+            $this->form_validation->set_rules('date_of_birth', 'Date of Birth', 'required', [
+                'required' => 'Please Enter/Select  Date of Birth'
+            ]);
+            $this->form_validation->set_rules('gender', 'Gender', 'required', [
+                'required' => 'Please  Select Gender'
+            ]);
+            $this->form_validation->set_rules('category', 'Category', 'required', [
+                'required' => 'Please Enter Category Name'
+            ]);
+            $this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]', [
+                'required' => 'Please Enter 10 digit Mobile Number'
+            ]);
+            $this->form_validation->set_rules('parent_mobile', 'Parent Mobile', 'required|regex_match[/^[0-9]{10}$/]', [
+                'required' => 'Please Enter 10 digit Mobile Number'
+            ]);
+            $this->form_validation->set_rules('father_name', 'Father Name', 'required|min_length[4]|alpha', [
+                'required' => 'Please Enter a Minimum 2 Characters'
+            ]);
+            $this->form_validation->set_rules('mother_name', 'Mother Name', 'required|min_length[4]|alpha', [
+                'required' => 'Please Enter a Minimum 2 Characters'
+            ]); 
 
             if ($this->form_validation->run() === FALSE) {
                 $data['action'] = 'admin/add_newstudent';
@@ -587,17 +611,27 @@ class Admin extends CI_Controller
 
             // Set validation rules
             $this->form_validation->set_rules('usn', 'Usn', 'required');
-            $this->form_validation->set_rules('student_name', 'Student Name', 'required');
+            $this->form_validation->set_rules('student_name', 'Student Name', 'required', [
+                'required' => 'The Student Name Must be atleast 4 Characters in length'
+            ]);
             $this->form_validation->set_rules('admission_year', 'Admission Year', 'required');
             $this->form_validation->set_rules('programme', 'Programme', 'required');
             $this->form_validation->set_rules('branch', 'Branch', 'required');
             $this->form_validation->set_rules('date_of_birth', 'Date of Birth', 'required');
             $this->form_validation->set_rules('gender', 'Gender', 'required');
             $this->form_validation->set_rules('category', 'Category', 'required');
-            $this->form_validation->set_rules('mobile', 'Mobile', 'required');
-            $this->form_validation->set_rules('parent_mobile', 'Parent Mobile', 'required');
-            $this->form_validation->set_rules('father_name', 'Father Name', 'required');
-            $this->form_validation->set_rules('mother_name', 'Mother Name', 'required');
+            $this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]', [
+                'required' => 'The Mobile Number is not in the Correct Format'
+            ]);
+            $this->form_validation->set_rules('parent_mobile', 'Parent Mobile', 'required|regex_match[/^[0-9]{10}$/]', [
+                'required' => 'The Mobile Number is not in the Correct Format'
+            ]);
+            $this->form_validation->set_rules('father_name', 'Father Name', 'required', [
+                'required' => 'The Student Name Must be atleast 4 Characters in length'
+            ]);
+            $this->form_validation->set_rules('mother_name', 'Mother Name', 'required', [
+                'required' => 'The Student Name Must be atleast 4 Characters in length'
+            ]);
 
             // If form validation fails
             if ($this->form_validation->run() === FALSE) {

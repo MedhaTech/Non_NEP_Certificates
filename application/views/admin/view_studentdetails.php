@@ -22,7 +22,7 @@
             <?php } ?>
             <div class="row">
                 <div class="form-group col-md-12 col-sm-12">
-                    <input type="text" class="form-control" placeholder="Enter Usn Number" id="usn"
+                    <input type="text" class="form-control" placeholder="Enter USN Number" id="usn"
                         name="usn"
                         value="<?php echo (set_value('usn')) ? set_value('usn') : $usn; ?>">
                     <span class="text-danger"><?php echo form_error('usn'); ?></span>
