@@ -79,8 +79,11 @@
                     <div class="form-group row">
                         <label for="date_of_birth" class="col-sm-4 col-form-label">Date of Birth<span class="text-danger">*</span></label>
                         <div class="col-sm-8">
+                            <!-- <input type="date" class="form-control" id="date_of_birth" name="date_of_birth"
+                                value="<?php echo (set_value('date_of_birth')) ? set_value('date_of_birth') : $date_of_birth; ?>"> -->
                             <input type="date" class="form-control" id="date_of_birth" name="date_of_birth"
-                                value="<?php echo (set_value('date_of_birth')) ? set_value('date_of_birth') : $date_of_birth; ?>">
+                                value="<?php echo (set_value('date_of_birth')) ? set_value('date_of_birth') : $date_of_birth; ?>"
+                                min="1900-01-01" max="<?php echo date('Y-m-d'); ?>">
                             <span class="text-danger"><?php echo form_error('date_of_birth'); ?></span>
                         </div>
                     </div>
