@@ -511,9 +511,19 @@ class Admin extends CI_Controller
             $this->form_validation->set_rules('usn', 'USN', 'required', [
                 'required' => 'Please Enter USN'
             ]);
-            $this->form_validation->set_rules('student_name', 'Student Name', 'required|min_length[4]|alpha', [
-                'required' => ' Please Enter a Minimum 2 Characters'
-            ]);
+            // $this->form_validation->set_rules('student_name', 'Student Name', 'required|min_length[4]|alpha', [
+            //     'required' => ' Please Enter a Minimum 2 Characters'
+            // ]);
+            $this->form_validation->set_rules(
+                'student_name', 
+                'Student Name', 
+                'required|min_length[4]|alpha', 
+                [
+                    'required' => 'Please Enter the Student Name',
+                    'min_length' => 'The Student Name must be at least 4 characters in length',
+                    'alpha' => 'The Student Name can only contain alphabetic characters'
+                ]
+            );   
             $this->form_validation->set_rules('admission_year', 'Admission Year', 'required', [
                 'required' => 'Please Select Admission Year'
             ]);
@@ -532,18 +542,47 @@ class Admin extends CI_Controller
             $this->form_validation->set_rules('category', 'Category', 'required', [
                 'required' => 'Please Enter Category Name'
             ]);
-            $this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]', [
-                'required' => 'Please Enter 10 digit Mobile Number'
-            ]);
-            $this->form_validation->set_rules('parent_mobile', 'Parent Mobile', 'required|regex_match[/^[0-9]{10}$/]', [
-                'required' => 'Please Enter 10 digit Mobile Number'
-            ]);
-            $this->form_validation->set_rules('father_name', 'Father Name', 'required|min_length[4]|alpha', [
-                'required' => 'Please Enter a Minimum 2 Characters'
-            ]);
-            $this->form_validation->set_rules('mother_name', 'Mother Name', 'required|min_length[4]|alpha', [
-                'required' => 'Please Enter a Minimum 2 Characters'
-            ]); 
+            // $this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]', [
+            //     'required' => 'Please Enter 10 digit Mobile Number'
+            // ]);
+            $this->form_validation->set_rules(
+                'mobile', 
+                'Mobile', 
+                'required|regex_match[/^[0-9]{10}$/]', 
+                [
+                    'required' => 'Please Enter 10 digit Mobile Number',
+                    'regex_match' => 'The Mobile Number is not in the correct format'
+                ]
+            );            
+            $this->form_validation->set_rules(
+                'parent_mobile', 
+                'Mobile', 
+                'required|regex_match[/^[0-9]{10}$/]', 
+                [
+                    'required' => 'Please Enter 10 digit Mobile Number',
+                    'regex_match' => 'The Mobile Number is not in the correct format'
+                ]
+            );            
+            $this->form_validation->set_rules(
+                'father_name', 
+                'Father Name', 
+                'required|min_length[4]|alpha', 
+                [
+                    'required' => 'Please Enter the Father Name',
+                    'min_length' => 'The Father Name must be at least 4 characters in length',
+                    'alpha' => 'The Father Name can only contain alphabetic characters'
+                ]
+            );
+            $this->form_validation->set_rules(
+                'mother_name', 
+                'Mother Name', 
+                'required|min_length[4]|alpha', 
+                [
+                    'required' => 'Please Enter the Mother Name',
+                    'min_length' => 'The Mother Name must be at least 4 characters in length',
+                    'alpha' => 'The Mother Name can only contain alphabetic characters'
+                ]
+            );
 
             if ($this->form_validation->run() === FALSE) {
                 $data['action'] = 'admin/add_newstudent';
