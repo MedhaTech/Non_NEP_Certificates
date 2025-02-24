@@ -57,7 +57,7 @@
                             <div class="col-md-12">
                             <div class="table-responsive">
 
-                                <table class="table table-bordered dt-responsive nowrap" id="backlogs_table">
+                                <table class="table table-bordered dt-responsive nowrap" id="basic-datatable">
                                     <thead class="thead-dark">
                                         <tr>
                                             <th>USN</th>
@@ -121,7 +121,7 @@
                             "<td>" + student.admission_year + "</td>" +
                             "<td>" + student.programme + "</td>" +
                             "<td>" + student.branch + "</td>" +
-                            "<td>" + student.subcode + "</td>" +
+                            "<td>" + student.course_code + "</td>" +
                             "<td>" + student.grade + "</td>" +
                             "</tr>";
                     });
@@ -135,7 +135,7 @@
                     $('#no_data_message p').text("No backlogs found").show();
                     $('#no_data_message').show();
                 }
-                $('#backlogs_table tbody').html(tableBody);
+                $('#basic-datatable tbody').html(tableBody);
             }
         });
     });
