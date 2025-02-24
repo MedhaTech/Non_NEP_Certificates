@@ -67,8 +67,11 @@
 
                                 <div class="form-group">
                                     <label for="date_of_birth">Date of Birth</label>
-                                    <input type="date" class="form-control" name="date_of_birth" id="date_of_birth"
-                                        value="<?php echo set_value('date_of_birth', $admissionDetails->date_of_birth); ?>">
+                                    <!-- <input type="date" class="form-control" name="date_of_birth" id="date_of_birth"
+                                        value="<?php echo set_value('date_of_birth', $admissionDetails->date_of_birth); ?>"> -->
+                                        <input type="date" class="form-control" name="date_of_birth" id="date_of_birth"
+                                            value="<?php echo (set_value('date_of_birth')) ? set_value('date_of_birth') : $admissionDetails->date_of_birth; ?>"
+                                            min="1900-01-01" max="<?php echo date('Y-m-d'); ?>">
                                         <span class="text-danger"><?php echo form_error('date_of_birth'); ?></span>
                                 </div>
 
