@@ -216,6 +216,7 @@ class Admin extends CI_Controller
 
             // Set validation rules
             $this->form_validation->set_rules('course_code', 'Course Code', 'required|regex_match[/^[a-zA-Z0-9-_]*$/]');
+            $this->form_validation->set_rules('course_name', 'Course Name', 'required');
             $this->form_validation->set_rules('programme', 'Programme', 'required');
             $this->form_validation->set_rules('branch', 'Branch', 'required');
             $this->form_validation->set_rules('semester', 'Semester', 'required');
