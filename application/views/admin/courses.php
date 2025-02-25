@@ -53,7 +53,7 @@
             $this->table->set_template($table_setup);
 
             // Table column headers
-            $print_fields = array('S.NO', 'Course Code', 'Course Name', 'Branch', 'Actions', 'Semester');
+            $print_fields = array('S.NO', 'Course Code', 'Course Name', 'Branch', 'Semester', 'Actions');
             $this->table->set_heading($print_fields);
 
             // Populate the table with course data
@@ -68,9 +68,9 @@
                     anchor('admin/viewcourseDetails/' . $encryptId, $course->course_code),
                     $course->course_name,
                     $course->branch,
+                    $course->semester,
                     "<a href='{$edit_url}' class='btn btn-primary btn-sm'><i class='fa fa-edit'></i> Edit</a> 
-                     <a href='#' class='btn btn-danger btn-sm' onclick='openDeleteModal(\"$delete_url\")'><i class='fa fa-trash'></i> Delete</a>",
-                    $course->semester
+                     <a href='#' class='btn btn-danger btn-sm' onclick='openDeleteModal(\"$delete_url\")'><i class='fa fa-trash'></i> Delete</a>"
                 );
                 $this->table->add_row($result_array);
             }
