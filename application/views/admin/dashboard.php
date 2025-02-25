@@ -21,7 +21,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                     
+                    <div class="table-responsive">
                         <table class="table table-bordered table-striped">
                             <thead class="thead-dark">
                                 <tr>
@@ -72,6 +72,7 @@
                           
                         </table>
                     </div>
+                                </div>
                 </div>
             </div>
         </div>
@@ -80,23 +81,3 @@
     </div> <!-- container-fluid -->
 </div>
 <!-- End Page-content -->
-
-<style>
-    .thead-dark th {
-        background-color: #343a40;
-        color: white;
-    }
-    .table {
-        border-radius: 0.5rem;
-        overflow: hidden;
-    }
-    .table th, .table td {
-        vertical-align: middle;
-    }
-    .table-striped tbody tr:nth-of-type(odd) {
-        background-color: #f8f9fa;
-    }
-    .table-bordered {
-        border: 1px solid #dee2e6;
-    }
-</style>

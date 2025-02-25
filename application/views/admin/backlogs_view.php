@@ -55,7 +55,9 @@
                     <div id="table_section" style="display: none;">
                         <div class="row mt-4">
                             <div class="col-md-12">
-                                <table class="table table-bordered dt-responsive nowrap" id="backlogs_table">
+                            <div class="table-responsive">
+
+                                <table class="table table-bordered dt-responsive nowrap" id="basic-datatable">
                                     <thead class="thead-dark">
                                         <tr>
                                             <th>USN</th>
@@ -72,6 +74,7 @@
                                     </tbody>
                                 </table>
                             </div>
+                                        </div>
                         </div>
                     </div>
                 </div>
@@ -80,58 +83,64 @@
         </div>
     </div>
 
+   
     <script>
-        $(document).ready(function() {
-            // Initial state: show the image and message, hide the table
-            $('#no_data_message').show();
+      $(document).ready(function() {
+    // Initially hide the image and show the "Please select the year" text
+    $('#no_data_message img').hide();
+    $('#no_data_message p').text("Please select the year").show();
+    $('#table_section').hide();
+
+    // Filter form submit (AJAX request)
+    $('#backlog_filter_form').submit(function(e) {
+        e.preventDefault(); // Prevent page reload on form submit
+        var admission_year = $('#admission_year').val();
+
+        if (!admission_year) {
+            // If no admission year is selected, show the text and hide the table
+            $('#no_data_message img').hide();
+            $('#no_data_message p').text("Please select the year").show();
             $('#table_section').hide();
+            return; // Stop further processing
+        }
 
-            // Filter form submit (AJAX request)
-            $('#backlog_filter_form').submit(function(e) {
-                e.preventDefault(); // Prevent page reload on form submit
-                var admission_year = $('#admission_year').val();
+        // AJAX request to fetch backlog data
+        $.ajax({
+            url: "<?= base_url('admin/fetch_backlogs') ?>",
+            type: "POST",
+            data: { admission_year: admission_year },
+            dataType: "json",
+            success: function(data) {
+                var tableBody = "";
+                if (data.length > 0) {
+                    // Populate table with data
+                    $.each(data, function(index, student) {
+                        tableBody += "<tr>" +
+                            "<td>" + student.usn + "</td>" +
+                            "<td>" + student.student_name + "</td>" +
+                            "<td>" + student.admission_year + "</td>" +
+                            "<td>" + student.programme + "</td>" +
+                            "<td>" + student.branch + "</td>" +
+                            "<td>" + student.course_code + "</td>" +
+                            "<td>" + student.grade + "</td>" +
+                            "</tr>";
+                    });
 
-                // If no admission year is selected, show the message and hide the table
-                if (!admission_year) {
+                    $('#no_data_message').hide(); // Hide the no data message
+                    $('#table_section').show(); // Show table
+                } else {
+                    // No backlog found, show the image and message
+                    $('#table_section').hide();
+                    $('#no_data_message img').show();
+                    $('#no_data_message p').text("No backlogs found").show();
                     $('#no_data_message').show();
-                    $('#table_section').hide(); // Hide table if no year selected
-                    return; // Stop further processing
                 }
-
-                // Otherwise, make the AJAX call
-                $.ajax({
-                    url: "<?= base_url('admin/fetch_backlogs') ?>",
-                    type: "POST",
-                    data: {
-                        admission_year: admission_year
-                    },
-                    dataType: "json",
-                    success: function(data) {
-                        var tableBody = "";
-                        if (data.length > 0) {
-                            $.each(data, function(index, student) {
-                                tableBody += "<tr>" +
-                                    "<td>" + student.usn + "</td>" +
-                                    "<td>" + student.student_name + "</td>" +
-                                    "<td>" + student.admission_year + "</td>" +
-                                    "<td>" + student.programme + "</td>" +
-                                    "<td>" + student.branch + "</td>" +
-                                    "<td>" + student.subcode + "</td>" +
-                                    "<td>" + student.grade + "</td>" +
-                                    "</tr>";
-                            });
-                            $('#no_data_message').hide(); // Hide the message when data is found
-                            $('#table_section').show(); // Show the table
-                        } else {
-                            tableBody = "<tr><td colspan='7' class='text-center'>No backlogs found.</td></tr>";
-                            $('#no_data_message').hide(); // Hide the message when data is found
-                            $('#table_section').show(); // Show the table even if no backlogs found
-                        }
-                        $('#backlogs_table tbody').html(tableBody);
-                    }
-                });
-            });
+                $('#basic-datatable tbody').html(tableBody);
+            }
         });
+    });
+});
+
     </script>
 </body>
 

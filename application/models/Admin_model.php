@@ -304,5 +304,33 @@ public function getFilteredStudents($filter_conditions = [])
     // Return the result as an array of students
     return $query;
 }
+public function getFilteredCourses($programme = null, $semester = null, $branch = null)
+{
+    $this->db->select('*');
+    $this->db->from('courses');
+
+    // Only apply filters if at least one of them is NOT null
+    if ($programme !== null || $semester !== null || $branch !== null) {
+        if (!empty($programme)) {
+            $this->db->where('programme', $programme);
+        }
+        if (!empty($semester)) {
+            $this->db->where('semester', $semester);
+        }
+        if (!empty($branch)) {
+            $this->db->where('branch', $branch);
+        }
+    }
+
+    return $this->db->get();
+}
+
+
+
+public function getAllCourses() {
+  $this->db->select('*');
+  $this->db->from('courses');
+  return $this->db->get();
+}
 
 }

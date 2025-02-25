@@ -140,9 +140,9 @@ class Admin extends CI_Controller
         }
     }
 
-    public function courses()
-    {
+    public function courses() {
         if ($this->session->userdata('logged_in')) {
+            // Retrieve session data
             $session_data = $this->session->userdata('logged_in');
             $data['id'] = $session_data['id'];
             $data['username'] = $session_data['username'];
@@ -150,66 +150,54 @@ class Admin extends CI_Controller
             $data['role'] = $session_data['role'];
     
             $data['page_title'] = "Courses";
-            $data['menu'] = "students";
+            $data['menu'] = "courses";
     
-            $data['students'] = $this->admin_model->getDetails('courses', null)->result();
-            $data['programmes'] = $this->admin_model->getDistinctValues('programme', 'courses');
-            $data['branches'] = $this->admin_model->getDistinctValues('branch', 'courses');
-            $data['semesters'] = $this->admin_model->getDistinctValues('semester', 'courses');
+            // Adding "All" options for filters
+            $data['programme_options'] = array("All" => "All Programmes") + $this->globals->programme();
+            $data['semester_options'] = array("All" => "All Semesters") + $this->globals->semester();
+            $data['branch_options'] = array("All" => "All Branches") + $this->globals->branch();
     
+            // Set validation rules
+            $this->form_validation->set_rules('programme', 'Programme', 'required');
+    
+            // Check if form data exists (i.e., user has submitted filters)
+            if ($this->input->server('REQUEST_METHOD') === 'POST') {
+                // Get selected filter values
+                $programme = $this->input->post('programme');
+                $semester = $this->input->post('semester');
+                $branch = $this->input->post('branch');
+    
+                // Convert "All" options to NULL (so they don’t filter anything)
+                $programme = ($programme === "All") ? null : $programme;
+                $semester = ($semester === "All") ? null : $semester;
+                $branch = ($branch === "All") ? null : $branch;
+    
+                // Fetch filtered courses based on selected values
+                $data['courses'] = $this->admin_model->getFilteredCourses($programme, $semester, $branch)->result();
+    
+                // Store selected filters to maintain state in UI
+                $data['selected_programme'] = $programme;
+                $data['selected_semester'] = $semester;
+                $data['selected_branch'] = $branch;
+            } else {
+                // No data should be fetched initially
+                $data['courses'] = [];
+                $data['selected_programme'] = null;
+                $data['selected_semester'] = null;
+                $data['selected_branch'] = null;
+            }
+            if (empty($selected_programme) && empty($selected_branch) && empty($selected_semester)) {
+                // It's the first load
+                $this->session->set_flashdata('first_load', true);
+            }
+            
+            // Render the view
             $this->admin_template->show('admin/courses', $data);
         } else {
             redirect('admin', 'refresh');
         }
     }
     
-    public function filterCourses()
-{
-    $programme = $this->input->post('programme');
-    $branch = $this->input->post('branch');
-    $semester = $this->input->post('semester');
-
-    $this->db->select('*');
-    $this->db->from('courses');
-
-    if (!empty($programme)) {
-        $this->db->where('programme', $programme);
-    }
-    if (!empty($branch)) {
-        $this->db->where('branch', $branch);
-    }
-    if (!empty($semester)) {
-        $this->db->where('semester', $semester);
-    }
-
-    $query = $this->db->get();
-    $courses = $query->result();
-
-    $output = "";
-    $i = 1;
-    foreach ($courses as $course) {
-        $edit_url = base_url('admin/editcourse/' . $course->id);
-        $encryptId = base64_encode($course->id);
-        $delete_url = base_url('admin/deleteCourse/' . $encryptId);
-
-        $output .= "<tr>
-            <td>{$i}</td>
-            <td><a href='".base_url('admin/viewcourseDetails/'.$encryptId)."'>{$course->course_code}</a></td>
-            <td>{$course->course_name}</td>
-            <td>{$course->branch}</td>
-            <td>
-                <a href='{$edit_url}' class='btn btn-primary btn-sm'><i class='fa fa-edit'></i> Edit</a>
-                <a href='{$delete_url}' class='btn btn-danger btn-sm' onclick='return confirm(\"Are you sure you want to delete this course?\")'><i class='fa fa-trash'></i> Delete</a>
-            </td>
-            <td>{$course->semester}</td>
-        </tr>";
-
-        $i++;
-    }
-
-    echo $output;
-}
-
 
     public function add_newcourse()
     {
