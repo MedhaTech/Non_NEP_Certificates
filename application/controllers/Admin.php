@@ -1017,7 +1017,7 @@ class Admin extends CI_Controller
             redirect('admin');
         }
     }
-    public function generate_student_pdf($id, $semester)
+public function generate_student_pdf($id, $semester)
     {
         error_reporting(E_ALL);
         ini_set('display_errors', 1);
@@ -1247,8 +1247,8 @@ class Admin extends CI_Controller
                 // Add SGPA, CGPA, and Result in a Single Cell
                 $pdf->SetXY($current_x, $row_y);
                 $pdf->SetFont('Arial', 'B', 8);
-                $sgpa = number_format($student->{'sgpa_' . $semester} ?? 0, 2);
-                $cgpa = number_format($student->cgpa ?? 0, 2);
+                $sgpa = number_format($semester_data[0]->sgpa ?? 0, 2);
+                $cgpa = number_format($semester_data[0]->cgpa ?? 0, 2);                
                 $result = 'PASS'; // Placeholder, can be dynamic later
                 $pdf->Cell($table_width, 5, "SGPA: $sgpa" . str_repeat(" ", 20) . "CGPA: $cgpa" . str_repeat(" ", 15) . "Result: $result", 1, 0, 'L');
 
@@ -1372,4 +1372,170 @@ class Admin extends CI_Controller
 
 
     // $this->admin_template->show('admin/studentdetails', $data);
+
+
+    public function forgot_password_view()
+    {
+        $this->login_template->show('admin/forgot_password_view');
+    }
+    
+
+   public function forgot_password() {
+    $this->load->library('form_validation');
+    $this->load->model('admin_model');
+    $this->load->library('email');  // Load Email Library
+    $this->config->load('email');   // Load Email Config
+
+    $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+
+    if ($this->form_validation->run() == FALSE) {
+        $this->session->set_flashdata('message', validation_errors());
+        redirect('admin/');
+    }
+
+    $email = $this->input->post('email'); 
+    $user = $this->admin_model->get_user_by_email($email);
+
+    if (!$user) {
+        $this->session->set_flashdata('message', 'Email not found!');
+        redirect('admin/');
+    }
+
+    $token = bin2hex(random_bytes(20));//token generation
+    $expiry_time = date("Y-m-d H:i:s", strtotime('+5 minutes'));//set expire date and time 5 min
+
+    $this->admin_model->store_reset_token($user->user_id, $token, $expiry_time);
+
+    $reset_link = base_url("admin/reset_password?token=" . $token);
+
+    // Email content
+    $subject = "Password Reset Request";
+ $message = "
+    <div style='max-width: 500px; margin: auto; padding: 20px; font-family: Arial, sans-serif; background: #f4f4f4; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);'>
+        <div style='background: #ffffff; padding: 20px; border-radius: 8px; text-align: center;'>
+            <h2 style='color: #333;'>Password Reset Request</h2>
+            <p style='color: #555;'>Hi <strong>{$user->username}</strong>,</p>
+            <p style='color: #555;'>You recently requested to reset your password. Click the button below to proceed:</p>
+            <a href='{$reset_link}' target='_blank' style='display: inline-block; padding: 10px 20px; margin-top: 10px; color: #fff; background: #007BFF; text-decoration: none; border-radius: 5px; font-size: 16px;'>Click Here to Reset</a>
+            <p style='color: #777; font-size: 12px; margin-top: 10px;'>This link is valid for 5 minutes only.</p>
+        </div>
+    </div>
+";
+
+
+
+    // Email configuration
+    $this->email->from('your-email@domain.com', 'BMSCE CERTIFY 2008'); 
+    $this->email->to($email);
+    $this->email->subject($subject);
+    $this->email->message($message);
+
+    if ($this->email->send()) {
+        $this->session->set_flashdata('message', 'Password reset link sent! Check your email.');
+    } else {
+        $this->session->set_flashdata('message', 'Failed to send email. Check email configuration.');
+    }
+
+    redirect('admin/');
+}
+
+// public function forgot_password() {
+//     $this->load->library('form_validation');
+//     $this->load->model('admin_model');
+//     $this->load->library('email');  // Load Email Library
+//     $this->config->load('email');   // Load Email Config
+
+//     $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+
+//     if ($this->form_validation->run() == FALSE) {
+//         $this->session->set_flashdata('message', validation_errors());
+//         redirect('admin/');
+//     }
+
+//     $email = $this->input->post('email'); 
+//     $user = $this->admin_model->get_user_by_email($email);
+
+//     if (!$user) {
+//         $this->session->set_flashdata('message', 'Email not found!');
+//         redirect('admin/');
+//     }
+
+//     $token = bin2hex(random_bytes(20));
+//     $expiry_time = date("Y-m-d H:i:s", strtotime('+5 minutes'));
+
+//     $this->admin_model->store_reset_token($user->user_id, $token, $expiry_time);
+
+//     $reset_link = base_url("admin/reset_password?token=" . $token);
+
+//     // Email content
+//     $subject = "Password Reset Request";
+//     $message = "
+//         <p>Hi <strong>{$user->username}</strong>,</p>
+//         <p>You requested a password reset. Click the link below to reset your password:</p>
+//         <p><a href='{$reset_link}' target='_blank'>{$reset_link}</a></p>
+//         <p><small>This link is valid for 5 minutes only.</small></p>
+//     ";
+
+//     // Email configuration
+//     $this->email->from('nandeeshjkalakatti@gmail.com', 'BMSCE CERTIFY 2008'); 
+//     $this->email->to($email);
+//     $this->email->subject($subject);
+//     $this->email->message($message);
+
+//     if ($this->email->send()) {
+//         $this->session->set_flashdata('message', 'Password reset link sent! Check your email.');
+//     } else {
+//         $this->session->set_flashdata('message', 'Failed to send email. Check email configuration.');
+//     }
+
+//     redirect('admin/');
+// }
+
+public function reset_password() {
+    $token = $this->input->get('token'); // Token from the URL
+
+    $this->load->model('admin_model');
+    $user = $this->admin_model->verify_reset_token($token);
+
+    if (!$user) {
+        $this->session->set_flashdata('message', 'Invalid or expired token!');
+        redirect('admin/');
+    }
+
+    // Load reset password form
+    $data['token'] = $token;
+    $this->login_template->show('admin/reset_password_view', $data);
+}
+
+public function update_password() {
+    $token = $this->input->post('token');
+    $new_password = $this->input->post('password');
+
+    $this->load->model('admin_model');
+    $user = $this->admin_model->verify_reset_token($token);
+
+    if (!$user) {
+        $this->session->set_flashdata('message', 'Invalid or expired token!');
+        redirect('admin/');
+    }
+
+    // Hash the password 
+    $hashed_password = md5($new_password);
+
+    // Update password and invalidate the reset token
+    $this->admin_model->update_password($user->user_id, $hashed_password);
+    $this->admin_model->invalidate_reset_token($token);
+
+    $this->session->set_flashdata('message', 'Password reset successfully! You can now log in.');
+    redirect('admin/');
+}
+
+
+
+
+
+
+
+
+    
 }

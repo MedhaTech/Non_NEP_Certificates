@@ -57,22 +57,24 @@
                             <div class="col-md-12">
                             <div class="table-responsive">
 
-                                <table class="table table-bordered dt-responsive nowrap" id="basic-datatable">
-                                    <thead class="thead-dark">
-                                        <tr>
-                                            <th>USN</th>
-                                            <th>Name</th>
-                                            <th>Admission Year</th>
-                                            <th>Programme</th>
-                                            <th>Branch</th>
-                                            <th>Subject Code</th>
-                                            <th>Grade</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <!-- Data will be inserted here by AJAX -->
-                                    </tbody>
-                                </table>
+                                <!-- Change the table ID to "backlog-datatable" -->
+<table class="table table-bordered dt-responsive nowrap" id="backlog-datatable">
+    <thead class="thead-dark">
+        <tr>
+            <th>USN</th>
+            <th>Name</th>
+            <th>Admission Year</th>
+            <th>Programme</th>
+            <th>Branch</th>
+            <th>Subject Code</th>
+            <th>Grade</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Data will be inserted here by AJAX -->
+    </tbody>
+</table>
+
                             </div>
                                         </div>
                         </div>
@@ -83,25 +85,42 @@
         </div>
     </div>
 
-   
-    <script>
-      $(document).ready(function() {
+
+<script>
+    $(document).ready(function() {
     // Initially hide the image and show the "Please select the year" text
     $('#no_data_message img').hide();
     $('#no_data_message p').text("Please select the year").show();
     $('#table_section').hide();
 
+    // Initialize DataTable with new ID "backlog-datatable"
+    var table = $('#backlog-datatable').DataTable({
+        "paging": true,
+        "lengthChange": true,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+        "pageLength": 10,
+        "language": {
+            "paginate": {
+                "previous": "<", 
+                "next": ">"
+            }
+        }
+    });
+
     // Filter form submit (AJAX request)
     $('#backlog_filter_form').submit(function(e) {
-        e.preventDefault(); // Prevent page reload on form submit
+        e.preventDefault();
         var admission_year = $('#admission_year').val();
 
         if (!admission_year) {
-            // If no admission year is selected, show the text and hide the table
             $('#no_data_message img').hide();
             $('#no_data_message p').text("Please select the year").show();
             $('#table_section').hide();
-            return; // Stop further processing
+            return;
         }
 
         // AJAX request to fetch backlog data
@@ -111,23 +130,23 @@
             data: { admission_year: admission_year },
             dataType: "json",
             success: function(data) {
-                var tableBody = "";
+                table.clear().draw(); // Clear existing data
+
                 if (data.length > 0) {
-                    // Populate table with data
                     $.each(data, function(index, student) {
-                        tableBody += "<tr>" +
-                            "<td>" + student.usn + "</td>" +
-                            "<td>" + student.student_name + "</td>" +
-                            "<td>" + student.admission_year + "</td>" +
-                            "<td>" + student.programme + "</td>" +
-                            "<td>" + student.branch + "</td>" +
-                            "<td>" + student.course_code + "</td>" +
-                            "<td>" + student.grade + "</td>" +
-                            "</tr>";
+                        table.row.add([
+                            student.usn,
+                            student.student_name,
+                            student.admission_year,
+                            student.programme,
+                            student.branch,
+                            student.course_code,
+                            student.grade
+                        ]).draw();
                     });
 
-                    $('#no_data_message').hide(); // Hide the no data message
-                    $('#table_section').show(); // Show table
+                    $('#no_data_message').hide();
+                    $('#table_section').show();
                 } else {
                     // No backlog found, show the image and message
                     $('#table_section').hide();
@@ -135,13 +154,14 @@
                     $('#no_data_message p').text("No backlogs found").show();
                     $('#no_data_message').show();
                 }
-                $('#basic-datatable tbody').html(tableBody);
             }
         });
     });
 });
 
-    </script>
+</script>
+
+
 </body>
 
 </html>

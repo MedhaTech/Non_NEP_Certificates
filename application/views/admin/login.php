@@ -15,6 +15,9 @@
                                                 </div>
                                                 <h1 class="h5 mb-1">Welcome Back!</h1>
                                                 <p class="text-muted mb-4">Enter your email address and password to access admin panel.</p>
+                                                <?php if ($this->session->flashdata('message')) : ?>
+    <div class="alert alert-info"><?php echo $this->session->flashdata('message'); ?></div>
+<?php endif; ?>
                                                 <?php echo form_open($action, 'class="js-validation-signin" method="POST"'); ?>
                                                 <?php echo '<span class="text-danger">'.validation_errors().'</span>'; ?>
                                                 <div class="input-group mb-3">
@@ -41,7 +44,13 @@
         
                                                 <div class="row mt-4">
                                                     <div class="col-12 text-center">
-                                                        <p class="text-muted mb-2"><a href="#" class="text-muted font-weight-medium ml-1">Forgot your password?</a></p>
+                                                    <p class="text-muted mb-2">
+                                                    <a href="<?php echo base_url('admin/forgot_password_view'); ?>" class="text-muted font-weight-medium ml-1">
+    Forgot your password?
+</a>
+
+</p>
+
                                                         <!-- <p class="text-muted mb-0">Don't have an account? <a href="pages-register.html" class="text-muted font-weight-medium ml-1"><b>Sign Up</b></a></p> -->
                                                     </div> <!-- end col -->
                                                 </div>
@@ -55,5 +64,15 @@
                     </div> <!-- end row -->
                 </div>
                 <!-- end container -->
+
+</form>
+
+
+                <div id="resetMessage" class="mt-2 text-danger"></div>
             </div>
-            <!-- end page -->
+        </div>
+    </div>
+</div>
+
+            </div>
+  
