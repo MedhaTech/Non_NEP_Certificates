@@ -333,4 +333,53 @@ public function getAllCourses() {
   return $this->db->get();
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  public function get_user_by_email($email) {
+        return $this->db->get_where('users', ['email' => $email])->row();
+    }
+
+    public function store_reset_token($user_id, $token, $expiry) {
+        $data = [
+            'reset_token' => $token,
+            'token_expiry' => $expiry
+        ];
+        $this->db->where('user_id', $user_id);
+        $this->db->update('users', $data);
+    }
+
+
+
+public function verify_reset_token($token) {
+  $this->db->where('reset_token', $token);
+  $this->db->where('token_expiry >=', date("Y-m-d H:i:s"));
+  return $this->db->get('users')->row();
+}
+
+public function update_password($user_id, $hashed_password) {
+  $this->db->where('user_id', $user_id);
+  $this->db->update('users', ['password' => $hashed_password]);
+}
+
+public function invalidate_reset_token($token) {
+  $this->db->where('reset_token', $token);
+  $this->db->update('users', ['reset_token' => null, 'token_expiry' => null]);
+}
 }

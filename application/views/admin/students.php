@@ -103,6 +103,8 @@
                             } else {
                                 // No data available message
                                 echo "<div class='text-center'><img src='" . base_url() . "assets/images/no_data.jpg' class='nodata'><br>No data found</div>";
+                               
+
                             }
                         }
                         ?>
