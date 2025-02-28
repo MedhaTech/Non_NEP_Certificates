@@ -4,15 +4,16 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= $page_title; ?> | BMSCE Campus Portal</title>
+    <title><?= $page_title; ?> | BMSCE CERTIFY</title>
 
     <!-- App favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>assets/images/BMS_College_of_Engineering.png">
+    <link rel="shortcut icon" type="image/x-icon"
+        href="<?php echo base_url(); ?>assets/images/BMS_College_of_Engineering.png">
 
     <!-- App css -->
     <link href="<?php echo base_url(); ?>assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url(); ?>assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-    <link href="<?php echo base_url(); ?>assets/css/theme.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo base_url(); ?>assets/css/theme.css" rel="stylesheet" type="text/css" />
 
     <!-- Plugins css -->
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/datatables/dataTables.bootstrap4.css"
@@ -37,7 +38,7 @@
                 <div class="navbar-brand-box d-flex align-items-left">
                     <a href="<?php echo base_url(); ?>admin/dashboard" class="logo">
                         <span>
-                        BMSCE CERTIFY 2008
+                            BMSCE CERTIFY 2008
                         </span>
                     </a>
 
@@ -57,16 +58,16 @@
                             <i class="mdi mdi-magnify"></i>
                         </button> -->
                         <?php echo form_open_multipart('admin/view_studentdetails', 'class="user"'); ?>
-                            <div class="input-group">
-                                <input type="text" class="form-control bg-light border-0 small" placeholder="Enter USN"
-                                    aria-label="Search" id="usn" name="usn" aria-describedby="basic-addon2"
-                                    value="<?php echo (set_value('usn')) ? set_value('usn') : $usn; ?>">
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary" type="submit">
-                                        <i class="fas fa-search fa-sm"></i>
-                                    </button>
-                                </div>
+                        <div class="input-group">
+                            <input type="text" class="form-control bg-light border-0 small" placeholder="Enter USN"
+                                aria-label="Search" id="usn" name="usn" aria-describedby="basic-addon2"
+                                value="<?php echo (set_value('usn')) ? set_value('usn') : $usn; ?>">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
                             </div>
+                        </div>
                         <?php echo form_close(); ?>
 
                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-0"
@@ -93,7 +94,8 @@
                             id="page-header-user-dropdown" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false">
                             <img class="rounded-circle header-profile-user"
-                                src="<?php echo base_url(); ?>assets/images/BMS_College_of_Engineering.png" alt="Header Avatar">
+                                src="<?php echo base_url(); ?>assets/images/BMS_College_of_Engineering.png"
+                                alt="Header Avatar">
                             <span class="d-none d-sm-inline-block ml-1">Welcome <?= $full_name; ?></span>
                             <i class="mdi mdi-chevron-down d-none d-sm-inline-block"></i>
                         </button>
