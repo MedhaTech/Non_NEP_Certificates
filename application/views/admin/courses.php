@@ -53,7 +53,9 @@
             $this->table->set_template($table_setup);
 
             // Table column headers
+
             $print_fields = array('S.NO', 'Course Code', 'Course Name', 'Branch', 'Semester', 'Actions');
+
             $this->table->set_heading($print_fields);
 
             // Populate the table with course data
