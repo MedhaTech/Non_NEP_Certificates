@@ -28,17 +28,16 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="semester">Semester</label>
-                            <?php echo form_dropdown('semester', $semester_options, isset($selected_semester) ? $selected_semester : 'All', 'class="form-control" id="semester"'); ?>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
                             <label for="branch">Branch</label>
                             <?php echo form_dropdown('branch', $branch_options, isset($selected_branch) ? $selected_branch : 'All', 'class="form-control" id="branch"'); ?>
                         </div>
                     </div>
-                    
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="semester">Semester</label>
+                            <?php echo form_dropdown('semester', $semester_options, isset($selected_semester) ? $selected_semester : 'All', 'class="form-control" id="semester"'); ?>
+                        </div>
+                    </div>
                     <div class="col-md-3 mt-4">
                         <button type="submit" class="btn btn-primary btn-block">Filter</button>
                     </div>
@@ -50,11 +49,11 @@
         <?php
         if (isset($courses) && count($courses) > 0) {
             // Set up the table
-            $print_fields = array('S.NO', 'Course Code', 'Course Name', 'Branch', 'Semester', 'Actions');
+            $table_setup = array('table_open' => '<table class="table dt-responsive nowrap table-bordered" border="1" id="basic-datatable">');
             $this->table->set_template($table_setup);
 
             // Table column headers
-            $print_fields = array('S.NO', 'Course Code', 'Course Name', 'Branch','Semester', 'Actions');
+            $print_fields = array('S.NO', 'Course Code', 'Course Name', 'Branch', 'Semester', 'Actions');
             $this->table->set_heading($print_fields);
 
             // Populate the table with course data
@@ -80,8 +79,7 @@
             // Check if it's the first load or after a filter
             if (isset($selected_programme) || isset($selected_branch) || isset($selected_semester)) {
                 // If it's after applying a filter and no data is found, show the 'no data' image
-                echo "<div class='text-center'><img src='" . base_url() . "assets/images/no_data.jpg' class='nodata'></div>"; 
-                echo "<div class='text-center'>No Data Found.</div>";
+                echo "<div class='text-center'><img src='" . base_url() . "assets/images/no_data.jpg' class='nodata'></div>";
             } else {
                 // If it's the first load, do not show the image, display a custom message instead
                 echo "<div class='text-center'>No courses available at the moment. Please apply a filter to view courses.</div>";
