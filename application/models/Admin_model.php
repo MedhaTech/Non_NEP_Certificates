@@ -190,18 +190,27 @@ class Admin_model extends CI_Model
     }
     return $this->db->get($table);
 }
-
 public function getStudentMarksBySemester($usn, $semester)
 {
-    $this->db->select('c.course_code, c.course_name, sm.cie, sm.see, sm.grade, sm.grade_points, sm.sgpa, sm.credits_earned, sm.credits_actual, sm.cgpa, sm.result_year,sm.grade,sm.barcode, sm.exam_period');
+    // Select necessary columns from students_marks and courses
+    $this->db->select('
+        c.course_code, c.course_name, sm.id, sm.cie, sm.see, sm.cie_see, sm.grade, sm.grade_points,
+        sm.sgpa, sm.credits_earned, sm.credits_actual, sm.cgpa, sm.result_year, sm.grade, sm.barcode, 
+        sm.exam_period, sm.semester, sm.ci, sm.suborder, sm.reexamyear, sm.gcno, sm.torder, sm.texam_period
+    ');
+    
+    // Join students_marks (sm) table with courses (c) table on the appropriate field
     $this->db->from('students_marks sm');
-    $this->db->join('courses c', 'sm.id = c.id');
+    $this->db->join('courses c', 'sm.id = c.id');  // Assuming 'course_id' in students_marks table
     $this->db->where('sm.usn', $usn);
     $this->db->where('sm.semester', $semester);
+    
+    // Execute the query
     $query = $this->db->get();
-    return $query->result();
-}
 
+    // Return the result of the query
+    return $query->result();  // This will return an array of result objects
+}
 public function insertCertificateLog($usn, $details) {
   $data = array(
       'usn' => $usn,
@@ -382,4 +391,28 @@ public function invalidate_reset_token($token) {
   $this->db->where('reset_token', $token);
   $this->db->update('users', ['reset_token' => null, 'token_expiry' => null]);
 }
+
+public function update_marks($course_id, $data) {
+  $this->db->where('id', $course_id);
+  return $this->db->update('students_marks', $data);
+}
+// ... existing code ...
+
+
+
+
+public function get_course_marks($course_id)
+{
+  $this->db->where('id', $course_id);
+  return $this->db->get('students_marks')->row();
+}
+
+
+public function deletemarks($id) {
+$this->db->where('id', $id);
+$this->db->delete('courses');
+return $this->db->affected_rows() > 0; // Return true if a row was deleted
+}
+
+
 }

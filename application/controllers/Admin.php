@@ -1533,6 +1533,91 @@ public function update_password() {
 
 
 
+public function edit_marks($courseid , $stuid) {
+    // Check if the user is logged in
+    
+
+    if ($this->session->userdata('logged_in')) {
+        // Get POST data from the form
+        $data = $this->input->post();
+        
+        // Validate the input data
+        $this->form_validation->set_rules('course_code', 'Course Code', 'required');
+        // Add other validation rules as necessary
+
+        if ($this->form_validation->run() == FALSE) {
+            // If validation fails, redirect back with error messages
+            $this->session->set_flashdata('error', validation_errors());
+            redirect($_SERVER['HTTP_REFERER']);
+        } else {
+            // Prepare the data for updating
+            $updateDetails = array(
+                
+                
+                'cie' => $data['cie'],
+                'see' => $data['see'],
+                'cie_see' => $data['cie_see'],
+                'grade' => $data['grade'],
+                'sgpa' => $data['sgpa'],
+                'cgpa' => $data['cgpa'],
+                'semester' => $data['semester'],
+                'grade_points' => $data['grade_points'],
+                'credits_earned' => $data['credits_earned'],
+                'credits_actual' => $data['credits_actual'],
+                'ci' => $data['ci'],
+                'suborder' => $data['suborder'],
+                'reexamyear' => $data['reexamyear'],
+                'result_year' => $data['result_year'],
+                'exam_period' => $data['exam_period'],
+                'gcno' => $data['gcno'],
+                'barcode' => $data['barcode'],
+                'torder' => $data['torder'],
+                'texam_period' => $data['texam_period'],
+            );
+
+            // Call model to update the course details
+            $result = $this->admin_model->update_marks($courseid, $updateDetails);
+
+            // Flash message for successful or failed update
+            if ($result) {
+                $this->session->set_flashdata('message', 'Marks updated successfully!');
+                $this->session->set_flashdata('status', 'alert-success');
+            } else {
+                $this->session->set_flashdata('message', 'Something went wrong, please try again!');
+                $this->session->set_flashdata('status', 'alert-danger');
+            }
+
+            $encryptId = base64_encode($stuid);
+            redirect('admin/studentdetails/' . $encryptId);
+        }
+    } else {
+        redirect('admin');
+    }
+}
+// ... existing code ...
+
+
+public function deletemarks($id  , $stuid) {
+    if ($this->session->userdata('logged_in')) {
+        // Call the model to delete the course
+        $result = $this->admin_model->deletemarks($id);
+
+        if ($result) {
+            $this->session->set_flashdata('message', 'Course deleted successfully!');
+            $this->session->set_flashdata('status', 'alert-success');
+        } else {
+            $this->session->set_flashdata('message', 'Error deleting course. Please try again.');
+            $this->session->set_flashdata('status', 'alert-danger');
+        }
+        // Redirect back to the student details page or wherever appropriate
+        $encryptId = base64_encode($stuid);
+        redirect('admin/studentdetails/' . $encryptId);// Adjust the redirect as necessary
+    } else {
+        redirect('admin');
+    }
+}
+
+
 
 
 
