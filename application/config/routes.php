@@ -60,3 +60,4 @@ $route['admin/generate_student_pdf/(:num)'] = 'admin/generate_student_pdf/$1';
 // Route for generating PDF for specific semester
 $route['admin/generate_student_pdf/(:num)/(:num)'] = 'admin/generate_student_pdf/$1/$2';
 $route['admin/update_certificate_log'] = 'admin/update_certificate_log';
+$route['admin/forgot_password'] = 'admin/forgot_password';

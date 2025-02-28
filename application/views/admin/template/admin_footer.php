@@ -3,13 +3,13 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="text-center text-lg-left">
-                                Copyright &copy; <?=date('Y');?> <a href="" target="_blank">BMSCE</a>.
+                                Copyright &copy; <?=date('Y');?> <a href="https://bmsce.ac.in/" target="_blank">BMSCE</a>.
                                 All rights reserved.
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="text-right d-none d-lg-block">
-                                    Design & Develop by <a href="medhatech.in" target="_blank" class="text-danger">Medha Tech</b>
+                                Designed and Developed by <a href="https://medhatech.in/" target="_blank" class="text-danger">Medha Tech</b>
                                 </div>
                             </div>
                         </div>

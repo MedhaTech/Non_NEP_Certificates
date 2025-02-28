@@ -140,9 +140,9 @@ class Admin extends CI_Controller
         }
     }
 
-    public function courses()
-    {
+    public function courses() {
         if ($this->session->userdata('logged_in')) {
+            // Retrieve session data
             $session_data = $this->session->userdata('logged_in');
             $data['id'] = $session_data['id'];
             $data['username'] = $session_data['username'];
@@ -150,66 +150,54 @@ class Admin extends CI_Controller
             $data['role'] = $session_data['role'];
     
             $data['page_title'] = "Courses";
-            $data['menu'] = "students";
+            $data['menu'] = "courses";
     
-            $data['students'] = $this->admin_model->getDetails('courses', null)->result();
-            $data['programmes'] = $this->admin_model->getDistinctValues('programme', 'courses');
-            $data['branches'] = $this->admin_model->getDistinctValues('branch', 'courses');
-            $data['semesters'] = $this->admin_model->getDistinctValues('semester', 'courses');
+            // Adding "All" options for filters
+            $data['programme_options'] = array("All" => "All Programmes") + $this->globals->programme();
+            $data['semester_options'] = array("All" => "All Semesters") + $this->globals->semester();
+            $data['branch_options'] = array("All" => "All Branches") + $this->globals->branch();
     
+            // Set validation rules
+            $this->form_validation->set_rules('programme', 'Programme', 'required');
+    
+            // Check if form data exists (i.e., user has submitted filters)
+            if ($this->input->server('REQUEST_METHOD') === 'POST') {
+                // Get selected filter values
+                $programme = $this->input->post('programme');
+                $semester = $this->input->post('semester');
+                $branch = $this->input->post('branch');
+    
+                // Convert "All" options to NULL (so they don’t filter anything)
+                $programme = ($programme === "All") ? null : $programme;
+                $semester = ($semester === "All") ? null : $semester;
+                $branch = ($branch === "All") ? null : $branch;
+    
+                // Fetch filtered courses based on selected values
+                $data['courses'] = $this->admin_model->getFilteredCourses($programme, $semester, $branch)->result();
+    
+                // Store selected filters to maintain state in UI
+                $data['selected_programme'] = $programme;
+                $data['selected_semester'] = $semester;
+                $data['selected_branch'] = $branch;
+            } else {
+                // No data should be fetched initially
+                $data['courses'] = [];
+                $data['selected_programme'] = null;
+                $data['selected_semester'] = null;
+                $data['selected_branch'] = null;
+            }
+            if (empty($selected_programme) && empty($selected_branch) && empty($selected_semester)) {
+                // It's the first load
+                $this->session->set_flashdata('first_load', true);
+            }
+            
+            // Render the view
             $this->admin_template->show('admin/courses', $data);
         } else {
             redirect('admin', 'refresh');
         }
     }
     
-    public function filterCourses()
-{
-    $programme = $this->input->post('programme');
-    $branch = $this->input->post('branch');
-    $semester = $this->input->post('semester');
-
-    $this->db->select('*');
-    $this->db->from('courses');
-
-    if (!empty($programme)) {
-        $this->db->where('programme', $programme);
-    }
-    if (!empty($branch)) {
-        $this->db->where('branch', $branch);
-    }
-    if (!empty($semester)) {
-        $this->db->where('semester', $semester);
-    }
-
-    $query = $this->db->get();
-    $courses = $query->result();
-
-    $output = "";
-    $i = 1;
-    foreach ($courses as $course) {
-        $edit_url = base_url('admin/editcourse/' . $course->id);
-        $encryptId = base64_encode($course->id);
-        $delete_url = base_url('admin/deleteCourse/' . $encryptId);
-
-        $output .= "<tr>
-            <td>{$i}</td>
-            <td><a href='".base_url('admin/viewcourseDetails/'.$encryptId)."'>{$course->course_code}</a></td>
-            <td>{$course->course_name}</td>
-            <td>{$course->branch}</td>
-            <td>
-                <a href='{$edit_url}' class='btn btn-primary btn-sm'><i class='fa fa-edit'></i> Edit</a>
-                <a href='{$delete_url}' class='btn btn-danger btn-sm' onclick='return confirm(\"Are you sure you want to delete this course?\")'><i class='fa fa-trash'></i> Delete</a>
-            </td>
-            <td>{$course->semester}</td>
-        </tr>";
-
-        $i++;
-    }
-
-    echo $output;
-}
-
 
     public function add_newcourse()
     {
@@ -228,6 +216,7 @@ class Admin extends CI_Controller
 
             // Set validation rules
             $this->form_validation->set_rules('course_code', 'Course Code', 'required|regex_match[/^[a-zA-Z0-9-_]*$/]');
+            $this->form_validation->set_rules('course_name', 'Course Name', 'required');
             $this->form_validation->set_rules('programme', 'Programme', 'required');
             $this->form_validation->set_rules('branch', 'Branch', 'required');
             $this->form_validation->set_rules('semester', 'Semester', 'required');
@@ -511,9 +500,19 @@ class Admin extends CI_Controller
             $this->form_validation->set_rules('usn', 'USN', 'required', [
                 'required' => 'Please Enter USN'
             ]);
-            $this->form_validation->set_rules('student_name', 'Student Name', 'required|min_length[4]|alpha', [
-                'required' => ' Please Enter a Minimum 2 Characters'
-            ]);
+            // $this->form_validation->set_rules('student_name', 'Student Name', 'required|min_length[4]|alpha', [
+            //     'required' => ' Please Enter a Minimum 2 Characters'
+            // ]);
+            $this->form_validation->set_rules(
+                'student_name', 
+                'Student Name', 
+                'required|min_length[4]|regex_match[/^[a-zA-Z\s]+$/]',  // Allow alphabets and spaces
+                [
+                    'required' => 'Please Enter the Student Name',
+                    'min_length' => 'The Student Name must be at least 4 characters in length',
+                    'regex_match' => 'The Student Name can only contain alphabetic characters and spaces'
+                ]
+            );  
             $this->form_validation->set_rules('admission_year', 'Admission Year', 'required', [
                 'required' => 'Please Select Admission Year'
             ]);
@@ -532,18 +531,47 @@ class Admin extends CI_Controller
             $this->form_validation->set_rules('category', 'Category', 'required', [
                 'required' => 'Please Enter Category Name'
             ]);
-            $this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]', [
-                'required' => 'Please Enter 10 digit Mobile Number'
-            ]);
-            $this->form_validation->set_rules('parent_mobile', 'Parent Mobile', 'required|regex_match[/^[0-9]{10}$/]', [
-                'required' => 'Please Enter 10 digit Mobile Number'
-            ]);
-            $this->form_validation->set_rules('father_name', 'Father Name', 'required|min_length[4]|alpha', [
-                'required' => 'Please Enter a Minimum 2 Characters'
-            ]);
-            $this->form_validation->set_rules('mother_name', 'Mother Name', 'required|min_length[4]|alpha', [
-                'required' => 'Please Enter a Minimum 2 Characters'
-            ]); 
+            // $this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]', [
+            //     'required' => 'Please Enter 10 digit Mobile Number'
+            // ]);
+            $this->form_validation->set_rules(
+                'mobile', 
+                'Mobile', 
+                'required|regex_match[/^[0-9]{10}$/]', 
+                [
+                    'required' => 'Please Enter 10 digit Mobile Number',
+                    'regex_match' => 'The Mobile Number is not in the correct format'
+                ]
+            );            
+            $this->form_validation->set_rules(
+                'parent_mobile', 
+                'Mobile', 
+                'required|regex_match[/^[0-9]{10}$/]', 
+                [
+                    'required' => 'Please Enter 10 digit Mobile Number',
+                    'regex_match' => 'The Mobile Number is not in the correct format'
+                ]
+            );            
+            $this->form_validation->set_rules(
+                'father_name', 
+                'Father Name', 
+                'required|min_length[4]|regex_match[/^[a-zA-Z\s]+$/]',  // Allow alphabets and spaces
+                [
+                    'required' => 'Please Enter the Father Name',
+                    'min_length' => 'The Father Name must be at least 4 characters in length',
+                    'regex_match' => 'The Father Name can only contain alphabetic characters and spaces'
+                ]
+            );
+            $this->form_validation->set_rules(
+                'mother_name', 
+                'Mother Name', 
+                'required|min_length[4]|regex_match[/^[a-zA-Z\s]+$/]',  // Allow alphabets and spaces
+                [
+                    'required' => 'Please Enter the Mother Name',
+                    'min_length' => 'The Mother Name must be at least 4 characters in length',
+                    'regex_match' => 'The Mother Name can only contain alphabetic characters and spaces'
+                ]
+            );
 
             if ($this->form_validation->run() === FALSE) {
                 $data['action'] = 'admin/add_newstudent';
@@ -610,28 +638,82 @@ class Admin extends CI_Controller
             $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
 
             // Set validation rules
-            $this->form_validation->set_rules('usn', 'Usn', 'required');
-            $this->form_validation->set_rules('student_name', 'Student Name', 'required', [
-                'required' => 'The Student Name Must be atleast 4 Characters in length'
-            ]);
-            $this->form_validation->set_rules('admission_year', 'Admission Year', 'required');
-            $this->form_validation->set_rules('programme', 'Programme', 'required');
-            $this->form_validation->set_rules('branch', 'Branch', 'required');
-            $this->form_validation->set_rules('date_of_birth', 'Date of Birth', 'required');
-            $this->form_validation->set_rules('gender', 'Gender', 'required');
-            $this->form_validation->set_rules('category', 'Category', 'required');
-            $this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]', [
-                'required' => 'The Mobile Number is not in the Correct Format'
-            ]);
-            $this->form_validation->set_rules('parent_mobile', 'Parent Mobile', 'required|regex_match[/^[0-9]{10}$/]', [
-                'required' => 'The Mobile Number is not in the Correct Format'
-            ]);
-            $this->form_validation->set_rules('father_name', 'Father Name', 'required', [
-                'required' => 'The Student Name Must be atleast 4 Characters in length'
-            ]);
-            $this->form_validation->set_rules('mother_name', 'Mother Name', 'required', [
-                'required' => 'The Student Name Must be atleast 4 Characters in length'
-            ]);
+                    // Set validation rules
+                    $this->form_validation->set_rules('usn', 'USN', 'required', [
+                    'required' => 'Please Enter USN'
+                ]);
+                // $this->form_validation->set_rules('student_name', 'Student Name', 'required|min_length[4]|alpha', [
+                //     'required' => ' Please Enter a Minimum 2 Characters'
+                // ]);
+                $this->form_validation->set_rules(
+                    'student_name', 
+                    'Student Name', 
+                    'required|min_length[4]|regex_match[/^[a-zA-Z\s]+$/]',  // Allow alphabets and spaces
+                    [
+                        'required' => 'Please Enter the Student Name',
+                        'min_length' => 'The Student Name must be at least 4 characters in length',
+                        'regex_match' => 'The Student Name can only contain alphabetic characters and spaces'
+                    ]
+                );  
+                $this->form_validation->set_rules('admission_year', 'Admission Year', 'required', [
+                    'required' => 'Please Select Admission Year'
+                ]);
+                $this->form_validation->set_rules('programme', 'Programme', 'required', [
+                    'required' => 'Please Select Programme'
+                ]);
+                $this->form_validation->set_rules('branch', 'Branch', 'required', [
+                    'required' => 'Please Select Branch'
+                ]);
+                $this->form_validation->set_rules('date_of_birth', 'Date of Birth', 'required', [
+                    'required' => 'Please Enter/Select  Date of Birth'
+                ]);
+                $this->form_validation->set_rules('gender', 'Gender', 'required', [
+                    'required' => 'Please  Select Gender'
+                ]);
+                $this->form_validation->set_rules('category', 'Category', 'required', [
+                    'required' => 'Please Enter Category Name'
+                ]);
+                // $this->form_validation->set_rules('mobile', 'Mobile', 'required|regex_match[/^[0-9]{10}$/]', [
+                //     'required' => 'Please Enter 10 digit Mobile Number'
+                // ]);
+                $this->form_validation->set_rules(
+                    'mobile', 
+                    'Mobile', 
+                    'required|regex_match[/^[0-9]{10}$/]', 
+                    [
+                        'required' => 'Please Enter 10 digit Mobile Number',
+                        'regex_match' => 'The Mobile Number is not in the correct format'
+                    ]
+                );            
+                $this->form_validation->set_rules(
+                    'parent_mobile', 
+                    'Mobile', 
+                    'required|regex_match[/^[0-9]{10}$/]', 
+                    [
+                        'required' => 'Please Enter 10 digit Mobile Number',
+                        'regex_match' => 'The Mobile Number is not in the correct format'
+                    ]
+                );            
+                $this->form_validation->set_rules(
+                    'father_name', 
+                    'Father Name', 
+                    'required|min_length[4]|regex_match[/^[a-zA-Z\s]+$/]',  // Allow alphabets and spaces
+                    [
+                        'required' => 'Please Enter the Father Name',
+                        'min_length' => 'The Father Name must be at least 4 characters in length',
+                        'regex_match' => 'The Father Name can only contain alphabetic characters and spaces'
+                    ]
+                );
+                $this->form_validation->set_rules(
+                    'mother_name', 
+                    'Mother Name', 
+                    'required|min_length[4]|regex_match[/^[a-zA-Z\s]+$/]',  // Allow alphabets and spaces
+                    [
+                        'required' => 'Please Enter the Mother Name',
+                        'min_length' => 'The Mother Name must be at least 4 characters in length',
+                        'regex_match' => 'The Mother Name can only contain alphabetic characters and spaces'
+                    ]
+                );
 
             // If form validation fails
             if ($this->form_validation->run() === FALSE) {
@@ -935,7 +1017,7 @@ class Admin extends CI_Controller
             redirect('admin');
         }
     }
-    public function generate_student_pdf($id, $semester)
+public function generate_student_pdf($id, $semester)
     {
         error_reporting(E_ALL);
         ini_set('display_errors', 1);
@@ -1165,8 +1247,8 @@ class Admin extends CI_Controller
                 // Add SGPA, CGPA, and Result in a Single Cell
                 $pdf->SetXY($current_x, $row_y);
                 $pdf->SetFont('Arial', 'B', 8);
-                $sgpa = number_format($student->{'sgpa_' . $semester} ?? 0, 2);
-                $cgpa = number_format($student->cgpa ?? 0, 2);
+                $sgpa = number_format($semester_data[0]->sgpa ?? 0, 2);
+                $cgpa = number_format($semester_data[0]->cgpa ?? 0, 2);                
                 $result = 'PASS'; // Placeholder, can be dynamic later
                 $pdf->Cell($table_width, 5, "SGPA: $sgpa" . str_repeat(" ", 20) . "CGPA: $cgpa" . str_repeat(" ", 15) . "Result: $result", 1, 0, 'L');
 
@@ -1290,4 +1372,170 @@ class Admin extends CI_Controller
 
 
     // $this->admin_template->show('admin/studentdetails', $data);
+
+
+    public function forgot_password_view()
+    {
+        $this->login_template->show('admin/forgot_password_view');
+    }
+    
+
+   public function forgot_password() {
+    $this->load->library('form_validation');
+    $this->load->model('admin_model');
+    $this->load->library('email');  // Load Email Library
+    $this->config->load('email');   // Load Email Config
+
+    $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+
+    if ($this->form_validation->run() == FALSE) {
+        $this->session->set_flashdata('message', validation_errors());
+        redirect('admin/');
+    }
+
+    $email = $this->input->post('email'); 
+    $user = $this->admin_model->get_user_by_email($email);
+
+    if (!$user) {
+        $this->session->set_flashdata('message', 'Email not found!');
+        redirect('admin/');
+    }
+
+    $token = bin2hex(random_bytes(20));//token generation
+    $expiry_time = date("Y-m-d H:i:s", strtotime('+5 minutes'));//set expire date and time 5 min
+
+    $this->admin_model->store_reset_token($user->user_id, $token, $expiry_time);
+
+    $reset_link = base_url("admin/reset_password?token=" . $token);
+
+    // Email content
+    $subject = "Password Reset Request";
+ $message = "
+    <div style='max-width: 500px; margin: auto; padding: 20px; font-family: Arial, sans-serif; background: #f4f4f4; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);'>
+        <div style='background: #ffffff; padding: 20px; border-radius: 8px; text-align: center;'>
+            <h2 style='color: #333;'>Password Reset Request</h2>
+            <p style='color: #555;'>Hi <strong>{$user->username}</strong>,</p>
+            <p style='color: #555;'>You recently requested to reset your password. Click the button below to proceed:</p>
+            <a href='{$reset_link}' target='_blank' style='display: inline-block; padding: 10px 20px; margin-top: 10px; color: #fff; background: #007BFF; text-decoration: none; border-radius: 5px; font-size: 16px;'>Click Here to Reset</a>
+            <p style='color: #777; font-size: 12px; margin-top: 10px;'>This link is valid for 5 minutes only.</p>
+        </div>
+    </div>
+";
+
+
+
+    // Email configuration
+    $this->email->from('your-email@domain.com', 'BMSCE CERTIFY 2008'); 
+    $this->email->to($email);
+    $this->email->subject($subject);
+    $this->email->message($message);
+
+    if ($this->email->send()) {
+        $this->session->set_flashdata('message', 'Password reset link sent! Check your email.');
+    } else {
+        $this->session->set_flashdata('message', 'Failed to send email. Check email configuration.');
+    }
+
+    redirect('admin/');
+}
+
+// public function forgot_password() {
+//     $this->load->library('form_validation');
+//     $this->load->model('admin_model');
+//     $this->load->library('email');  // Load Email Library
+//     $this->config->load('email');   // Load Email Config
+
+//     $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+
+//     if ($this->form_validation->run() == FALSE) {
+//         $this->session->set_flashdata('message', validation_errors());
+//         redirect('admin/');
+//     }
+
+//     $email = $this->input->post('email'); 
+//     $user = $this->admin_model->get_user_by_email($email);
+
+//     if (!$user) {
+//         $this->session->set_flashdata('message', 'Email not found!');
+//         redirect('admin/');
+//     }
+
+//     $token = bin2hex(random_bytes(20));
+//     $expiry_time = date("Y-m-d H:i:s", strtotime('+5 minutes'));
+
+//     $this->admin_model->store_reset_token($user->user_id, $token, $expiry_time);
+
+//     $reset_link = base_url("admin/reset_password?token=" . $token);
+
+//     // Email content
+//     $subject = "Password Reset Request";
+//     $message = "
+//         <p>Hi <strong>{$user->username}</strong>,</p>
+//         <p>You requested a password reset. Click the link below to reset your password:</p>
+//         <p><a href='{$reset_link}' target='_blank'>{$reset_link}</a></p>
+//         <p><small>This link is valid for 5 minutes only.</small></p>
+//     ";
+
+//     // Email configuration
+//     $this->email->from('nandeeshjkalakatti@gmail.com', 'BMSCE CERTIFY 2008'); 
+//     $this->email->to($email);
+//     $this->email->subject($subject);
+//     $this->email->message($message);
+
+//     if ($this->email->send()) {
+//         $this->session->set_flashdata('message', 'Password reset link sent! Check your email.');
+//     } else {
+//         $this->session->set_flashdata('message', 'Failed to send email. Check email configuration.');
+//     }
+
+//     redirect('admin/');
+// }
+
+public function reset_password() {
+    $token = $this->input->get('token'); // Token from the URL
+
+    $this->load->model('admin_model');
+    $user = $this->admin_model->verify_reset_token($token);
+
+    if (!$user) {
+        $this->session->set_flashdata('message', 'Invalid or expired token!');
+        redirect('admin/');
+    }
+
+    // Load reset password form
+    $data['token'] = $token;
+    $this->login_template->show('admin/reset_password_view', $data);
+}
+
+public function update_password() {
+    $token = $this->input->post('token');
+    $new_password = $this->input->post('password');
+
+    $this->load->model('admin_model');
+    $user = $this->admin_model->verify_reset_token($token);
+
+    if (!$user) {
+        $this->session->set_flashdata('message', 'Invalid or expired token!');
+        redirect('admin/');
+    }
+
+    // Hash the password 
+    $hashed_password = md5($new_password);
+
+    // Update password and invalidate the reset token
+    $this->admin_model->update_password($user->user_id, $hashed_password);
+    $this->admin_model->invalidate_reset_token($token);
+
+    $this->session->set_flashdata('message', 'Password reset successfully! You can now log in.');
+    redirect('admin/');
+}
+
+
+
+
+
+
+
+
+    
 }
