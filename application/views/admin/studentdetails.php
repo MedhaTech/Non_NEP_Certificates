@@ -196,250 +196,248 @@
 </form>
                                     </td>
                                 </tr>
-                                <div class="modal fade" id="editMarksModal<?= $course->id; ?>" tabindex="-1"
-                                    role="dialog" aria-labelledby="editMarksModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg" role="document">
-                                        <div class="modal-content tx-14">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="editMarksModalLabel">Edit Course Marks</h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div id="messageContainer"></div>
-                                                <!-- Form to edit course marks -->
-                                             
-                                              <form method="post" action="<?php echo site_url('admin/edit_marks/' . $course->id . '/' .  $students->id); ?>" class="form-horizontal">
-                                                      <div class="row">
-                                                        <div class="form-group">
-                                                            <input type="hidden" class="form-control" name="usn"
-                                                                id="usn"
-                                                                value="<?php echo set_value('usn', $students->usn); ?>">
-                                                            <span
-                                                                class="text-danger"><?php echo form_error('usn'); ?></span>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label for="course_code">Course Code</label>
-                                                                <input type="text" class="form-control"
-                                                                    name="course_code" id="course_code"
-                                                                    value="<?php echo set_value('course_code', $course->course_code); ?>">
-                                                                <span
-                                                                    class="text-danger"><?php echo form_error('course_code'); ?></span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label for="course_name">Course Name</label>
-                                                                <input type="text" class="form-control"
-                                                                    name="course_name" id="course_name"
-                                                                    value="<?php echo set_value('course_name', $course->course_name); ?>">
-                                                                <span
-                                                                    class="text-danger"><?php echo form_error('course_name'); ?></span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group">
-                                                                <label for="cie">CIE</label>
-                                                                <!-- <input type="number" class="form-control" id="cie" name="cie"> -->
-                                                                <input type="text" class="form-control" name="cie"
-                                                                    id="cie"
-                                                                    value="<?php echo set_value('cie', $course->cie); ?>">
-                                                                <span
-                                                                    class="text-danger"><?php echo form_error('cie'); ?></span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group">
-                                                                <label for="see">SEE</label>
-                                                                <input type="text" class="form-control" name="see"
-                                                                    id="see"
-                                                                    value="<?php echo set_value('see', $course->see); ?>">
-                                                                <span
-                                                                    class="text-danger"><?php echo form_error('see'); ?></span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group">
-                                                                <label for="cie_see">CIE_SEE</label>
-                                                                <input type="text" class="form-control" name="cie_see"
-                                                                    id="cie_see"
-                                                                    value="<?php echo set_value('cie_see', $course->cie_see); ?>">
-                                                                <span
-                                                                    class="text-danger"><?php echo form_error('cie_see'); ?></span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group">
-                                                                <label for="grade">Grade</label>
-                                                                <input type="text" class="form-control" name="grade"
-                                                                    id="grade"
-                                                                    value="<?php echo set_value('grade', $course->grade); ?>">
-                                                                <span
-                                                                    class="text-danger"><?php echo form_error('grade'); ?></span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group">
-                                                                <label for="sgpa">Sgpa</label>
-                                                                <input type="text" class="form-control" name="sgpa"
-                                                                    id="sgpa"
-                                                                    value="<?php echo set_value('sgpa', $course->sgpa); ?>">
-                                                                <span
-                                                                    class="text-danger"><?php echo form_error('sgpa'); ?></span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group">
-                                                                <label for="cgpa">cgpa</label>
-                                                                <input type="text" class="form-control" name="cgpa"
-                                                                    id="cgpa"
-                                                                    value="<?php echo set_value('cgpa', $course->cgpa); ?>">
-                                                                <span
-                                                                    class="text-danger"><?php echo form_error('cgpa'); ?></span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group">
-                                                                <label for="semester">Semester</label>
-                                                                <input type="text" class="form-control" name="semester"
-                                                                    id="semester"
-                                                                    value="<?php echo set_value('sgpa', $course->semester); ?>">
-                                                                <span
-                                                                    class="text-danger"><?php echo form_error('semester'); ?></span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group">
-                                                                <label for="grade_points">Grade Points</label>
-                                                                <input type="text" class="form-control"
-                                                                    name="grade_points" id="grade_points"
-                                                                    value="<?php echo set_value('grade_points', $course->grade_points); ?>">
-                                                                <span
-                                                                    class="text-danger"><?php echo form_error('grade_points'); ?></span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group">
-                                                                <label for="credits_earned">Credits Earned</label>
-                                                                <input type="text" class="form-control"
-                                                                    name="credits_earned" id="credits_earned"
-                                                                    value="<?php echo set_value('credits_earned', $course->credits_earned); ?>">
-                                                                <span
-                                                                    class="text-danger"><?php echo form_error('credits_earned'); ?></span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group">
-                                                                <label for="credits_actual">Credits Actual</label>
-                                                                <input type="text" class="form-control"
-                                                                    name="credits_actual" id="credits_actual"
-                                                                    value="<?php echo set_value('credits_actual', $course->credits_actual); ?>">
-                                                                <span
-                                                                    class="text-danger"><?php echo form_error('credits_actual'); ?></span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group">
-                                                                <label for="ci">CI</label>
-                                                                <input type="text" class="form-control" name="ci"
-                                                                    id="ci"
-                                                                    value="<?php echo set_value('ci', $course->ci); ?>">
-                                                                <span
-                                                                    class="text-danger"><?php echo form_error('ci'); ?></span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group">
-                                                                <label for="suborder">Sub Order</label>
-                                                                <input type="text" class="form-control" name="suborder"
-                                                                    id="suborder"
-                                                                    value="<?php echo set_value('suborder', $course->suborder); ?>">
-                                                                <span
-                                                                    class="text-danger"><?php echo form_error('suborder'); ?></span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group">
-                                                                <label for="reexamyear">Re Exam Year</label>
-                                                                <input type="date" class="form-control"
-                                                                    name="reexamyear" id="reexamyear"
-                                                                    value="<?php echo set_value('reexamyear', $course->reexamyear); ?>">
-                                                                <span
-                                                                    class="text-danger"><?php echo form_error('reexamyear'); ?></span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group">
-                                                                <label for="result_year">Result Year</label>
-                                                                <input type="date" class="form-control"
-                                                                    name="result_year" id="result_year"
-                                                                    value="<?php echo set_value('result_year', $course->result_year); ?>">
-                                                                <span
-                                                                    class="text-danger"><?php echo form_error('result_year'); ?></span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group">
-                                                                <label for="exam_period">Exam Period</label>
-                                                                <input type="text" class="form-control"
-                                                                    name="exam_period" id="exam_period"
-                                                                    value="<?php echo set_value('exam_period', $course->exam_period); ?>">
-                                                                <span
-                                                                    class="text-danger"><?php echo form_error('exam_period'); ?></span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group">
-                                                                <label for="gcno">Gc no</label>
-                                                                <input type="text" class="form-control" name="gcno"
-                                                                    id="gcno"
-                                                                    value="<?php echo set_value('gcno', $course->gcno); ?>">
-                                                                <span
-                                                                    class="text-danger"><?php echo form_error('gcno'); ?></span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group">
-                                                                <label for="barcode">Barcode</label>
-                                                                <input type="text" class="form-control" name="barcode"
-                                                                    id="barcode"
-                                                                    value="<?php echo set_value('barcode', $course->barcode); ?>">
-                                                                <span
-                                                                    class="text-danger"><?php echo form_error('barcode'); ?></span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group">
-                                                                <label for="torder">Torder</label>
-                                                                <input type="text" class="form-control" name="torder"
-                                                                    id="torder"
-                                                                    value="<?php echo set_value('torder', $course->torder); ?>">
-                                                                <span
-                                                                    class="text-danger"><?php echo form_error('torder'); ?></span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group">
-                                                                <label for="texam_period">TExam Period</label>
-                                                                <input type="text" class="form-control"
-                                                                    name="texam_period" id="texam_period"
-                                                                    value="<?php echo set_value('texam_period', $course->texam_period); ?>">
-                                                                <span
-                                                                    class="text-danger"><?php echo form_error('texam_period'); ?></span>
-                                                            </div>
-                                                        </div>
+                                        <div class="modal fade" id="editMarksModal<?= $course->id; ?>" tabindex="-1"
+                                            role="dialog" aria-labelledby="editMarksModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg" role="document">
+                                                <div class="modal-content tx-14">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="editMarksModalLabel">Edit Course Marks</h5>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
                                                     </div>
-                                                    <button type="submit" class="btn btn-primary" name="Update"
-                                                        id="Update">Update</button>
-                                                  
-                                                </form>
+                                                    <div class="modal-body">
+                                                        <div id="messageContainer"></div>
+                                                        <!-- Form to edit course marks -->
+                                                    
+                                                    <form  id="update-form" method="post" action="<?php echo site_url('admin/edit_marks/' . $course->id . '/' .  $students->id); ?>" class="form-horizontal">
+                                                            <div class="row">
+                                                                <div class="form-group">
+                                                                    <input type="hidden" class="form-control" name="usn"
+                                                                        id="usn"
+                                                                        value="<?php echo set_value('usn', $students->usn); ?>">
+                                                                    <span
+                                                                        class="text-danger"><?php echo form_error('usn'); ?></span>
+                                                                </div>
+                                                                <div class="col-md-6">
+    <div class="form-group">
+        <label for="course_code">Course Code</label>
+        <input type="text" class="form-control" name="course_code" id="course_code"
+            value="<?php echo set_value('course_code', $course->course_code); ?>" readonly>
+        <span class="text-danger"><?php echo form_error('course_code'); ?></span>
+    </div>
+</div>
+
+<div class="col-md-6">
+    <div class="form-group">
+        <label for="course_name">Course Name</label>
+        <input type="text" class="form-control" name="course_name" id="course_name"
+            value="<?php echo set_value('course_name', $course->course_name); ?>" readonly>
+        <span class="text-danger"><?php echo form_error('course_name'); ?></span>
+    </div>
+</div>
+
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label for="cie">CIE</label>
+                                                                        <!-- <input type="number" class="form-control" id="cie" name="cie"> -->
+                                                                        <input type="text" class="form-control" name="cie"
+                                                                            id="cie"
+                                                                            value="<?php echo set_value('cie', $course->cie); ?>">
+                                                                        <span
+                                                                            class="text-danger"><?php echo form_error('cie'); ?></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label for="see">SEE</label>
+                                                                        <input type="text" class="form-control" name="see"
+                                                                            id="see"
+                                                                            value="<?php echo set_value('see', $course->see); ?>">
+                                                                        <span
+                                                                            class="text-danger"><?php echo form_error('see'); ?></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label for="cie_see">CIE_SEE</label>
+                                                                        <input type="text" class="form-control" name="cie_see"
+                                                                            id="cie_see"
+                                                                            value="<?php echo set_value('cie_see', $course->cie_see); ?>">
+                                                                        <span
+                                                                            class="text-danger"><?php echo form_error('cie_see'); ?></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label for="grade">Grade</label>
+                                                                        <input type="text" class="form-control" name="grade"
+                                                                            id="grade"
+                                                                            value="<?php echo set_value('grade', $course->grade); ?>">
+                                                                        <span
+                                                                            class="text-danger"><?php echo form_error('grade'); ?></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label for="sgpa">Sgpa</label>
+                                                                        <input type="text" class="form-control" name="sgpa"
+                                                                            id="sgpa"
+                                                                            value="<?php echo set_value('sgpa', $course->sgpa); ?>">
+                                                                        <span
+                                                                            class="text-danger"><?php echo form_error('sgpa'); ?></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label for="cgpa">cgpa</label>
+                                                                        <input type="text" class="form-control" name="cgpa"
+                                                                            id="cgpa"
+                                                                            value="<?php echo set_value('cgpa', $course->cgpa); ?>">
+                                                                        <span
+                                                                            class="text-danger"><?php echo form_error('cgpa'); ?></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label for="semester">Semester</label>
+                                                                        <input type="text" class="form-control" name="semester"
+                                                                            id="semester"
+                                                                            value="<?php echo set_value('sgpa', $course->semester); ?>">
+                                                                        <span
+                                                                            class="text-danger"><?php echo form_error('semester'); ?></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label for="grade_points">Grade Points</label>
+                                                                        <input type="text" class="form-control"
+                                                                            name="grade_points" id="grade_points"
+                                                                            value="<?php echo set_value('grade_points', $course->grade_points); ?>">
+                                                                        <span
+                                                                            class="text-danger"><?php echo form_error('grade_points'); ?></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label for="credits_earned">Credits Earned</label>
+                                                                        <input type="text" class="form-control"
+                                                                            name="credits_earned" id="credits_earned"
+                                                                            value="<?php echo set_value('credits_earned', $course->credits_earned); ?>">
+                                                                        <span
+                                                                            class="text-danger"><?php echo form_error('credits_earned'); ?></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label for="credits_actual">Credits Actual</label>
+                                                                        <input type="text" class="form-control"
+                                                                            name="credits_actual" id="credits_actual"
+                                                                            value="<?php echo set_value('credits_actual', $course->credits_actual); ?>">
+                                                                        <span
+                                                                            class="text-danger"><?php echo form_error('credits_actual'); ?></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label for="ci">CI</label>
+                                                                        <input type="text" class="form-control" name="ci"
+                                                                            id="ci"
+                                                                            value="<?php echo set_value('ci', $course->ci); ?>">
+                                                                        <span
+                                                                            class="text-danger"><?php echo form_error('ci'); ?></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label for="suborder">Sub Order</label>
+                                                                        <input type="text" class="form-control" name="suborder"
+                                                                            id="suborder"
+                                                                            value="<?php echo set_value('suborder', $course->suborder); ?>">
+                                                                        <span
+                                                                            class="text-danger"><?php echo form_error('suborder'); ?></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label for="reexamyear">Re Exam Year</label>
+                                                                        <input type="date" class="form-control"
+                                                                            name="reexamyear" id="reexamyear"
+                                                                            value="<?php echo set_value('reexamyear', $course->reexamyear); ?>">
+                                                                        <span
+                                                                            class="text-danger"><?php echo form_error('reexamyear'); ?></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label for="result_year">Result Year</label>
+                                                                        <input type="date" class="form-control"
+                                                                            name="result_year" id="result_year"
+                                                                            value="<?php echo set_value('result_year', $course->result_year); ?>">
+                                                                        <span
+                                                                            class="text-danger"><?php echo form_error('result_year'); ?></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label for="exam_period">Exam Period</label>
+                                                                        <input type="text" class="form-control"
+                                                                            name="exam_period" id="exam_period"
+                                                                            value="<?php echo set_value('exam_period', $course->exam_period); ?>">
+                                                                        <span
+                                                                            class="text-danger"><?php echo form_error('exam_period'); ?></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label for="gcno">Gc no</label>
+                                                                        <input type="text" class="form-control" name="gcno"
+                                                                            id="gcno"
+                                                                            value="<?php echo set_value('gcno', $course->gcno); ?>">
+                                                                        <span
+                                                                            class="text-danger"><?php echo form_error('gcno'); ?></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label for="barcode">Barcode</label>
+                                                                        <input type="text" class="form-control" name="barcode"
+                                                                            id="barcode"
+                                                                            value="<?php echo set_value('barcode', $course->barcode); ?>">
+                                                                        <span
+                                                                            class="text-danger"><?php echo form_error('barcode'); ?></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label for="torder">Torder</label>
+                                                                        <input type="text" class="form-control" name="torder"
+                                                                            id="torder"
+                                                                            value="<?php echo set_value('torder', $course->torder); ?>">
+                                                                        <span
+                                                                            class="text-danger"><?php echo form_error('torder'); ?></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label for="texam_period">TExam Period</label>
+                                                                        <input type="text" class="form-control"
+                                                                            name="texam_period" id="texam_period"
+                                                                            value="<?php echo set_value('texam_period', $course->texam_period); ?>">
+                                                                        <span
+                                                                            class="text-danger"><?php echo form_error('texam_period'); ?></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <button type="submit" class="btn btn-primary" name="Update"
+                                                                id="Update">Update</button>
+                                                        
+                                                        </form>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
                     </div>
                     <?php endforeach; ?>
                     <?php else: ?>
@@ -516,10 +514,6 @@ $(document).ready(function() {
 </script>
 
 
-
-
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {
     let usn = "<?= $students->usn; ?>"; // Get USN from PHP variable
@@ -637,5 +631,40 @@ $(document).ready(function() {
         var action = button.data('action');
         $('#deleteForm').attr('action', action);
     });
+});
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    let form = document.getElementById("update-form"); // Form ID
+    let inputs = form.querySelectorAll("input, select"); // All form inputs
+    let updateButton = document.getElementById("update-button"); // Update button
+
+    // Store the initial values of form fields
+    let initialValues = {};
+    inputs.forEach(input => {
+        initialValues[input.name] = input.value;
+    });
+
+    // Function to check if any value has changed
+    function checkChanges() {   
+        let isChanged = false;
+        inputs.forEach(input => {
+            if (input.value !== initialValues[input.name]) {
+                isChanged = true;
+            }
+        });
+
+        updateButton.disabled = !isChanged; // Enable if changed, disable if same
+    }
+
+    // Add event listener to each input field
+    inputs.forEach(input => {
+        input.addEventListener("input", checkChanges);
+    });
+
+    // Initially disable the button
+    updateButton.disabled = true;
 });
 </script>

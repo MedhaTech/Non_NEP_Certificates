@@ -344,23 +344,6 @@ public function getAllCourses() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   public function get_user_by_email($email) {
         return $this->db->get_where('users', ['email' => $email])->row();
     }
@@ -393,10 +376,27 @@ public function invalidate_reset_token($token) {
 }
 
 public function update_marks($course_id, $data) {
-  $this->db->where('id', $course_id);
-  return $this->db->update('students_marks', $data);
+    // Fetch existing data
+    $this->db->where('id', $course_id);
+    $query = $this->db->get('students_marks');
+    $existing_data = $query->row_array();
+
+    // Check if the data is different
+    if ($existing_data && $existing_data === $data) {
+        return 'no_change'; // No data change
+    } else {
+        // Update the record
+        $this->db->where('id', $course_id);
+        $this->db->update('students_marks', $data);
+        
+        if ($this->db->affected_rows() > 0) {
+            return 'updated'; // Data updated successfully
+        } else {
+            return 'failed'; // No rows affected
+        }
+    }
 }
-// ... existing code ...
+
 
 
 

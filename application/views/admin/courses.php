@@ -81,7 +81,8 @@
             // Check if it's the first load or after a filter
             if (isset($selected_programme) || isset($selected_branch) || isset($selected_semester)) {
                 // If it's after applying a filter and no data is found, show the 'no data' image
-                echo "<div class='text-center'><img src='" . base_url() . "assets/images/no_data.jpg' class='nodata'></div>";
+                echo "<div class='text-center'><img src='" . base_url() . "assets/images/no_data.jpg' class='nodata'> <br> <p> No Data Found</div>
+                                                                                                                            ";
             } else {
                 // If it's the first load, do not show the image, display a custom message instead
                 echo "<div class='text-center'>No courses available at the moment. Please apply a filter to view courses.</div>";

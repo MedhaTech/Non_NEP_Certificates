@@ -924,8 +924,7 @@ class Admin extends CI_Controller
             // var_dump($data['studentmarks']); die();
 
             // Get POST data from the form
-            $course_code = $this->input->post('course_code');  // Assuming course_code is being passed
-            $course_name = $this->input->post('course_name');
+          
             $cie = $this->input->post('cie');
             $see = $this->input->post('see');
             $cie_see = $this->input->post('cie_see');
@@ -955,8 +954,7 @@ class Admin extends CI_Controller
             if ($courseExists) {
                 // Prepare the update data for students_marks table
                 $updateDetails = array(
-                    'course_code' => $course_code,
-                    'course_name' => $course_name,
+                  
                     'cie' => $cie,
                     'see' => $see,
                     'cie_see' => $cie_see,
@@ -1017,160 +1015,172 @@ class Admin extends CI_Controller
             redirect('admin');
         }
     }
+
+    
+    
+
+
 public function generate_student_pdf($id, $semester)
-    {
-        error_reporting(E_ALL);
-        ini_set('display_errors', 1);
-        if ($this->session->userdata('logged_in')) {
-            $student = $this->admin_model->getDetails('students', $id)->row();
+{
+    // Disable error reporting in production
+    error_reporting(0);
+    ini_set('display_errors', 0);
 
-            if (!$student) {
-                show_404();
-            }
-
-            if (ob_get_contents()) ob_end_clean();
-
-            require_once APPPATH . 'libraries/ReportPDF.php';
-            require_once APPPATH . '../vendor/autoload.php';
-            $pdf = new ReportPDF('L', 'mm', 'A4');
-            $pdf->AddPage();
-
-            // Background and student details
-            $pdf->Image(base_url('assets/images/certificate_bg.png'), 0, 0, 297, 210);
-
-            $pdf->SetFont('Times', 'B', 10);
-            $pdf->SetTextColor(0, 0, 0);
-
-            $pdf->SetXY(66, 72);
-            $pdf->Cell(50, 10, $student->usn, 0, 1);
-
-            $pdf->SetXY(61, 56);
-            $pdf->Cell(50, 10, $student->student_name, 0, 1);
-
-            $pdf->SetXY(60, 61.3);
-            $pdf->Cell(50, 10, $student->mother_name, 0, 1);
-
-            $pdf->SetXY(60, 66.5);
-            $pdf->Cell(50, 10, $student->father_name, 0, 1);
-
-            $pdf->SetXY(201, 61.2);
-            $pdf->Cell(50, 10, $semester, 0, 1);
-
-            // Get semester data
-            $semester_data = $this->admin_model->getStudentMarksBySemester($student->usn, $semester);
-
-            // Define fixed parameters
-            $table_start_y = 85;
-            $max_table_height = 64;
-            $header_height = 8;
-
-            // Calculate row height based on number of rows
-            $num_rows = count($semester_data);
-            $available_height = $max_table_height - $header_height;
-            $row_height = ($available_height - 5) / max($num_rows, 1); // Adjust height
-
-
-            // Table Headers
-            $pdf->SetFont('Arial', 'B', 11);
-            $pdf->SetTextColor(231, 119, 22);
-            $pdf->SetFillColor(255, 255, 255);
-            $pdf->SetXY(30, $table_start_y);
-            $pdf->Cell(15, $header_height, 'Sl.No.', 1, 0, 'C', true);
-            $pdf->Cell(40, $header_height, 'Course Code', 1, 0, 'C', true);
-            $pdf->Cell(80, $header_height, 'Course Title', 1, 0, 'C', true);
-            $pdf->Cell(25, $header_height, 'Credits', 1, 0, 'C', true);
-            $pdf->Cell(40, $header_height, 'Grade Awarded', 1, 0, 'C', true);
-            $pdf->Cell(40, $header_height, 'Grade Points', 1, 1, 'C', true);
-
-            // Add data rows and calculate totals
-            if (!empty($semester_data)) {
-                $pdf->SetFont('Arial', '', 10);
-                $pdf->SetTextColor(0, 0, 0);
-                $sno = 1;
-                $y = $table_start_y + $header_height;
-
-                $total_credits_actual = 0;
-                $total_credits_earned = 0;
-
-                foreach ($semester_data as $course) {
-                    $pdf->SetXY(30, $y);
-                    $pdf->Cell(15, $row_height, $sno++, 1, 0, 'C', true);
-                    $pdf->Cell(40, $row_height, $course->course_code, 1, 0, 'C', true);
-                    $pdf->Cell(80, $row_height, $course->course_name, 1, 0, 'L', true);
-                    $pdf->Cell(25, $row_height, $course->credits_earned, 1, 0, 'C', true);
-                    $pdf->Cell(40, $row_height, $course->grade, 1, 0, 'C', true);
-                    $pdf->Cell(40, $row_height, $course->grade_points, 1, 1, 'C', true);
-                    $y += $row_height;
-
-                    // Add to totals
-                    $total_credits_actual += $course->credits_actual;
-                    $total_credits_earned += $course->credits_earned;
-                    if (!empty($course->barcode)) {
-                        $barcode_number = $course->barcode;
-                    }
-                }
-
-                // Add SGPA row at the bottom of the table
-                $pdf->SetXY(155, 176);
-                $pdf->Cell(50, 10, $semester_data[0]->sgpa, 0, 1);
-
-
-                $pdf->SetXY(155, 164);
-                $pdf->Cell(50, 10, $total_credits_actual, 0, 1);
-
-
-                $pdf->SetXY(155, 170);
-                $pdf->Cell(50, 10, $total_credits_earned, 0, 1);
-
-                $pdf->SetAutoPageBreak(false); // Disable automatic page breaks
-                $pdf->SetMargins(0, 0, 0); // Remove margins
-
-                // Force Y position to the bottom while ensuring visibility
-                $bottom_y = min(188, $pdf->GetPageHeight() - 15);
-                $pdf->SetXY(155, $bottom_y);
-                $pdf->Cell(50, 10, $semester_data[0]->cgpa);
-
-
-                $bottom_y = min(188, $pdf->GetPageHeight() - 15);
-                $pdf->SetXY(78, $bottom_y);
-                $pdf->Cell(50, 10, date('d-M-Y'));
-
-
-
-
-                $bottom_y = min(182, $pdf->GetPageHeight() - 15);
-                $pdf->SetXY(155, $bottom_y);
-                $pdf->Cell(50, 10, $total_credits_earned);
-
-                // If needed, adjust background image placement
-                $pdf->SetFont('Times', 'B', 10);
-                $pdf->SetXY(201, 67.2);
-                $pdf->Cell(50, 10, date('F Y', strtotime($course->result_year)), 0, 1);
-
-
-
-
-
-                // Generate Barcode Below CGPA
-                if (!empty($barcode_number)) {
-                    $generator = new \Picqer\Barcode\BarcodeGeneratorPNG();
-                    $barcode = $generator->getBarcode($barcode_number, $generator::TYPE_CODE_128);
-
-                    // Save barcode image temporarily
-                    $barcodePath = APPPATH . 'temp/barcode_' . $barcode_number . '.png';
-                    file_put_contents($barcodePath, $barcode);
-
-                    // Add barcode image **below CGPA**
-                    $pdf->Image($barcodePath, 19, 174, 50, 10); // Adjusted position
-                }
-            }
-
-            // $pdf->Output();
-            $pdf->Output('D', $semester . ' semester Grade Card' . '.pdf');
-        } else {
-            redirect('admin/timeout');
-        }
+    // Clear all output buffers to avoid "headers already sent" issues
+    while (ob_get_level()) {
+        ob_end_clean();
     }
+
+    if ($this->session->userdata('logged_in')) {
+        $student = $this->admin_model->getDetails('students', $id)->row();
+
+        if (!$student) {
+            show_404();
+            exit;
+        }
+
+        require_once APPPATH . 'libraries/ReportPDF.php';
+        require_once APPPATH . '../vendor/autoload.php';
+
+        $pdf = new ReportPDF('L', 'mm', 'A4');
+        $pdf->AddPage();
+
+        // Background and student details
+        $pdf->Image(base_url('assets/images/certificate_bg.png'), 0, 0, 297, 210);
+
+        $pdf->SetFont('Times', 'B', 10);
+        $pdf->SetTextColor(0, 0, 0);
+
+        $pdf->SetXY(66, 72);
+        $pdf->Cell(50, 10, $student->usn, 0, 1);
+
+        $pdf->SetXY(61, 56);
+        $pdf->Cell(50, 10, $student->student_name, 0, 1);
+
+        $pdf->SetXY(60, 61.3);
+        $pdf->Cell(50, 10, $student->mother_name ?? '-', 0, 1);
+
+        $pdf->SetXY(60, 66.5);
+        $pdf->Cell(50, 10, $student->father_name ?? '-', 0, 1);
+
+        $pdf->SetXY(201, 61.2);
+        $pdf->Cell(50, 10, $semester, 0, 1);
+
+        // Get semester data
+        $semester_data = $this->admin_model->getStudentMarksBySemester($student->usn, $semester);
+
+        // Define fixed parameters
+        $table_start_y = 85;
+        $max_table_height = 64;
+        $header_height = 8;
+
+        // Calculate row height based on number of rows
+        $num_rows = count($semester_data);
+        $available_height = $max_table_height - $header_height;
+        $row_height = ($available_height - 5) / max($num_rows, 1);
+
+        // Table Headers
+        $pdf->SetFont('Arial', 'B', 11);
+        $pdf->SetTextColor(231, 119, 22);
+        $pdf->SetFillColor(255, 255, 255);
+        $pdf->SetXY(30, $table_start_y);
+        $pdf->Cell(15, $header_height, 'Sl.No.', 1, 0, 'C', true);
+        $pdf->Cell(40, $header_height, 'Course Code', 1, 0, 'C', true);
+        $pdf->Cell(80, $header_height, 'Course Title', 1, 0, 'C', true);
+        $pdf->Cell(25, $header_height, 'Credits', 1, 0, 'C', true);
+        $pdf->Cell(40, $header_height, 'Grade Awarded', 1, 0, 'C', true);
+        $pdf->Cell(40, $header_height, 'Grade Points', 1, 1, 'C', true);
+
+        // Add data rows and calculate totals
+        if (!empty($semester_data)) {
+            $pdf->SetFont('Arial', '', 10);
+            $pdf->SetTextColor(0, 0, 0);
+            $sno = 1;
+            $y = $table_start_y + $header_height;
+
+            $total_credits_actual = 0;
+            $total_credits_earned = 0;
+            $barcode_number = null;
+
+            foreach ($semester_data as $course) {
+                $pdf->SetXY(30, $y);
+                $pdf->Cell(15, $row_height, $sno++, 1, 0, 'C', true);
+                $pdf->Cell(40, $row_height, $course->course_code, 1, 0, 'C', true);
+                $pdf->Cell(80, $row_height, $course->course_name, 1, 0, 'L', true);
+                $pdf->Cell(25, $row_height, $course->credits_earned ?? '-', 1, 0, 'C', true);
+                $pdf->Cell(40, $row_height, $course->grade ?? '-', 1, 0, 'C', true);
+                $pdf->Cell(40, $row_height, $course->grade_points ?? '-', 1, 1, 'C', true);
+                $y += $row_height;
+
+                // Add to totals
+                $total_credits_actual += $course->credits_actual ?? 0;
+                $total_credits_earned += $course->credits_earned ?? 0;
+
+                if (!empty($course->barcode)) {
+                    $barcode_number = $course->barcode;
+                }
+            }
+
+            // Add SGPA row at the bottom of the table
+            $pdf->SetXY(155, 176);
+            $pdf->Cell(50, 10, $semester_data[0]->sgpa ?? '-', 0, 1);
+
+            $pdf->SetXY(155, 164);
+            $pdf->Cell(50, 10, $total_credits_actual, 0, 1);
+
+            $pdf->SetXY(155, 170);
+            $pdf->Cell(50, 10, $total_credits_earned, 0, 1);
+
+            $pdf->SetAutoPageBreak(false);
+            $pdf->SetMargins(0, 0, 0);
+
+
+            $bottom_y = min(182, $pdf->GetPageHeight() - 15);
+            $pdf->SetXY(155, $bottom_y);
+            $pdf->Cell(50, 10, $total_credits_earned);
+            // CGPA and Date
+            $pdf->SetXY(155, min(188, $pdf->GetPageHeight() - 15));
+            $pdf->Cell(50, 10, $semester_data[0]->cgpa ?? '-', 0, 1);
+
+            $pdf->SetXY(78, min(188, $pdf->GetPageHeight() - 15));
+            $pdf->Cell(50, 10, date('d-M-Y'));
+
+            // Handle result year safely
+            $result_year = $course->result_year ?? '1970-01-01';
+            $pdf->SetFont('Times', 'B', 10);
+            $pdf->SetXY(201, 67.2);
+            $pdf->Cell(50, 10, date('F Y', strtotime($result_year)), 0, 1);
+
+            // Generate Barcode
+            if (!empty($barcode_number)) {
+                $generator = new \Picqer\Barcode\BarcodeGeneratorPNG();
+                $barcode = $generator->getBarcode($barcode_number, $generator::TYPE_CODE_128);
+
+                $barcodePath = APPPATH . 'temp/barcode_' . $barcode_number . '.png';
+                file_put_contents($barcodePath, $barcode);
+
+                // Add barcode image
+                $pdf->Image($barcodePath, 19, 174, 50, 10);
+
+                // Delete temp barcode file
+                unlink($barcodePath);
+            }
+        }
+
+        // Clear output buffer again before sending PDF
+        while (ob_get_level()) {
+            ob_end_clean();
+        }
+        
+        $pdf->Output('D', $semester . ' semester Grade Card' . '.pdf');
+        // $pdf->Output();
+     
+    } else {
+        redirect('admin/timeout');
+       
+    }
+}
+
     public function generate_transcript_pdf($id)
     {
         if ($this->session->userdata('logged_in')) {
@@ -1425,7 +1435,7 @@ public function generate_student_pdf($id, $semester)
 
 
     // Email configuration
-    $this->email->from('your-email@domain.com', 'BMSCE CERTIFY 2008'); 
+    $this->email->from($email, 'BMSCE CERTIFY 2008'); 
     $this->email->to($email);
     $this->email->subject($subject);
     $this->email->message($message);
@@ -1532,28 +1542,18 @@ public function update_password() {
 
 
 
-
-public function edit_marks($courseid , $stuid) {
-    // Check if the user is logged in
-    
-
+public function edit_marks($courseid, $stuid) {
     if ($this->session->userdata('logged_in')) {
-        // Get POST data from the form
         $data = $this->input->post();
-        
-        // Validate the input data
+
+        // Validate input
         $this->form_validation->set_rules('course_code', 'Course Code', 'required');
-        // Add other validation rules as necessary
 
         if ($this->form_validation->run() == FALSE) {
-            // If validation fails, redirect back with error messages
             $this->session->set_flashdata('error', validation_errors());
             redirect($_SERVER['HTTP_REFERER']);
         } else {
-            // Prepare the data for updating
             $updateDetails = array(
-                
-                
                 'cie' => $data['cie'],
                 'see' => $data['see'],
                 'cie_see' => $data['cie_see'],
@@ -1575,15 +1575,18 @@ public function edit_marks($courseid , $stuid) {
                 'texam_period' => $data['texam_period'],
             );
 
-            // Call model to update the course details
+            // Call model to update marks
             $result = $this->admin_model->update_marks($courseid, $updateDetails);
 
-            // Flash message for successful or failed update
-            if ($result) {
-                $this->session->set_flashdata('message', 'Marks updated successfully!');
+            // Flash messages based on result
+            if ($result === 'no_change') {
+                $this->session->set_flashdata('message', 'No changes were made.');
+                $this->session->set_flashdata('status', 'alert-warning');
+            } elseif ($result === 'updated') {
+                $this->session->set_flashdata('message', 'Data updated successfully!');
                 $this->session->set_flashdata('status', 'alert-success');
             } else {
-                $this->session->set_flashdata('message', 'Something went wrong, please try again!');
+                $this->session->set_flashdata('message', 'No changes were made.');
                 $this->session->set_flashdata('status', 'alert-danger');
             }
 
@@ -1594,6 +1597,7 @@ public function edit_marks($courseid , $stuid) {
         redirect('admin');
     }
 }
+
 // ... existing code ...
 
 
@@ -1618,7 +1622,12 @@ public function deletemarks($id  , $stuid) {
 }
 
 
-
+public function () {
+   
+    $CI->load->helper('url'); // Load helper here
+    echo $CI->load->view('errors/html/error_404', [], TRUE);
+    exit;
+}
 
 
 
