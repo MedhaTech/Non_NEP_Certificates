@@ -1017,21 +1017,24 @@ class Admin extends CI_Controller
             redirect('admin');
         }
     }
+
 public function generate_student_pdf($id, $semester)
 {
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
+    // Disable error reporting in production
+    error_reporting(0);
+    ini_set('display_errors', 0);
+
+    // Clear all output buffers to avoid "headers already sent" issues
+    while (ob_get_level()) {
+        ob_end_clean();
+    }
 
     if ($this->session->userdata('logged_in')) {
         $student = $this->admin_model->getDetails('students', $id)->row();
 
         if (!$student) {
             show_404();
-        }
-
-        // Clear any previous output to prevent header issues
-        if (ob_get_length()) {
-            ob_end_clean();
+            exit;
         }
 
         require_once APPPATH . 'libraries/ReportPDF.php';
@@ -1129,6 +1132,10 @@ public function generate_student_pdf($id, $semester)
             $pdf->SetAutoPageBreak(false);
             $pdf->SetMargins(0, 0, 0);
 
+
+            $bottom_y = min(182, $pdf->GetPageHeight() - 15);
+            $pdf->SetXY(155, $bottom_y);
+            $pdf->Cell(50, 10, $total_credits_earned);
             // CGPA and Date
             $pdf->SetXY(155, min(188, $pdf->GetPageHeight() - 15));
             $pdf->Cell(50, 10, $semester_data[0]->cgpa ?? '-', 0, 1);
@@ -1158,15 +1165,19 @@ public function generate_student_pdf($id, $semester)
             }
         }
 
-        // Send PDF to browser
-        ob_clean(); // Clean output buffer again to prevent errors
+        // Clear output buffer again before sending PDF
+        while (ob_get_level()) {
+            ob_end_clean();
+        }
+        
         $pdf->Output('D', $semester . ' semester Grade Card' . '.pdf');
-        exit(); // Ensure script stops after PDF is generated
+        // $pdf->Output();
+     
     } else {
         redirect('admin/timeout');
+       
     }
 }
-
     public function generate_transcript_pdf($id)
     {
         if ($this->session->userdata('logged_in')) {
