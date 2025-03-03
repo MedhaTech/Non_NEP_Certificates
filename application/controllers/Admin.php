@@ -1425,7 +1425,7 @@ public function generate_student_pdf($id, $semester)
 
 
     // Email configuration
-    $this->email->from('your-email@domain.com', 'BMSCE CERTIFY 2008'); 
+    $this->email->from('roreplayreplay@gmail.com', 'BMSCE CERTIFY 2008'); 
     $this->email->to($email);
     $this->email->subject($subject);
     $this->email->message($message);
