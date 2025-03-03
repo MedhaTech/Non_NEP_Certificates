@@ -1433,9 +1433,7 @@ public function generate_student_pdf($id, $semester)
     if ($this->email->send()) {
         $this->session->set_flashdata('message', 'Password reset link sent! Check your email.');
     } else {
-	     $this->email->print_debugger()
-	    
-             $this->session->set_flashdata('message', 'Failed to send email. Check email configuration.');
+	$this->session->set_flashdata('message', 'Failed to send email. Check email configuration.');
     }
 
     redirect('admin/');
