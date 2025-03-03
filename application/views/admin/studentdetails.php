@@ -225,7 +225,7 @@
                                                                 <label for="course_code">Course Code</label>
                                                                 <input type="text" class="form-control"
                                                                     name="course_code" id="course_code"
-                                                                    value="<?php echo set_value('course_code', $course->course_code); ?>">
+                                                                    value="<?php echo set_value('course_code', $course->course_code); ?>" readonly>
                                                                 <span
                                                                     class="text-danger"><?php echo form_error('course_code'); ?></span>
                                                             </div>
@@ -235,7 +235,7 @@
                                                                 <label for="course_name">Course Name</label>
                                                                 <input type="text" class="form-control"
                                                                     name="course_name" id="course_name"
-                                                                    value="<?php echo set_value('course_name', $course->course_name); ?>">
+                                                                    value="<?php echo set_value('course_name', $course->course_name); ?>" readonly>
                                                                 <span
                                                                     class="text-danger"><?php echo form_error('course_name'); ?></span>
                                                             </div>
