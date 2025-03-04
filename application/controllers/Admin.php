@@ -1622,13 +1622,6 @@ public function deletemarks($id  , $stuid) {
 }
 
 
-public function () {
-   
-    $CI->load->helper('url'); // Load helper here
-    echo $CI->load->view('errors/html/error_404', [], TRUE);
-    exit;
-}
-
 
 
     
