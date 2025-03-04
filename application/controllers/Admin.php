@@ -924,8 +924,7 @@ class Admin extends CI_Controller
             // var_dump($data['studentmarks']); die();
 
             // Get POST data from the form
-            $course_code = $this->input->post('course_code');  // Assuming course_code is being passed
-            $course_name = $this->input->post('course_name');
+          
             $cie = $this->input->post('cie');
             $see = $this->input->post('see');
             $cie_see = $this->input->post('cie_see');
@@ -955,8 +954,7 @@ class Admin extends CI_Controller
             if ($courseExists) {
                 // Prepare the update data for students_marks table
                 $updateDetails = array(
-                    'course_code' => $course_code,
-                    'course_name' => $course_name,
+                  
                     'cie' => $cie,
                     'see' => $see,
                     'cie_see' => $cie_see,
@@ -1178,6 +1176,7 @@ public function generate_student_pdf($id, $semester)
        
     }
 }
+
     public function generate_transcript_pdf($id)
     {
         if ($this->session->userdata('logged_in')) {
@@ -1432,7 +1431,9 @@ public function generate_student_pdf($id, $semester)
 
 
     // Email configuration
+
     $this->email->from('roreplayreplay@gmail.com', 'BMSCE CERTIFY 2008'); 
+
     $this->email->to($email);
     $this->email->subject($subject);
     $this->email->message($message);
@@ -1540,28 +1541,18 @@ public function update_password() {
 
 
 
-
-public function edit_marks($courseid , $stuid) {
-    // Check if the user is logged in
-    
-
+public function edit_marks($courseid, $stuid) {
     if ($this->session->userdata('logged_in')) {
-        // Get POST data from the form
         $data = $this->input->post();
-        
-        // Validate the input data
+
+        // Validate input
         $this->form_validation->set_rules('course_code', 'Course Code', 'required');
-        // Add other validation rules as necessary
 
         if ($this->form_validation->run() == FALSE) {
-            // If validation fails, redirect back with error messages
             $this->session->set_flashdata('error', validation_errors());
             redirect($_SERVER['HTTP_REFERER']);
         } else {
-            // Prepare the data for updating
             $updateDetails = array(
-                
-                
                 'cie' => $data['cie'],
                 'see' => $data['see'],
                 'cie_see' => $data['cie_see'],
@@ -1583,15 +1574,18 @@ public function edit_marks($courseid , $stuid) {
                 'texam_period' => $data['texam_period'],
             );
 
-            // Call model to update the course details
+            // Call model to update marks
             $result = $this->admin_model->update_marks($courseid, $updateDetails);
 
-            // Flash message for successful or failed update
-            if ($result) {
-                $this->session->set_flashdata('message', 'Marks updated successfully!');
+            // Flash messages based on result
+            if ($result === 'no_change') {
+                $this->session->set_flashdata('message', 'No changes were made.');
+                $this->session->set_flashdata('status', 'alert-warning');
+            } elseif ($result === 'updated') {
+                $this->session->set_flashdata('message', 'Data updated successfully!');
                 $this->session->set_flashdata('status', 'alert-success');
             } else {
-                $this->session->set_flashdata('message', 'Something went wrong, please try again!');
+                $this->session->set_flashdata('message', 'No changes were made.');
                 $this->session->set_flashdata('status', 'alert-danger');
             }
 
@@ -1602,6 +1596,7 @@ public function edit_marks($courseid , $stuid) {
         redirect('admin');
     }
 }
+
 // ... existing code ...
 
 
@@ -1626,7 +1621,12 @@ public function deletemarks($id  , $stuid) {
 }
 
 
-
+public function () {
+   
+    $CI->load->helper('url'); // Load helper here
+    echo $CI->load->view('errors/html/error_404', [], TRUE);
+    exit;
+}
 
 
 
