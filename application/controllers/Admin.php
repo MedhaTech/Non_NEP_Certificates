@@ -1016,6 +1016,7 @@ class Admin extends CI_Controller
         }
     }
 
+
 public function generate_student_pdf($id, $semester)
 {
     // Disable error reporting in production
