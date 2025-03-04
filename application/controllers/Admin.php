@@ -1016,9 +1016,6 @@ class Admin extends CI_Controller
         }
     }
 
-    
-    
-
 
 public function generate_student_pdf($id, $semester)
 {
@@ -1435,7 +1432,9 @@ public function generate_student_pdf($id, $semester)
 
 
     // Email configuration
-    $this->email->from($email, 'BMSCE CERTIFY 2008'); 
+
+    $this->email->from('roreplayreplay@gmail.com', 'BMSCE CERTIFY 2008'); 
+
     $this->email->to($email);
     $this->email->subject($subject);
     $this->email->message($message);
@@ -1443,7 +1442,8 @@ public function generate_student_pdf($id, $semester)
     if ($this->email->send()) {
         $this->session->set_flashdata('message', 'Password reset link sent! Check your email.');
     } else {
-        $this->session->set_flashdata('message', 'Failed to send email. Check email configuration.');
+       $error_message = $this->email->print_debugger(['headers', 'subject', 'body']);
+    $this->session->set_flashdata('message', 'Failed to send email. Debugging info: <br><pre>' . $error_message . '</pre>');
     }
 
     redirect('admin/');
