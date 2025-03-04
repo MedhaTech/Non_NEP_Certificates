@@ -1,7 +1,6 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-  
 $config['protocol']    = 'smtp';
 $config['smtp_host']   = 'ssl://smtp.gmail.com'; // or 'tls://smtp.gmail.com'
 $config['smtp_port']   = 465; // Use 587 if using TLS
