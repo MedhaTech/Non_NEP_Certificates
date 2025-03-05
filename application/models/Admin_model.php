@@ -58,6 +58,11 @@ class Admin_model extends CI_Model
     $this->db->where($fieldId, $id);
     return $this->db->get($tableName);
   }
+  function getDetailsbysinglefield($tableName, $usn)
+  {
+    $this->db->where('usn', $usn);
+    return $this->db->get($tableName);
+  }
 
 
   function getDetailsbyfield2($id1, $value1, $id2, $value2, $tableName)
@@ -201,7 +206,7 @@ public function getStudentMarksBySemester($usn, $semester)
     
     // Join students_marks (sm) table with courses (c) table on the appropriate field
     $this->db->from('students_marks sm');
-    $this->db->join('courses c', 'sm.id = c.id');  // Assuming 'course_id' in students_marks table
+    $this->db->join('courses c', 'sm.course_code = c.course_code');  // Assuming 'course_id' in students_marks table
     $this->db->where('sm.usn', $usn);
     $this->db->where('sm.semester', $semester);
     
@@ -408,11 +413,21 @@ public function get_course_marks($course_id)
 }
 
 
-public function deletemarks($id) {
-$this->db->where('id', $id);
-$this->db->delete('courses');
-return $this->db->affected_rows() > 0; // Return true if a row was deleted
+public function deletemarks($course_id, $student_id) {
+  $this->db->where('id', $course_id);
+  $this->db->delete('students_marks');
+  return $this->db->affected_rows() > 0; // Return true if a row was deleted
 }
+public function getCourseNameByCode($course_code) {
+  $this->db->select('course_name');
+  $this->db->from('courses'); // Assuming your course table is named 'courses'
+  $this->db->where('course_code', $course_code);
+  $query = $this->db->get();
 
+  if ($query->num_rows() > 0) {
+      return $query->row()->course_name; // Return the course name
+  }
+  return null; // Return null if no course found
+}
 
 }

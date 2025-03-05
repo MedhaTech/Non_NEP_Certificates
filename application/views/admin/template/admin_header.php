@@ -157,7 +157,22 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="<?= base_url('admin/backlogs') ?>">
-                                    <i class="mdi mdi-file-alert-outline mr-2"></i>Backlogs
+                                    <i class="mdi mdi-file-outline mr-2"></i>Backlogs
+                                </a>
+                            </li>
+                            <!-- <li class="nav-item">
+                                <a class="nav-link" href="<?= base_url('admin/backlogs') ?>">
+                                    <i class="mdi mdi-file-download-outline mr-2"></i> Grade card
+                                </a>
+                            </li> -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?= base_url('admin/transcript') ?>">
+                                    <i class="mdi mdi-file-download-outline mr-2"></i>Transcript
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?= base_url('admin/pdc') ?>">
+                                    <i class="mdi mdi-file-download-outline mr-2"></i>PDC
                                 </a>
                             </li>
 

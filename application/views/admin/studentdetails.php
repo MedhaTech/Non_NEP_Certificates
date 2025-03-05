@@ -107,25 +107,20 @@
                     <div class="card-tools d-flex">
                         <!-- Print button for this semester -->
                         <?php 
-
-                                $session = date("F Y", strtotime($course->result_year));
-
-                                    ;
-
-                                echo anchor('admin/generate_student_pdf/' . $students->id . '/' . $semester, 
-                                    '<span class="icon"><i class="fas fa-print"></i></span>', 
-                                    'class="btn btn-light btn-sm me-2 print-semester" 
-                                    data-usn="' . $students->usn . '" 
-                                    data-semester="' . $semester . '" 
-                                    data-session="' . $session . '"'); 
-                                ?>
-
-                                <!-- Existing collapse button -->
-                                <button class="btn btn-link text-white" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#semester-<?= $semester; ?>" aria-expanded="false"
-                                    aria-controls="semester-<?= $semester; ?>">
-                                    <i class="fas fa-chevron-down"></i>
-                                </button>
+                            $session = date("F Y", strtotime($course->result_year));
+                            echo anchor('admin/generate_student_pdf/' . $students->id . '/' . $semester, 
+                                '<span class="icon"><i class="fas fa-print"></i></span>', 
+                                'class="btn btn-light btn-sm me-2 print-semester" 
+                                data-usn="' . $students->usn . '" 
+                                data-semester="' . $semester . '" 
+                                data-session="' . $session . '"'); 
+                        ?>
+                        <!-- Existing collapse button -->
+                        <button class="btn btn-link text-white" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#semester-<?= $semester; ?>" aria-expanded="false"
+                            aria-controls="semester-<?= $semester; ?>">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
                     </div>
                 </div>
 
@@ -148,11 +143,11 @@
                             </thead>
                             <tbody>
 
-                                <?php if (!empty(${"semester_$semester"})): ?>
+                                <?php if (!empty($studentmarks[$semester])): ?>
                                 <?php $sno = 1; ?>
-                                <?php foreach (${"semester_$semester"} as $course): ?>
+                                <?php foreach ($studentmarks[$semester] as $course): ?>
                                 <tr>
-                                    <td><?=  $sno++?></td>
+                                    <td><?= $sno++ ?></td>
                                     <td><?= $course->course_code; ?></td>
                                     <td><?= $course->course_name; ?></td>
                                     <td><?= $course->credits_earned; ?></td>
@@ -162,41 +157,20 @@
                                     <td><?= $course->grade_points; ?></td>
                                     <td>
                                         <a href="javascript:void(0);" class="btn btn-warning btn-sm" data-toggle="modal"
-                                            data-target="#editMarksModal<?= $course->id; ?>">
+                                            data-target="#editMarksModal<?= $course->course_code; ?>">
                                             Edit
                                         </a>
                                         <!-- Delete Button (Triggers Modal) -->
-<button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" 
+                                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" 
     data-action="<?php echo site_url('admin/deletemarks/' . $course->id . '/' .  $students->id); ?>">
     Delete
 </button>
+                                        
 
-<!-- Delete Confirmation Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered animate__animated animate__zoomIn" role="document">
-        <div class="modal-content">
-            <div class="modal-header  text-white">
-                <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to delete this course?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <form id="deleteForm" method="post">
-                    <button type="submit" class="btn btn-danger">Yes, Delete</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 </form>
                                     </td>
                                 </tr>
-                                        <div class="modal fade" id="editMarksModal<?= $course->id; ?>" tabindex="-1"
+                                        <div class="modal fade" id="editMarksModal<?= $course->course_code; ?>" tabindex="-1"
                                             role="dialog" aria-labelledby="editMarksModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg" role="document">
                                                 <div class="modal-content tx-14">
@@ -221,22 +195,22 @@
                                                                         class="text-danger"><?php echo form_error('usn'); ?></span>
                                                                 </div>
                                                                 <div class="col-md-6">
-    <div class="form-group">
-        <label for="course_code">Course Code</label>
-        <input type="text" class="form-control" name="course_code" id="course_code"
-            value="<?php echo set_value('course_code', $course->course_code); ?>" readonly>
-        <span class="text-danger"><?php echo form_error('course_code'); ?></span>
-    </div>
-</div>
+                                                                    <div class="form-group">
+                                                                        <label for="course_code">Course Code</label>
+                                                                        <input type="text" class="form-control" name="course_code" id="course_code"
+                                                                            value="<?php echo set_value('course_code', $course->course_code); ?>" readonly>
+                                                                        <span class="text-danger"><?php echo form_error('course_code'); ?></span>
+                                                                    </div>
+                                                                </div>
 
-<div class="col-md-6">
-    <div class="form-group">
-        <label for="course_name">Course Name</label>
-        <input type="text" class="form-control" name="course_name" id="course_name"
-            value="<?php echo set_value('course_name', $course->course_name); ?>" readonly>
-        <span class="text-danger"><?php echo form_error('course_name'); ?></span>
-    </div>
-</div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label for="course_name">Course Name</label>
+                                                                        <input type="text" class="form-control" name="course_name" id="course_name"
+                                                                            value="<?php echo set_value('course_name', $course->course_name); ?>" readonly>
+                                                                        <span class="text-danger"><?php echo form_error('course_name'); ?></span>
+                                                                    </div>
+                                                                </div>
 
                                                                 <div class="col-md-3">
                                                                     <div class="form-group">
@@ -447,27 +421,55 @@
                     <?php endif; ?>
                     </tbody>
                     </table>
+                                    </td>
+                                </tr>
+                                
+                    </div>
                 </div>
             </div>
+            <?php endfor; ?>
         </div>
-        <?php endfor; ?>
+
+
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Details</th>
+                    <th>Downloaded At</th>
+                </tr>
+            </thead>
+            <tbody id="logs-table">
+                <tr>
+                    <td colspan="3" class="text-center">Loading...</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
 
-    <table class="table table-bordered mt-3">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Details</th>
-                <th>Downloaded At</th>
-            </tr>
-        </thead>
-        <tbody id="logs-table">
-            <tr>
-                <td colspan="3" class="text-center">Loading...</td>
-            </tr>
-        </tbody>
-    </table>
+   <!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered animate__animated animate__zoomIn" role="document">
+        <div class="modal-content">
+            <div class="modal-header  text-white">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this course?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <form id="deleteForm" method="post">
+                    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 </div>
 
 </div>
@@ -552,11 +554,6 @@ $(document).ready(function() {
 });
 </script>
 
-<!-- Edit Marks Modal -->
-
-
-</div>
-</div>
 
 <script>
 // function loadCourseData(course_code, course_name, credits_earned, cie, see, grade, gradePoints, usn) {
