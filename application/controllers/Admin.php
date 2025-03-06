@@ -1211,100 +1211,177 @@ public function generate_student_pdf($id, $semester)
     }
 }
 
-    public function generate_transcript_pdf($id)
-    {
-        if ($this->session->userdata('logged_in')) {
-            $student = $this->admin_model->getDetails('students', $id)->row();
+public function generate_transcript_pdf($id)
+{
+    if ($this->session->userdata('logged_in')) {
+        $student = $this->admin_model->getDetails('students', $id)->row();
 
-            if (!$student) {
-                show_404();
-            }
-
-            if (ob_get_contents()) ob_end_clean();
-
-            require_once APPPATH . 'libraries/ReportPDF.php';
-            $pdf = new ReportPDF('P', 'mm', 'A4');
-            $pdf->AddPage();
-
-            // Background Image
-            $pdf->Image(base_url('assets/images/transcript.png'), 0, 0, 210, 297);
-            $pdf->SetFont('Times', 'B', 10);
-            $pdf->SetTextColor(0, 0, 0);
-
-            // Student Info at the top
-            $pdf->SetXY(60, 31.5);
-            $pdf->Cell(50, 6, $student->student_name);
-            $pdf->SetXY(60, 37);
-            $pdf->Cell(50, 6, $student->usn);
-            $pdf->SetXY(60, 42);
-            $pdf->Cell(50, 6, $student->admission_year);
-
-            $pdf->SetXY(60, 52);
-            $pdf->Cell(50, 6, $student->programme);
-            $pdf->SetXY(33, 58.8);
-            $pdf->Cell(50, 6, $student->branch);
-
-            // Layout Variables
-            $y_position = 91;
-            $left_x = 10;
-            $right_x = 105;
-            $table_width = 90.5;
-
-            for ($semester = 1; $semester <= 8; $semester++) {
-                $semester_data = $this->admin_model->getStudentMarksBySemester($student->usn, $semester);
-                $current_x = ($semester % 2 == 1) ? $left_x : $right_x;
-
-                if (!empty($semester_data)) {
-                    $exam_period = $semester_data[0]->exam_period ?? 'N/A';
-                } else {
-                    $exam_period = 'N/A';
-                }
-
-                // Display Semester and Exam Period
-                $pdf->SetFont('Arial', 'B', 8);
-                $pdf->SetXY($current_x, $y_position - 3);
-                $pdf->Cell($table_width, 5, "Semester: $semester  |  Exam Period: $exam_period", 1, 0, 'L');
-
-                // Data Rows
-                $pdf->SetFont('Arial', '', 7);
-                $row_y = $y_position + 2;
-                $count = 1;
-                foreach ($semester_data as $course) {
-                    if ($row_y > 270) {
-                        $pdf->AddPage();
-                        $pdf->SetXY($current_x, 20);
-                        $row_y = 25;
-                    }
-                    $pdf->SetXY($current_x, $row_y);
-                    $pdf->Cell(3, 5, $count++, 1, 0, 'C');
-                    $pdf->Cell(73, 5, substr($course->course_name, 0, 35), 1, 0, 'L');
-                    $pdf->Cell(4.8, 5, $course->credits_earned, 1, 0, 'C');
-                    $pdf->Cell(4.6, 5, $course->grade, 1, 0, 'C');
-                    $pdf->Cell(4.9, 5, $course->result, 1, 0, 'C');
-                    $row_y += 5;
-                }
-
-                // Add SGPA, CGPA, and Result in a Single Cell
-                $pdf->SetXY($current_x, $row_y);
-                $pdf->SetFont('Arial', 'B', 8);
-                $sgpa = number_format($semester_data[0]->sgpa ?? 0, 2);
-                $cgpa = number_format($semester_data[0]->cgpa ?? 0, 2);                
-                $result = 'PASS'; // Placeholder, can be dynamic later
-                $pdf->Cell($table_width, 5, "SGPA: $sgpa" . str_repeat(" ", 20) . "CGPA: $cgpa" . str_repeat(" ", 15) . "Result: $result", 1, 0, 'L');
-
-                if ($semester % 2 == 0) {
-                    $y_position = max($row_y + 10, $y_position + 35);
-                }
-            }
-
-            // $pdf->Output();
-            $pdf->Output('D', $student->student_name . ' Transcript' . '.pdf');
-        } else {
-            redirect('admin/timeout');
+        if (!$student) {
+            show_404();
         }
+
+        if (ob_get_contents()) ob_end_clean();
+
+        require_once APPPATH . 'libraries/ReportPDF.php';
+        require_once APPPATH . '../vendor/autoload.php';
+
+        $pdf = new ReportPDF('P', 'mm', 'A4');
+        $pdf->AddPage();
+
+        // Background Image
+        $pdf->Image(base_url('assets/images/transcript.png'), 0, 0, 210, 297);
+        $pdf->SetFont('Times', 'B', 10);
+        $pdf->SetTextColor(0, 0, 0);
+
+        // Student Info at the top
+        $pdf->SetXY(60, 31.5);
+        $pdf->Cell(50, 6, $student->student_name);
+        $pdf->SetXY(60, 37);
+        $pdf->Cell(50, 6, $student->usn);
+        $pdf->SetXY(60, 42);
+        $pdf->Cell(50, 6, $student->admission_year);
+
+        $pdf->SetXY(60, 52);
+        $pdf->Cell(50, 6, $student->programme);
+        $pdf->SetXY(33, 58.8);
+        $pdf->Cell(50, 6, $student->branch);
+
+        // Add a section title for academic records
+        $pdf->SetFont('Times', 'B', 12);
+        $pdf->SetTextColor(0, 0, 0);
+        $pdf->SetXY(15, 65);
+   
+
+        // Fetch all student marks using the USN
+        $usn = $student->usn;
+        $allMarks = $this->admin_model->getDetailsbysinglefield('students_marks', $usn)->result();
+
+        // Initialize an array to hold marks grouped by semester
+        $studentmarks = [];
+
+        // Loop through all marks and group them by semester
+        foreach ($allMarks as $mark) {
+            $sem = $mark->semester; // Assuming each mark has a semester field
+            if (!isset($studentmarks[$sem])) {
+                $studentmarks[$sem] = []; // Initialize the array for the semester if it doesn't exist
+            }
+
+            // Fetch course name using the course code
+            $course_name = $this->admin_model->getCourseNameByCode($mark->course_code); // Assuming this method exists
+            $mark->course_name = $course_name; // Add course name to the mark object
+
+            $studentmarks[$sem][] = $mark; // Add the mark to the corresponding semester
+        }
+
+        // Sort semesters numerically to ensure proper order
+        ksort($studentmarks);
+        
+        // Layout Variables
+        $left_x = 15;  // Left column position
+        $right_x = 110; // Right column position
+        $table_width = 90; // Adjusted width for each table
+        $max_page_height = 260; // A4 height minus margins and header space
+        $top_margin_first_page = 89; // Increased margin for first page
+        $table_group_header_space = 18; // Space between table groups
+        $top_margin_other_pages = 15; // Top margin for continuation pages
+        $space_between_tables = 10; // Space between tables vertically
+
+        // Calculate the starting Y position with additional margin for table group
+        $y_position = $top_margin_first_page;
+        $current_page = 1; // Track page number
+        $column = 'left'; // Start with left column
+        
+        // Add header line above all semester tables
+       
+        foreach ($studentmarks as $semester => $semester_data) {
+            // Calculate table height
+            $course_count = count($semester_data);
+            $table_height = ($course_count * 6) + 18; // Header (6) + column headers (6) + courses + summary row (6)
+            
+            // Determine X position based on current column
+            $current_x = ($column == 'left') ? $left_x : $right_x;
+            
+            // Check if this table will fit on current page at current position
+            if ($y_position + $table_height > $max_page_height) {
+                // If we're in the right column and don't have space, move to new page and left column
+                if ($column == 'right') {
+                    $pdf->AddPage();
+                    $current_page++;
+                    $y_position = $top_margin_other_pages;
+                    $column = 'left';
+                    $current_x = $left_x;
+                } else {
+                    // If we're in left column and don't have space, check if right column has space
+                    // If not, move to new page
+                    if ($y_position + $table_height > $max_page_height) {
+                        $pdf->AddPage();
+                        $current_page++;
+                        $y_position = $top_margin_other_pages;
+                        $column = 'left';
+                        $current_x = $left_x;
+                    } else {
+                        // If left column doesn't fit but right might, switch to right column
+                        $column = 'right';
+                        $current_x = $right_x;
+                    }
+                }
+            }
+            
+            // Print Semester Header
+            $exam_period = $semester_data[0]->exam_period ?? 'N/A';
+            $pdf->SetFont('Arial', 'B', 8);
+            $pdf->SetXY($current_x, $y_position);
+            $pdf->Cell($table_width, 6, "Semester: $semester  |  Exam Period: $exam_period", 1, 0, 'L');
+
+            // Print Table Headers
+            $pdf->SetFont('Arial', '', 7);
+            $pdf->SetXY($current_x, $y_position + 6);
+            $pdf->Cell(8, 6, "No.", 1, 0, 'C');
+            $pdf->Cell(50, 6, "Course Name", 1, 0, 'L');
+            $pdf->Cell(12, 6, "Credits", 1, 0, 'C');
+            $pdf->Cell(10, 6, "Grade", 1, 0, 'C');
+            $pdf->Cell(10, 6, "Result", 1, 0, 'C');
+
+            // Print Course Details
+            $row_y = $y_position + 12;
+            $count = 1;
+            foreach ($semester_data as $course) {
+                $pdf->SetXY($current_x, $row_y);
+                $pdf->Cell(8, 6, $count++, 1, 0, 'C');
+                $pdf->Cell(50, 6, substr($course->course_name, 0, 25), 1, 0, 'L');
+                $pdf->Cell(12, 6, $course->credits_earned, 1, 0, 'C');
+                $pdf->Cell(10, 6, $course->grade, 1, 0, 'C');
+                $pdf->Cell(10, 6, $course->result, 1, 0, 'C');
+                $row_y += 6;
+            }
+
+            // Print SGPA, CGPA, and Result Row
+            $pdf->SetXY($current_x, $row_y);
+            $pdf->SetFont('Arial', 'B', 8);
+            $sgpa = number_format($semester_data[0]->sgpa ?? 0, 2);
+            $cgpa = number_format($semester_data[0]->cgpa ?? 0, 2);
+            $result = 'PASS'; // Change dynamically if needed
+            $pdf->Cell($table_width, 6, "SGPA: $sgpa    CGPA: $cgpa    Result: $result", 1, 0, 'L');
+
+            // Prepare for next table
+            if ($column == 'left') {
+                // Move to right column at same Y position
+                $column = 'right';
+            } else {
+                // Move to left column on next row
+                $column = 'left';
+                $y_position += $table_height + $space_between_tables;
+            }
+        }
+        
+        // ... existing code ...
+
+        $pdf->Output();
+        // $pdf->Output('D', $student->student_name . ' Transcript' . '.pdf');
+    } else {
+        redirect('admin/timeout');
     }
-
-
+}
 
     public function update_certificate_log()
     {
@@ -1384,7 +1461,7 @@ public function generate_student_pdf($id, $semester)
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            $data['id'] = $session_data['id'];
+            $data['id'] = $session_data['id'];  
             $data['username'] = $session_data['username'];
             $data['full_name'] = $session_data['full_name'];
             $data['role'] = $session_data['role'];
@@ -1654,50 +1731,54 @@ public function deletemarks($id  , $stuid) {
 }
 
 
-
 public function transcript()
-    {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            $data['id'] = $session_data['id'];
-            $data['username'] = $session_data['username'];
-            $data['full_name'] = $session_data['full_name'];
-            $data['role'] = $session_data['role'];
+{
+    if ($this->session->userdata('logged_in')) {
+        $session_data = $this->session->userdata('logged_in');
+        $data['id'] = $session_data['id'];
+        $data['username'] = $session_data['username'];
+        $data['full_name'] = $session_data['full_name'];
+        $data['role'] = $session_data['role'];
 
-            $data['page_title'] = "View Student Semester";
-            $data['menu'] = "students";
+        $data['page_title'] = "Transcript";
+        $data['menu'] = "transcripts";
 
-            // Set validation rules for USN
-            $this->form_validation->set_rules('usn', 'USN', 'required');
+        // Check if USN is submitted
+        $usn = $this->input->post('usn');
+        if ($usn) {
+            // Fetch student details using USN
+            $data['students'] = $this->admin_model->getDetailsbysinglefield('students', $usn)->row();
+            if ($data['students']) {
+                // Fetch student marks using the USN
+                $allMarks = $this->admin_model->getDetailsbysinglefield('students_marks', $usn)->result();
 
-            if ($this->form_validation->run() === FALSE) {
-                // If validation fails, show the search form
-                $data['action'] = 'admin/transcript'; // Set action for the form
-                $this->admin_template->show('admin/transcript', $data);
-            } else {
-                // If form is valid, look for the USN and fetch details
-                $usn = $this->input->post('usn');
-                $details = $this->admin_model->getDetailsbyfield($usn, 'usn', 'students')->row();
+                // Initialize an array to hold marks grouped by semester
+                $data['studentmarks'] = [];
 
-                if ($details) {
-                    $data['students'] = $details;
-
-                    // Fetch semester data for all semesters (1 to 8)
-                    for ($semester = 1; $semester <= 8; $semester++) {
-                        $data["semester_$semester"] = $this->admin_model->getStudentMarksBySemester($usn, $semester);
+                // Loop through all marks and group them by semester
+                foreach ($allMarks as $mark) {
+                    $semester = $mark->semester;
+                    if (!isset($data['studentmarks'][$semester])) {
+                        $data['studentmarks'][$semester] = [];
                     }
 
-                    $data['page_title'] = "Student Details for USN: $usn";
-                    $this->admin_template->show('admin/transcript', $data);
-                } else {
-                    redirect('admin/students', 'refresh');
-                }
-            }
-        } else {
-            redirect('admin/timeout');
-        }
-    }
+                    // Fetch course name using the course code
+                    $course_name = $this->admin_model->getCourseNameByCode($mark->course_code);
+                    $mark->course_name = $course_name;
 
+                    $data['studentmarks'][$semester][] = $mark;
+                }
+            } else {
+                $data['error'] = "No student found with the provided USN.";
+            }
+        }
+
+        // Show the view
+        $this->admin_template->show('admin/transcript', $data);
+    } else {
+        redirect('admin/timeout');
+    }
+}
     public function generate_pdc_pdf($id)
 {
     if ($this->session->userdata('logged_in')) {
@@ -1728,7 +1809,7 @@ public function transcript()
         $semester_data = $this->admin_model->getStudentMarksBySemester($student->usn, 8);
         $cgpa = !empty($semester_data) ? number_format($semester_data[0]->cgpa ?? 0, 2) : 'N/A';
 
-        // Display CGPA
+        // Display CGP      A
         $pdf->SetXY(98, 184);
         $pdf->Cell(50, 6, "$cgpa");
 
