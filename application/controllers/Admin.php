@@ -167,7 +167,7 @@ class Admin extends CI_Controller
                 $semester = $this->input->post('semester');
                 $branch = $this->input->post('branch');
     
-                // Convert "All" options to NULL (so they don’t filter anything)
+                // Convert "All" options to NULL (so they don't filter anything)
                 $programme = ($programme === "All") ? null : $programme;
                 $semester = ($semester === "All") ? null : $semester;
                 $branch = ($branch === "All") ? null : $branch;
@@ -799,7 +799,9 @@ class Admin extends CI_Controller
             $decoded_id = base64_decode($id);
 
             // Fetch course details for the given course ID
-            $data['students'] = $this->admin_model->getDetails('students', $decoded_id)->row(); // Using row() for a single course
+            $data['students'] = $this->admin_model->getDetails('students', $decoded_id)->row(); 
+           
+            // Using row() for a single course
 
             $this->admin_template->show('admin/view_studentdetails', $data);
         } else {
@@ -891,14 +893,25 @@ class Admin extends CI_Controller
             // Fetch student details
             $data['students'] = $this->admin_model->getDetails('students', $id)->row();
             $data['usn'] = $data['students']->usn;
-            $data['studentmarks'] = $this->admin_model->getDetails('students_marks', $id)->row();
 
-            // var_dump($data['studentmarks']); die();
+            // Fetch student marks using the USN
+            $allMarks = $this->admin_model->getDetailsbysinglefield('students_marks', $data['usn'])->result(); // Fetch all records
 
+            // Initialize an array to hold marks grouped by semester
+            $data['studentmarks'] = [];
 
-            // Fetch marks and course data for each semester (1 to 8)
-            for ($semester = 1; $semester <= 8; $semester++) {
-                $data["semester_$semester"] = $this->admin_model->getStudentMarksBySemester($data['students']->usn, $semester);
+            // Loop through all marks and group them by semester
+            foreach ($allMarks as $mark) {
+                $semester = $mark->semester; // Assuming each mark has a semester field
+                if (!isset($data['studentmarks'][$semester])) {
+                    $data['studentmarks'][$semester] = []; // Initialize the array for the semester if it doesn't exist
+                }
+
+                // Fetch course name using the course code
+                $course_name = $this->admin_model->getCourseNameByCode($mark->course_code); // Assuming this method exists
+                $mark->course_name = $course_name; // Add course name to the mark object
+
+                $data['studentmarks'][$semester][] = $mark; // Add the mark to the corresponding semester
             }
 
             // Show the view
@@ -1063,8 +1076,29 @@ public function generate_student_pdf($id, $semester)
         $pdf->SetXY(201, 61.2);
         $pdf->Cell(50, 10, $semester, 0, 1);
 
-        // Get semester data
-        $semester_data = $this->admin_model->getStudentMarksBySemester($student->usn, $semester);
+        // Fetch student marks using the USN
+        $usn = $student->usn;
+        $allMarks = $this->admin_model->getDetailsbysinglefield('students_marks', $usn)->result();
+
+        // Initialize an array to hold marks grouped by semester
+        $studentmarks = [];
+
+        // Loop through all marks and group them by semester
+        foreach ($allMarks as $mark) {
+            $sem = $mark->semester; // Assuming each mark has a semester field
+            if (!isset($studentmarks[$sem])) {
+                $studentmarks[$sem] = []; // Initialize the array for the semester if it doesn't exist
+            }
+
+            // Fetch course name using the course code
+            $course_name = $this->admin_model->getCourseNameByCode($mark->course_code); // Assuming this method exists
+            $mark->course_name = $course_name; // Add course name to the mark object
+
+            $studentmarks[$sem][] = $mark; // Add the mark to the corresponding semester
+        }
+
+        // Get semester data for the specified semester
+        $semester_data = $studentmarks[$semester] ?? []; // Use the semester passed to the function
 
         // Define fixed parameters
         $table_start_y = 85;
@@ -1103,7 +1137,7 @@ public function generate_student_pdf($id, $semester)
                 $pdf->SetXY(30, $y);
                 $pdf->Cell(15, $row_height, $sno++, 1, 0, 'C', true);
                 $pdf->Cell(40, $row_height, $course->course_code, 1, 0, 'C', true);
-                $pdf->Cell(80, $row_height, $course->course_name, 1, 0, 'L', true);
+                $pdf->Cell(80, $row_height, $course->course_name, 1, 0, 'L', true); // Use course name here
                 $pdf->Cell(25, $row_height, $course->credits_earned ?? '-', 1, 0, 'C', true);
                 $pdf->Cell(40, $row_height, $course->grade ?? '-', 1, 0, 'C', true);
                 $pdf->Cell(40, $row_height, $course->grade_points ?? '-', 1, 1, 'C', true);
@@ -1130,7 +1164,6 @@ public function generate_student_pdf($id, $semester)
 
             $pdf->SetAutoPageBreak(false);
             $pdf->SetMargins(0, 0, 0);
-
 
             $bottom_y = min(182, $pdf->GetPageHeight() - 15);
             $pdf->SetXY(155, $bottom_y);
@@ -1169,8 +1202,8 @@ public function generate_student_pdf($id, $semester)
             ob_end_clean();
         }
         
-        $pdf->Output('D', $semester . ' semester Grade Card' . '.pdf');
-        // $pdf->Output();
+        // $pdf->Output('D', $semester . ' semester Grade Card' . '.pdf');
+        $pdf->Output();
      
     } else {
         redirect('admin/timeout');
@@ -1600,11 +1633,10 @@ public function edit_marks($courseid, $stuid) {
 
 // ... existing code ...
 
-
 public function deletemarks($id  , $stuid) {
     if ($this->session->userdata('logged_in')) {
         // Call the model to delete the course
-        $result = $this->admin_model->deletemarks($id);
+        $result = $this->admin_model->deletemarks($id, $stuid);
 
         if ($result) {
             $this->session->set_flashdata('message', 'Course deleted successfully!');
@@ -1623,6 +1655,127 @@ public function deletemarks($id  , $stuid) {
 
 
 
+public function transcript()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            $data['id'] = $session_data['id'];
+            $data['username'] = $session_data['username'];
+            $data['full_name'] = $session_data['full_name'];
+            $data['role'] = $session_data['role'];
 
-    
+            $data['page_title'] = "View Student Semester";
+            $data['menu'] = "students";
+
+            // Set validation rules for USN
+            $this->form_validation->set_rules('usn', 'USN', 'required');
+
+            if ($this->form_validation->run() === FALSE) {
+                // If validation fails, show the search form
+                $data['action'] = 'admin/transcript'; // Set action for the form
+                $this->admin_template->show('admin/transcript', $data);
+            } else {
+                // If form is valid, look for the USN and fetch details
+                $usn = $this->input->post('usn');
+                $details = $this->admin_model->getDetailsbyfield($usn, 'usn', 'students')->row();
+
+                if ($details) {
+                    $data['students'] = $details;
+
+                    // Fetch semester data for all semesters (1 to 8)
+                    for ($semester = 1; $semester <= 8; $semester++) {
+                        $data["semester_$semester"] = $this->admin_model->getStudentMarksBySemester($usn, $semester);
+                    }
+
+                    $data['page_title'] = "Student Details for USN: $usn";
+                    $this->admin_template->show('admin/transcript', $data);
+                } else {
+                    redirect('admin/students', 'refresh');
+                }
+            }
+        } else {
+            redirect('admin/timeout');
+        }
+    }
+
+    public function generate_pdc_pdf($id)
+{
+    if ($this->session->userdata('logged_in')) {
+        $student = $this->admin_model->getDetails('students', $id)->row();
+
+        if (!$student) {
+            show_404();
+        }
+
+        if (ob_get_contents()) ob_end_clean();
+
+        require_once APPPATH . 'libraries/ReportPDF.php';
+        $pdf = new ReportPDF('P', 'mm', 'A4');
+        $pdf->AddPage();
+
+        // Background Image
+        $pdf->Image(base_url('assets/images/DEMO_PDC.png'), 0, 0, 210, 297); // Assuming you have a PDC background image
+        $pdf->SetFont('Times', 'B', 13);
+        $pdf->SetTextColor(0, 0, 0);
+
+        // Student Info
+        $pdf->SetXY(89, 131.5);
+        $pdf->Cell(50, 6, $student->student_name);
+        $pdf->SetXY(111.5, 144);
+        $pdf->Cell(50, 6, $student->usn);
+        
+        // Fetch 8th semester CGPA
+        $semester_data = $this->admin_model->getStudentMarksBySemester($student->usn, 8);
+        $cgpa = !empty($semester_data) ? number_format($semester_data[0]->cgpa ?? 0, 2) : 'N/A';
+
+        // Display CGPA
+        $pdf->SetXY(98, 184);
+        $pdf->Cell(50, 6, "$cgpa");
+
+        // Output the PDF
+        $pdf->Output();
+        // $pdf->Output('D', $student->stud ent_name . ' PDC' . '.pdf');
+    } else {
+        redirect('admin/timeout');
+    }
+}
+
+public function pdc()
+{
+    if ($this->session->userdata('logged_in')) {
+        $session_data = $this->session->userdata('logged_in');
+        $data['id'] = $session_data['id'];
+        $data['username'] = $session_data['username'];
+        $data['full_name'] = $session_data['full_name'];
+        $data['role'] = $session_data['role'];
+
+        $data['page_title'] = "View Student PDC";
+        $data['menu'] = "students";
+
+
+        // Set validation rules for USN
+        $this->form_validation->set_rules('usn', 'USN', 'required');
+
+        if ($this->form_validation->run() === FALSE) {
+            // If validation fails, show the search form
+            $data['action'] = 'admin/pdc'; // Set action for the form
+            $this->admin_template->show('admin/pdc', $data);
+        } else {
+            // If form is valid, look for the USN and fetch details
+            $usn = $this->input->post('usn');
+            $details = $this->admin_model->getDetailsbyfield($usn, 'usn', 'students')->row();
+
+            if ($details) {
+                $data['students'] = $details;
+                $data['page_title'] = "PDC for USN: $usn";
+                $this->admin_template->show('admin/pdc', $data);
+            } else {
+                redirect('admin/students', 'refresh');
+            }
+        }
+    } else {
+        redirect('admin/timeout');
+    }
+}
+
 }
