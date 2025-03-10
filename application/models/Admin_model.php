@@ -430,4 +430,84 @@ public function getCourseNameByCode($course_code) {
   return null; // Return null if no course found
 }
 
+function getStudentByUSN($usn)
+{
+  $this->db->where('usn', $usn);
+  $query = $this->db->get('students');
+  return $query->row();
+}
+
+function getStudentRegularMarks($usn, $semester)
+{
+  $this->db->where('usn', $usn);
+  $this->db->where('semester', $semester);
+  // For regular exams, typically not in July
+  $this->db->where('MONTH(result_year) !=', 7);
+  $query = $this->db->get('students_marks');
+  
+  $results = $query->result();
+  
+  // Add course names to the results
+  foreach ($results as $result) {
+    $result->course_name = $this->getCourseNameByCode($result->course_code);
+  }
+  
+  return $results;
+}
+
+function getStudentSupplementaryMarks($usn, $semester, $sequence)
+{
+  $this->db->where('usn', $usn);
+  $this->db->where('semester', $semester);
+  // For supplementary exams, typically in July
+  $this->db->where('MONTH(result_year)', 7);
+  $this->db->order_by('result_year', 'ASC');
+  $query = $this->db->get('students_marks');
+  
+  $allResults = $query->result();
+  
+  if (empty($allResults)) {
+    return [];
+  }
+  
+  // Group all results by year to create sequences
+  $yearGroups = [];
+  foreach ($allResults as $result) {
+    $year = date('Y', strtotime($result->result_year));
+    if (!isset($yearGroups[$year])) {
+      $yearGroups[$year] = [];
+    }
+    
+    // Add the course to this year's group
+    $courseCode = $result->course_code;
+    if (!isset($yearGroups[$year][$courseCode])) {
+      $yearGroups[$year][$courseCode] = $result;
+    }
+  }
+  
+  // Sort year groups chronologically
+  ksort($yearGroups);
+  
+  // Assign sequence numbers (S1, S2, etc.) to each year group
+  $sequenceYears = array_keys($yearGroups);
+  
+  // If the requested sequence is invalid, return empty array
+  if (!isset($sequenceYears[$sequence-1])) {
+    return [];
+  }
+  
+  // Get the year corresponding to the requested sequence
+  $targetYear = $sequenceYears[$sequence-1];
+  
+  // Return the results for the requested sequence
+  $results = array_values($yearGroups[$targetYear]);
+  
+  // Add course names to the results
+  foreach ($results as $result) {
+    $result->course_name = $this->getCourseNameByCode($result->course_code);
+  }
+  
+  return $results;
+}
+
 }

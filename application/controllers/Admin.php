@@ -1032,6 +1032,10 @@ class Admin extends CI_Controller
 
 public function generate_student_pdf($id, $semester)
 {
+    // Use $decoded_id instead of $id for further processing
+    $decoded_id = base64_decode($id);
+    $decoded_sem = base64_decode($semester);
+    
     // Disable error reporting in production
     error_reporting(0);
     ini_set('display_errors', 0);
@@ -1042,7 +1046,7 @@ public function generate_student_pdf($id, $semester)
     }
 
     if ($this->session->userdata('logged_in')) {
-        $student = $this->admin_model->getDetails('students', $id)->row();
+        $student = $this->admin_model->getDetails('students', $decoded_id)->row();
 
         if (!$student) {
             show_404();
@@ -1074,7 +1078,7 @@ public function generate_student_pdf($id, $semester)
         $pdf->Cell(50, 10, $student->father_name ?? '-', 0, 1);
 
         $pdf->SetXY(201, 61.2);
-        $pdf->Cell(50, 10, $semester, 0, 1);
+        $pdf->Cell(50, 10, $decoded_sem, 0, 1);
 
         // Fetch student marks using the USN
         $usn = $student->usn;
@@ -1098,7 +1102,7 @@ public function generate_student_pdf($id, $semester)
         }
 
         // Get semester data for the specified semester
-        $semester_data = $studentmarks[$semester] ?? []; // Use the semester passed to the function
+        $semester_data = $studentmarks[$decoded_sem] ?? []; // Use the semester passed to the function
 
         // Define fixed parameters
         $table_start_y = 85;
@@ -1212,6 +1216,181 @@ public function generate_student_pdf($id, $semester)
 }
 
 public function generate_transcript_pdf($id)
+{
+$id = base64_decode($id);
+
+    if ($this->session->userdata('logged_in')) {
+        $student = $this->admin_model->getDetails('students', $id)->row();
+
+        if (!$student) {
+            show_404();
+        }
+
+        if (ob_get_contents()) ob_end_clean();
+
+        require_once APPPATH . 'libraries/ReportPDF.php';
+        require_once APPPATH . '../vendor/autoload.php';
+
+        $pdf = new ReportPDF('P', 'mm', 'A4');
+        $pdf->AddPage();
+
+        // Background Image
+        $pdf->Image(base_url('assets/images/transcript.png'), 0, 0, 210, 297);
+        $pdf->SetFont('Times', 'B', 10);
+        $pdf->SetTextColor(0, 0, 0);
+
+        // Student Info at the top
+        $pdf->SetXY(60, 31.5);
+        $pdf->Cell(50, 6, $student->student_name);
+        $pdf->SetXY(60, 37);
+        $pdf->Cell(50, 6, $student->usn);
+        $pdf->SetXY(60, 42);
+        $pdf->Cell(50, 6, $student->admission_year);
+
+        $pdf->SetXY(60, 52);
+        $pdf->Cell(50, 6, $student->programme);
+        $pdf->SetXY(33, 58.8);
+        $pdf->Cell(50, 6, $student->branch);
+
+        // Add a section title for academic records
+        $pdf->SetFont('Times', 'B', 12);
+        $pdf->SetTextColor(0, 0, 0);
+        $pdf->SetXY(15, 65);
+   
+
+        // Fetch all student marks using the USN
+        $usn = $student->usn;
+        $allMarks = $this->admin_model->getDetailsbysinglefield('students_marks', $usn)->result();
+
+        // Initialize an array to hold marks grouped by semester
+        $studentmarks = [];
+
+        // Loop through all marks and group them by semester
+        foreach ($allMarks as $mark) {
+            $sem = $mark->semester; // Assuming each mark has a semester field
+            if (!isset($studentmarks[$sem])) {
+                $studentmarks[$sem] = []; // Initialize the array for the semester if it doesn't exist
+            }
+
+            // Fetch course name using the course code
+            $course_name = $this->admin_model->getCourseNameByCode($mark->course_code); // Assuming this method exists
+            $mark->course_name = $course_name; // Add course name to the mark object
+
+            $studentmarks[$sem][] = $mark; // Add the mark to the corresponding semester
+        }
+
+        // Sort semesters numerically to ensure proper order
+        ksort($studentmarks);
+        
+        // Layout Variables
+        $left_x = 15;  // Left column position
+        $right_x = 110; // Right column position
+        $table_width = 90; // Adjusted width for each table
+        $max_page_height = 260; // A4 height minus margins and header space
+        $top_margin_first_page = 89; // Increased margin for first page
+        $table_group_header_space = 18; // Space between table groups
+        $top_margin_other_pages = 15; // Top margin for continuation pages
+        $space_between_tables = 10; // Space between tables vertically
+
+        // Calculate the starting Y position with additional margin for table group
+        $y_position = $top_margin_first_page;
+        $current_page = 1; // Track page number
+        $column = 'left'; // Start with left column
+        
+        // Add header line above all semester tables
+       
+        foreach ($studentmarks as $semester => $semester_data) {
+            // Calculate table height
+            $course_count = count($semester_data);
+            $table_height = ($course_count * 6) + 18; // Header (6) + column headers (6) + courses + summary row (6)
+            
+            // Determine X position based on current column
+            $current_x = ($column == 'left') ? $left_x : $right_x;
+            
+            // Check if this table will fit on current page at current position
+            if ($y_position + $table_height > $max_page_height) {
+                // If we're in the right column and don't have space, move to new page and left column
+                if ($column == 'right') {
+                    $pdf->AddPage();
+                    $current_page++;
+                    $y_position = $top_margin_other_pages;
+                    $column = 'left';
+                    $current_x = $left_x;
+                } else {
+                    // If we're in left column and don't have space, check if right column has space
+                    // If not, move to new page
+                    if ($y_position + $table_height > $max_page_height) {
+                        $pdf->AddPage();
+                        $current_page++;
+                        $y_position = $top_margin_other_pages;
+                        $column = 'left';
+                        $current_x = $left_x;
+                    } else {
+                        // If left column doesn't fit but right might, switch to right column
+                        $column = 'right';
+                        $current_x = $right_x;
+                    }
+                }
+            }
+            
+            // Print Semester Header
+            $exam_period = $semester_data[0]->exam_period ?? 'N/A';
+            $pdf->SetFont('Arial', 'B', 8);
+            $pdf->SetXY($current_x, $y_position);
+            $pdf->Cell($table_width, 6, "Semester: $semester  |  Exam Period: $exam_period", 1, 0, 'L');
+
+            // Print Table Headers
+            $pdf->SetFont('Arial', '', 7);
+            $pdf->SetXY($current_x, $y_position + 6);
+            $pdf->Cell(8, 6, "No.", 1, 0, 'C');
+            $pdf->Cell(50, 6, "Course Name", 1, 0, 'L');
+            $pdf->Cell(12, 6, "Credits", 1, 0, 'C');
+            $pdf->Cell(10, 6, "Grade", 1, 0, 'C');
+            $pdf->Cell(10, 6, "Result", 1, 0, 'C');
+
+            // Print Course Details
+            $row_y = $y_position + 12;
+            $count = 1;
+            foreach ($semester_data as $course) {
+                $pdf->SetXY($current_x, $row_y);
+                $pdf->Cell(8, 6, $count++, 1, 0, 'C');
+                $pdf->Cell(50, 6, substr($course->course_name, 0, 25), 1, 0, 'L');
+                $pdf->Cell(12, 6, $course->credits_earned, 1, 0, 'C');
+                $pdf->Cell(10, 6, $course->grade, 1, 0, 'C');
+                $pdf->Cell(10, 6, $course->result, 1, 0, 'C');
+                $row_y += 6;
+            }
+
+            // Print SGPA, CGPA, and Result Row
+            $pdf->SetXY($current_x, $row_y);
+            $pdf->SetFont('Arial', 'B', 8);
+            $sgpa = number_format($semester_data[0]->sgpa ?? 0, 2);
+            $cgpa = number_format($semester_data[0]->cgpa ?? 0, 2);
+            $result = 'PASS'; // Change dynamically if needed
+            $pdf->Cell($table_width, 6, "SGPA: $sgpa    CGPA: $cgpa    Result: $result", 1, 0, 'L');
+
+            // Prepare for next table
+            if ($column == 'left') {
+                // Move to right column at same Y position
+                $column = 'right';
+            } else {
+                // Move to left column on next row
+                $column = 'left';
+                $y_position += $table_height + $space_between_tables;
+            }
+        }
+        
+        // ... existing code ...
+        // $pdf->Output($student->usn . '_transcript.pdf', 'I'); // 'I' means inline preview
+
+        // $pdf->Output();
+        $pdf->Output('D', $student->student_name . ' Transcript' . '.pdf');
+    } else {
+        redirect('admin/timeout');
+    }
+}
+
+public function generate_transcript_pdf_preview($id)
 {
     if ($this->session->userdata('logged_in')) {
         $student = $this->admin_model->getDetails('students', $id)->row();
@@ -1375,8 +1554,9 @@ public function generate_transcript_pdf($id)
         }
         
         // ... existing code ...
+        $pdf->Output($student->usn . '_transcript.pdf', 'I'); // 'I' means inline preview
 
-        $pdf->Output();
+        // $pdf->Output();
         // $pdf->Output('D', $student->student_name . ' Transcript' . '.pdf');
     } else {
         redirect('admin/timeout');
@@ -1781,6 +1961,7 @@ public function transcript()
 }
     public function generate_pdc_pdf($id)
 {
+    $id= base64_decode($id);
     if ($this->session->userdata('logged_in')) {
         $student = $this->admin_model->getDetails('students', $id)->row();
 
@@ -1856,6 +2037,426 @@ public function pdc()
         }
     } else {
         redirect('admin/timeout');
+    }
+}
+
+        public function get_grade_card()
+        {
+            if ($this->session->userdata('logged_in')) {
+                $session_data = $this->session->userdata('logged_in');
+                $data['id'] = $session_data['id'];
+                $data['username'] = $session_data['username'];
+                $data['full_name'] = $session_data['full_name'];
+                $data['role'] = $session_data['role'];
+
+                $data['page_title'] = "Get Grade Card";
+                $data['menu'] = "gradecard";
+
+                // Show the view
+                $this->admin_template->show('admin/get_grade_card', $data);
+            } else {
+                redirect('admin/timeout');
+            }
+        }
+
+        public function fetch_semester_options()
+        {
+            if (!$this->session->userdata('logged_in')) {
+                echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+                return;
+            }
+
+            $usn = $this->input->post('usn');
+            if (empty($usn)) {
+                echo json_encode(['status' => 'error', 'message' => 'USN is required']);
+                return;
+            }
+
+            // Get all marks records for this USN
+            $allMarks = $this->admin_model->getDetailsbysinglefield('students_marks', $usn)->result();
+            
+            if (empty($allMarks)) {
+                echo json_encode(['status' => 'error', 'message' => 'No records found for this USN']);
+                return;
+            }
+
+            // Group by semester and attempt
+            $regularSemesters = [];
+            $supplementarySemesters = [];
+
+            // First, find all regular semesters
+            foreach ($allMarks as $mark) {
+                $semester = $mark->semester;
+                $resultYear = date('Y-m', strtotime($mark->result_year));
+                $isRepeat = (date('m', strtotime($mark->result_year)) == '07');
+                
+                if (!$isRepeat) {
+                    // For regular exams, just use the semester number
+                    if (!isset($regularSemesters[$semester])) {
+                        $regularSemesters[$semester] = [
+                            'semester' => $semester,
+                            'year' => $resultYear,
+                            'label' => $semester . ' (' . $resultYear . ')'
+                        ];
+                    }
+                }
+            }
+
+            // Group supplementary exams by semester and year
+            $supplementaryGroups = [];
+            foreach ($allMarks as $mark) {
+                $semester = $mark->semester;
+                $isRepeat = (date('m', strtotime($mark->result_year)) == '07');
+                
+                if ($isRepeat) {
+                    $year = date('Y', strtotime($mark->result_year));
+                    if (!isset($supplementaryGroups[$semester])) {
+                        $supplementaryGroups[$semester] = [];
+                    }
+                    
+                    if (!in_array($year, $supplementaryGroups[$semester])) {
+                        $supplementaryGroups[$semester][] = $year;
+                    }
+                }
+            }
+            
+            // Sort years within each semester group chronologically
+            foreach ($supplementaryGroups as $semester => $years) {
+                sort($years);
+                
+                // Create S1, S2, etc. labels based on the sorted years
+                foreach ($years as $index => $year) {
+                    $sequence = $index + 1;
+                    $resultYear = $year . '-07';
+                    
+                    $supplementarySemesters[$semester . 'S' . $sequence] = [
+                        'semester' => $semester,
+                        'sequence' => $sequence,
+                        'year' => $resultYear,
+                        'label' => $semester . 'S' . $sequence . ' (' . $resultYear . ')'
+                    ];
+                }
+            }
+
+            // Sort regular semesters numerically
+            ksort($regularSemesters);
+            
+            // Sort repeat semesters
+            ksort($supplementarySemesters);
+            
+            // Merge both arrays with regular semesters first
+            $options = array_merge($regularSemesters, $supplementarySemesters);
+            
+            echo json_encode([
+                'status' => 'success', 
+                'options' => array_values($options)
+            ]);
+        }
+
+        public function generate_grade_card()
+        {
+            if (!$this->session->userdata('logged_in')) {
+                echo json_encode(['status' => 'error', 'message' => 'Session expired']);
+                return;
+            }
+
+            $usn = $this->input->post('usn');
+            $selected_option = $this->input->post('semester_option');
+            
+            if (empty($usn) || empty($selected_option)) {
+                echo json_encode(['status' => 'error', 'message' => 'USN and Semester are required']);
+                return;
+            }
+
+            // Parse the selected option
+            $parts = explode(' ', $selected_option);
+            $semesterCode = $parts[0]; // This will be like "1", "2", "1S1", "2S2", etc.
+            
+            // Determine if it's a regular semester or a supplementary
+            $isSupplementary = (strpos($semesterCode, 'S') !== false);
+            
+            if ($isSupplementary) {
+                // Extract the semester number and sequence
+                preg_match('/(\d+)S(\d+)/', $semesterCode, $matches);
+                if (count($matches) < 3) {
+                    echo json_encode(['status' => 'error', 'message' => 'Invalid semester format']);
+                    return;
+                }
+                
+                $semester = $matches[1];
+                $sequence = $matches[2];
+                
+                // Get all marks for this USN and semester
+                $allMarks = $this->admin_model->getStudentSupplementaryMarks($usn, $semester, $sequence);
+            } else {
+                // It's a regular semester
+                $semester = $semesterCode;
+                
+                // Get all marks for this USN and semester
+                $allMarks = $this->admin_model->getStudentRegularMarks($usn, $semester);
+            }
+            
+            // Get student details
+            $student = $this->admin_model->getStudentByUSN($usn);
+            
+            if (empty($student)) {
+                echo json_encode(['status' => 'error', 'message' => 'Student not found']);
+                return;
+            }
+            
+            // Format the semester type (Odd/Even)
+            $semesterType = ($semester % 2 == 1) ? 'Odd' : 'Even';
+            
+            // Get exam period for the display
+            $examPeriod = '';
+            if (!empty($allMarks)) {
+                $examPeriod = date('F Y', strtotime($allMarks[0]->result_year));
+            }
+            
+            $data = [
+                'student' => $student,
+                'marks' => $allMarks,
+                'semester' => $semester,
+                'semester_type' => $semesterType,
+                'exam_period' => $examPeriod,
+                'is_supplementary' => $isSupplementary,
+                'sequence' => $isSupplementary ? $sequence : null
+            ];
+            
+            // Return the HTML for the grade card
+            $html = $this->load->view('admin/grade_card_template', $data, true);
+            
+            echo json_encode([
+                'status' => 'success',
+                'html' => $html
+            ]);
+        }
+
+        public function print_grade_card()
+        {
+            if (!$this->session->userdata('logged_in')) {
+                redirect('admin/timeout');
+                return;
+            }
+
+            $usn = $this->input->get('usn');
+            $semester = $this->input->get('semester');
+            $is_supplementary = $this->input->get('is_supplementary');
+            $sequence = $this->input->get('sequence');
+            
+            if (empty($usn) || empty($semester)) {
+                $this->session->set_flashdata('error', 'USN and Semester are required');
+                redirect('admin/get_grade_card');
+                return;
+            }
+
+            // Get student ID from USN
+            $student = $this->admin_model->getStudentByUSN($usn);
+            
+            if (empty($student)) {
+                $this->session->set_flashdata('error', 'Student not found');
+                redirect('admin/get_grade_card');
+                return;
+            }
+
+            // Log the certificate download
+            $semLabel = $semester;
+            if ($is_supplementary == 'true') {
+                $semLabel = $semester . 'S' . $sequence;
+            }
+            
+            // Get result date for supplementary if needed
+            if ($is_supplementary == 'true' && !empty($sequence)) {
+                // Get the supplementary exam marks first to get the result year
+                $suppMarks = $this->admin_model->getStudentSupplementaryMarks($usn, $semester, $sequence);
+                
+                if (!empty($suppMarks)) {
+                    // Add result year to session for PDF generation
+                    $this->session->set_userdata('pdf_result_year', $suppMarks[0]->result_year);
+                }
+            }
+            
+            $details = 'Grade Card (Sem: ' . $semLabel . ($is_supplementary == 'true' ? ', Supplementary)' : ', Regular)');
+            $this->admin_model->insertCertificateLog($usn, $details);
+
+            // Use the existing generate_student_pdf function
+            redirect('admin/generate_student_pdf/' . $student->id . '/' . $semester);
+        }
+        public function generate_grade_card_pdf($id, $semester, $is_supplementary = 0, $sequence = null)
+        {
+            // Decode the parameters
+            $decoded_id = base64_decode($id);
+            $decoded_semester = base64_decode($semester);
+            $is_supplementary = base64_decode($is_supplementary);
+            $sequence = base64_decode($sequence);
+            $is_supplementary = ($is_supplementary == 1);
+        
+            if ($this->session->userdata('logged_in')) {
+               
+                $student = $this->admin_model->getStudentByUSN($decoded_id);
+
+        
+                if (!$student) {
+                    show_404();
+                    exit;
+                }
+        
+                require_once APPPATH . 'libraries/ReportPDF.php';
+                require_once APPPATH . '../vendor/autoload.php';
+        
+                $pdf = new ReportPDF('L', 'mm', 'A4');
+                $pdf->AddPage();
+                // ... existing code ...
+        
+                // Background Image
+                $pdf->Image(base_url('assets/images/certificate_bg.png'), 0, 0, 297, 210);
+        
+                $pdf->SetFont('Times', 'B', 10);
+                $pdf->SetTextColor(0, 0, 0);
+        
+                $pdf->SetXY(66, 72);
+                $pdf->Cell(50, 10, $student->usn, 0, 1);
+        
+                $pdf->SetXY(61, 56);
+                $pdf->Cell(50, 10, $student->student_name, 0, 1);
+        
+                $pdf->SetXY(60, 61.3);
+                $pdf->Cell(50, 10, $student->mother_name ?? '-', 0, 1);
+        
+                $pdf->SetXY(60, 66.5);
+                $pdf->Cell(50, 10, $student->father_name ?? '-', 0, 1);
+        
+                $pdf->SetXY(201, 61.2);
+                $pdf->Cell(50, 10, $decoded_semester, 0, 1);
+        
+                // 🛠️ Fetch marks based on semester type
+                if ($is_supplementary) {
+                    // ✅ Ensure sequence is provided
+                    if (!$sequence) {
+                        // Try fetching the latest sequence for this semester
+                        $sequence = $this->admin_model->getLatestSupplementarySequence($decoded_id, $decoded_semester);
+                    }
+        
+                    // ✅ Retrieve supplementary marks
+                    $marks = $this->admin_model->getStudentSupplementaryMarks($decoded_id, $decoded_semester, $sequence);
+                } else {
+                    // ✅ Retrieve regular semester marks
+                    $marks = $this->admin_model->getStudentRegularMarks($decoded_id, $decoded_semester);
+                }
+        
+                if (empty($marks)) {
+                    echo "No marks available.";
+                    exit;
+                }
+        
+                // ✅ Generate and output PDF
+                $this->renderPDF($pdf, $student, $marks, $decoded_semester, $is_supplementary, $sequence);
+        
+                $pdf->Output();
+            } else {
+                redirect('admin/timeout');
+            }
+        }
+        public function getLatestSupplementarySequence($usn, $semester)
+        {
+            $this->db->select('MAX(sequence) as latest_sequence');
+            $this->db->from('students_marks');
+            $this->db->where('usn', $usn);
+            $this->db->where('semester', $semester);
+            $this->db->where('subcode LIKE', 'S%'); // Ensure it's a supplementary mark
+        
+            $query = $this->db->get();
+            $result = $query->row();
+        
+            return ($result && $result->latest_sequence) ? $result->latest_sequence : 1; // Default to sequence 1 if none found
+        }
+                
+    
+private function renderPDF($pdf, $student, $marks, $semester, $is_supplementary, $sequence)
+{
+    // Set font
+  // Define fixed parameters
+  $table_start_y = 85;
+  $max_table_height = 64;
+  $header_height = 8;
+
+  // Calculate row height based on number of rows
+  $num_rows = count($marks);
+  $available_height = $max_table_height - $header_height;
+  $row_height = ($available_height - 5) / max($num_rows, 1);
+
+  // Table Headers
+  $pdf->SetFont('Arial', 'B', 11);
+  $pdf->SetTextColor(231, 119, 22);
+  $pdf->SetFillColor(255, 255, 255);
+  $pdf->SetXY(30, $table_start_y);
+  $pdf->Cell(15, $header_height, 'Sl.No.', 1, 0, 'C', true);
+  $pdf->Cell(40, $header_height, 'Course Code', 1, 0, 'C', true);
+  $pdf->Cell(80, $header_height, 'Course Title', 1, 0, 'C', true);
+  $pdf->Cell(25, $header_height, 'Credits', 1, 0, 'C', true);
+  $pdf->Cell(40, $header_height, 'Grade Awarded', 1, 0, 'C', true);
+  $pdf->Cell(40, $header_height, 'Grade Points', 1, 1, 'C', true);
+    // Table data
+    $sno = 1;
+    $y = $table_start_y + $header_height;
+   
+    foreach ($marks as $mark) {
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetTextColor(0, 0, 0);
+        $pdf->SetXY(30, $y);
+        $pdf->Cell(15, $row_height, $sno++, 1, 0, 'C', true);
+        $pdf->Cell(40, $row_height, $mark->course_code, 1, 0, 'C', true);
+        $pdf->Cell(80, $row_height, $mark->course_name, 1, 0, 'L', true); // Use course name here
+        $pdf->Cell(25, $row_height, $mark->credits_earned ?? '-', 1, 0, 'C', true);
+        $pdf->Cell(40, $row_height, $mark->grade ?? '-', 1, 0, 'C', true);
+        $pdf->Cell(40, $row_height, $mark->grade_points ?? '-', 1, 1, 'C', true);
+        $y += $row_height;
+          // Add to totals
+          $total_credits_actual += $mark->credits_actual ?? 0;
+          $total_credits_earned += $mark->credits_earned ?? 0;
+          if (!empty($mark->barcode)) {
+            $barcode_number = $mark->barcode;
+        }
+    }
+    $pdf->SetXY(155, 176);
+    $pdf->Cell(50, 10, $marks[0]->sgpa ?? '-', 0, 1);
+
+    $pdf->SetXY(155, 164);
+    $pdf->Cell(50, 10, $total_credits_actual, 0, 1);
+
+    $pdf->SetXY(155, 170);
+    $pdf->Cell(50, 10, $total_credits_earned, 0, 1);
+
+    $pdf->SetAutoPageBreak(false);
+    $pdf->SetMargins(0, 0, 0);
+
+    $bottom_y = min(182, $pdf->GetPageHeight() - 15);
+    $pdf->SetXY(155, $bottom_y);
+    $pdf->Cell(50, 10, $total_credits_earned);
+    // CGPA and Date
+    $pdf->SetXY(155, min(188, $pdf->GetPageHeight() - 15));
+    $pdf->Cell(50, 10, $marks[0]->cgpa ?? '-', 0, 1);
+
+    $pdf->SetXY(78, min(188, $pdf->GetPageHeight() - 15));
+    $pdf->Cell(50, 10, date('d-M-Y'));
+
+    // Handle result year safely
+    $result_year = $course->result_year ?? '1970-01-01';
+    $pdf->SetFont('Times', 'B', 10);
+    $pdf->SetXY(201, 67.2);
+    $pdf->Cell(50, 10, date('F Y', strtotime($result_year)), 0, 1);
+    if (!empty($barcode_number)) {
+        $generator = new \Picqer\Barcode\BarcodeGeneratorPNG();
+        $barcode = $generator->getBarcode($barcode_number, $generator::TYPE_CODE_128);
+
+        $barcodePath = APPPATH . 'temp/barcode_' . $barcode_number . '.png';
+        file_put_contents($barcodePath, $barcode);
+
+        // Add barcode image
+        $pdf->Image($barcodePath, 19, 174, 50, 10);
+
+        // Delete temp barcode file
+        unlink($barcodePath);
     }
 }
 

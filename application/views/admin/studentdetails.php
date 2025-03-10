@@ -7,7 +7,7 @@
                 <h3 class="card-title text-white mt-2"><?= $page_title; ?></h3>
                 <div class="card-tools d-flex">
                     <?php echo anchor('admin/editstudent/' . $students->id, '<span class="icon"><i class="fas fa-edit"></i></span> <span class="text">Edit</span>', 'class="btn btn-danger btn-sm btn-icon-split shadow-sm"'); ?>
-                    <?php echo anchor('admin/generate_transcript_pdf/' . $students->id, 
+                    <?php echo anchor('admin/generate_transcript_pdf/' . base64_encode($students->id), 
     '<span class="icon"><i class="fas fa-file-pdf"></i></span> <span class="text">Generate Transcript</span>', 
     'class="btn btn-primary btn-sm btn-icon-split shadow-sm ml-2 generate-transcript" data-usn="' . $students->usn . '"'); 
 ?>
@@ -108,7 +108,7 @@
                         <!-- Print button for this semester -->
                         <?php 
                             $session = date("F Y", strtotime($course->result_year));
-                            echo anchor('admin/generate_student_pdf/' . $students->id . '/' . $semester, 
+                            echo anchor('admin/generate_student_pdf/' . base64_encode($students->id) . '/' . base64_encode($semester), 
                                 '<span class="icon"><i class="fas fa-print"></i></span>', 
                                 'class="btn btn-light btn-sm me-2 print-semester" 
                                 data-usn="' . $students->usn . '" 

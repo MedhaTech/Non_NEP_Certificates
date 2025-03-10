@@ -1,63 +1,86 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= $page_title; ?> | BMSCE CERTIFY</title>
-    <link href="<?php echo base_url(); ?>assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-  
-</head>
-<body>
+
+
 <div class="page-content">
-<div class="container-fluid">
-<div class="card-body" >
-<div class="card">
-    <div class="container mt-5">
-        <h2 class="text-center"><?= $page_title; ?></h2>
+    <div class="container-fluid">
 
-        <?php echo form_open('admin/pdc', 'class="form-inline mb-4 justify-content-center"'); ?>
-            <div class="form-group">
-                <label for="usn" class="mr-2">Enter USN:</label>
-                <input type="text" class="form-control" id="usn" name="usn" placeholder="USN" value="<?= set_value('usn'); ?>" required>
-            </div>
-            <button type="submit" class="btn btn-primary ml-2">Search</button>
-        <?php echo form_close(); ?>
-
-        <?php if (isset($students)): ?>
-            <div class="card mt-4">
-                <div class="card-header">
-                    Student Details
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-flex align-items-center justify-content-between">
+                    <h4 class="mb-0 font-size-18"><?= $page_title; ?></h4>
                 </div>
-                <div class="card-body">
-                    <h5 class="card-title"><?= $students->student_name; ?></h5>
-                    <p class="card-text"><strong>USN:</strong> <?= $students->usn; ?></p>
-                    <p class="card-text"><strong>CGPA:</strong> 
-                        <?php 
-                        $semester_data = $this->admin_model->getStudentMarksBySemester($students->usn, 8);
-                        $cgpa = !empty($semester_data) ? number_format($semester_data[0]->cgpa ?? 0, 2) : 'N/A';
-                        echo $cgpa; 
-                        ?>
-                    </p>
-                    <div class="text-center">
-                        <a href="<?php echo base_url('admin/generate_pdc_pdf/' . $students->id); ?>" class="btn btn-primary ml-2">Download PDC</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <?php if ($this->session->flashdata('message')): ?>
+                <div class="alert <?php echo $this->session->flashdata('status'); ?> mt-3">
+                    <?php echo $this->session->flashdata('message'); ?>
+                </div>
+                <?php endif; ?>
+
+                <?php echo form_open('admin/pdc', 'class="user" id="pdc_search"'); ?>
+                <div class="row">
+                    <!-- USN Search Field -->
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="usn">Enter USN <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="usn" name="usn" placeholder="Enter USN" value="<?= set_value('usn'); ?>" required>
+                            <span class="text-danger"><?php echo form_error('usn'); ?></span>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="col-md-3 mt-4">
+                        <button type="submit" class="btn btn-primary btn-block" name="Search" id="Search">Search</button>
                     </div>
                 </div>
-            </div>
-        <?php endif; ?>
+                </form>
 
-        <?php if (validation_errors()): ?>
-            <div class="alert alert-danger mt-4">
-                <?= validation_errors(); ?>
+                <div class="row">
+                    <div class="col-md-12">
+                        <?php if (isset($students)): ?>
+                            <?php
+                                // Table setup
+                                $table_setup = array('table_open' => '<table class="table dt-responsive nowrap table-bordered" border="1">');
+                                $this->table->set_template($table_setup);
+
+                                // Table headings
+                                $print_fields = array('USN', 'Student Name', 'CGPA', 'Action');
+                                $this->table->set_heading($print_fields);
+
+                                $semester_data = $this->admin_model->getStudentMarksBySemester($students->usn, 8);
+                                $cgpa = !empty($semester_data) ? number_format($semester_data[0]->cgpa ?? 0, 2) : 'N/A';
+                                
+                                // Create PDF download URL
+                                $pdf_url = base_url('admin/generate_pdc_pdf/' . base64_encode($students->id));
+
+                                // Filling table row
+                                $result_array = array(
+                                    $students->usn,
+                                    $students->student_name,
+                                    $cgpa,
+                                    "<a href='{$pdf_url}' class='btn btn-primary btn-sm'><i class='fa fa-download'></i> Download PDC</a>"
+                                );
+                                $this->table->add_row($result_array);
+                                
+                                // Generating and displaying the table
+                                echo $this->table->generate();
+                            ?>
+                        <?php elseif (validation_errors()): ?>
+                            <div class="alert alert-danger mt-4">
+                                <?= validation_errors(); ?>
+                            </div>
+                        <?php elseif (isset($_POST['usn'])): ?>
+                            <div class="text-center mt-4">
+                                <img src="<?= base_url(); ?>assets/images/no_data.jpg" class="nodata"><br>
+                                No data found
+                            </div>
+                        <?php endif; ?>
+                    </div><!-- end col-->
+                </div><!-- end row-->
             </div>
-        <?php endif; ?>
+        </div>
     </div>
-        </div>
-        </div>
-        </div>
-        </div>
-        </div>
-
-    <script src="<?php echo base_url(); ?>assets/js/jquery.min.js"></script>
-    <script src="<?php echo base_url(); ?>assets/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+</div>
+<!-- /.content-wrapper -->
