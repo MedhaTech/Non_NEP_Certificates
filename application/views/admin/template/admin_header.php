@@ -28,6 +28,7 @@
     <script src="<?php echo base_url(); ?>assets/js/jquery.min.js"></script>
 </head>
 
+<body>
 <!-- Begin page -->
 <div id="layout-wrapper">
 
@@ -39,7 +40,7 @@
                 <div class="navbar-brand-box d-flex align-items-left">
                     <a href="<?php echo base_url(); ?>admin/dashboard" class="logo">
                         <span>
-                            BMSCE CERTIFY 2008
+                            BMSCE CERTIFY
                         </span>
                     </a>
 
@@ -53,16 +54,11 @@
                 <div class="d-flex align-items-center">
 
                     <div class="dropdown d-inline-block ml-2">
-                        <!-- <button type="button" class="btn header-item noti-icon waves-effect waves-light"
-                            id="page-header-search-dropdown" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false">
-                            <i class="mdi mdi-magnify"></i>
-                        </button> -->
                         <?php echo form_open_multipart('admin/view_studentdetails', 'class="user"'); ?>
                         <div class="input-group">
                             <input type="text" class="form-control bg-light border-0 small" placeholder="Enter USN"
-                                aria-label="Search" id="usn" name="usn" aria-describedby="basic-addon2"
-                                value="<?php echo (set_value('usn')) ? set_value('usn') : $usn; ?>">
+                                aria-label="Search" id="header-usn" name="usn" aria-describedby="basic-addon2"
+                                value="<?php echo (isset($usn) && set_value('usn')) ? set_value('usn') : (isset($usn) ? $usn : ''); ?>" autocomplete="off">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="submit">
                                     <i class="fas fa-search fa-sm"></i>
@@ -70,23 +66,6 @@
                             </div>
                         </div>
                         <?php echo form_close(); ?>
-
-                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-0"
-                            aria-labelledby="page-header-search-dropdown">
-
-                            <form class="p-3">
-                                <div class="form-group m-0">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Search ..."
-                                            aria-label="Recipient's username">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="submit"><i
-                                                    class="mdi mdi-magnify"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
                     </div>
 
 
@@ -101,22 +80,6 @@
                             <i class="mdi mdi-chevron-down d-none d-sm-inline-block"></i>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
-
-                            <!-- <a class="dropdown-item d-flex align-items-center justify-content-between"
-                                href="javascript:void(0)">
-                                <span>Profile</span>
-                                <span>
-                                    <span class="badge badge-pill badge-warning">1</span>
-                                </span>
-                            </a>
-                            <a class="dropdown-item d-flex align-items-center justify-content-between"
-                                href="javascript:void(0)">
-                                Settings
-                            </a>
-                            <a class="dropdown-item d-flex align-items-center justify-content-between"
-                                href="javascript:void(0)">
-                                <span>Lock Account</span>
-                            </a> -->
                             <a class="dropdown-item d-flex align-items-center justify-content-between"
                                 href="<?php echo base_url(); ?>admin/changepassword">
                                 <span>Change Password</span>
@@ -160,11 +123,11 @@
                                     <i class="mdi mdi-file-outline mr-2"></i>Backlogs
                                 </a>
                             </li>
-                            <!-- <li class="nav-item">
-                                <a class="nav-link" href="<?= base_url('admin/backlogs') ?>">
-                                    <i class="mdi mdi-file-download-outline mr-2"></i> Grade card
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?= base_url('admin/get_grade_card') ?>">
+                                    <i class="mdi mdi-file-download-outline mr-2"></i>Grade Card
                                 </a>
-                            </li> -->
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="<?= base_url('admin/transcript') ?>">
                                     <i class="mdi mdi-file-download-outline mr-2"></i>Transcript
@@ -181,3 +144,19 @@
                 </nav>
             </div>
         </div>
+
+    <script>
+    $(document).ready(function() {
+        // Add event listener for the header search field
+        $('#header-usn').on('keyup', function(e) {
+            var usn = $(this).val().trim();
+            
+            // Auto-submit the form if the USN is 10 characters long or enter key is pressed
+            if ((usn.length >= 10 && e.keyCode !== 8) || e.keyCode === 13) {
+                $(this).closest('form').submit();
+            }
+        });
+    });
+    </script>
+</body>
+</html> 
