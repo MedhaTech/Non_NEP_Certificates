@@ -271,9 +271,10 @@ public function getStudentCountByYear() {
    $this->db->distinct();
    $this->db->select('admission_year');
    $this->db->from('students');
-   $this->db->order_by('admission_year', 'ASC');
+   $this->db->order_by('admission_year', 'DESC');
    return $this->db->get()->result();
  }
+
  public function getDistinctValues($column, $table)
 {
     $this->db->distinct();

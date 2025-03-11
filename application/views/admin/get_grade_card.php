@@ -48,7 +48,8 @@
                         </div>
                     </div>
                 </div>
-                
+                <div id="error-message" style="color: red; margin-top: 10px; text-align:center;"></div>
+
                 <div id="grade-card-result" class="mt-4"></div>
             </div>
         </div>
@@ -172,10 +173,15 @@ $(document).ready(function() {
         var usn = $('#usn').val().trim();
         var semesterOption = $('#semester_option').val();
         
-        if (usn === '' || semesterOption === '') {
-            alert('Please select a USN and semester/attempt');
-            return;
-        }
+        const errorMessageDiv = document.getElementById('error-message');
+
+if (usn === '' || semesterOption === '') {
+    errorMessageDiv.textContent = 'Please select a USN and semester/attempt';
+    return;
+} else {
+    errorMessageDiv.textContent = ''; // Clear the error message if inputs are valid
+}
+
         
         // Show loading
         $('#grade-card-result').html('<div class="text-center"><i class="fas fa-spinner fa-spin fa-2x"></i><p class="mt-2">Generating grade card...</p></div>');

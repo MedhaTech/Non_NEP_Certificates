@@ -35,6 +35,12 @@
                         <button type="submit" class="btn btn-primary btn-block" name="Search" id="Search">Search</button>
                     </div>
                 </div>
+                <?php if ($this->session->flashdata('error')): ?>
+    <div class="alert alert-danger">
+        <?= $this->session->flashdata('error'); ?>
+    </div>
+<?php endif; ?>
+
                 </form>
 
                 <div class="row">

@@ -12,14 +12,11 @@
 
         <div class="card">
             <div class="card-body">
-                <?php if ($this->session->flashdata('message')): ?>
-                <div class="alert <?php echo $this->session->flashdata('status'); ?> mt-3">
-                    <?php echo $this->session->flashdata('message'); ?>
-                </div>
-                <?php endif; ?>
+                <!-- Flash message section -->
+               
 
                 <?php echo form_open_multipart('admin/transcript', 'class="user"'); ?>
-                <div class="row ">
+                <div class="row">
                     <div class="col-md-5">
                         <div class="form-group">
                             <label for="usn">Enter Student USN <span class="text-danger">*</span></label>
@@ -56,6 +53,11 @@
                         </div>
                     </div>
                 </div>
+                <?php endif; ?>
+                <?php if ($this->session->flashdata('message')): ?>
+                    <div class="alert <?php echo $this->session->flashdata('status'); ?> mt-3">
+                        <?php echo $this->session->flashdata('message'); ?>
+                    </div>
                 <?php endif; ?>
             </div>
         </div>
