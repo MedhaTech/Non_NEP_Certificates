@@ -1180,7 +1180,7 @@ public function generate_student_pdf($id, $semester)
             $pdf->Cell(50, 10, date('d-M-Y'));
 
             // Handle result year safely
-            $result_year = $course->result_year ?? '0000-00-00';
+            $result_year = $course->result_year ?? 'N/A';
             $pdf->SetFont('Times', 'B', 10);
             $pdf->SetXY(201, 67.2);
             $pdf->Cell(50, 10, date('F Y', strtotime($result_year)), 0, 1);
@@ -2365,7 +2365,7 @@ private function renderPDF($pdf, $student, $marks, $semester, $is_supplementary,
     $pdf->Cell(50, 10, date('d-M-Y'));
 
     // Handle result year safely
-    $result_year = $course->result_year ?? '0';
+    $result_year = $course->result_year ?? 'n/a';
     $pdf->SetFont('Times', 'B', 10);
     $pdf->SetXY(201, 67.2);
     $pdf->Cell(50, 10, date('F Y', strtotime($result_year)), 0, 1);
