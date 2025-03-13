@@ -1180,7 +1180,7 @@ public function generate_student_pdf($id, $semester)
             $pdf->Cell(50, 10, date('d-M-Y'));
 
             // Handle result year safely
-            $result_year = $course->result_year ?? '0000-00-00';
+            $result_year = $course->result_year ?? 'N/A';
             $pdf->SetFont('Times', 'B', 10);
             $pdf->SetXY(201, 67.2);
             $pdf->Cell(50, 10, date('F Y', strtotime($result_year)), 0, 1);
@@ -1211,8 +1211,11 @@ unlink($barcodeFilePath);
             ob_end_clean();
         }
         
-        $pdf->Output('D', $decoded_semester . ' semester Grade Card' . '.pdf');
+        // $pdf->Output('D', $decoded_semester . ' Sem Grade Card' . '.pdf');
         // $pdf->Output();
+        $pdf->Output('D', $student->usn. '_' . ' Sem_' . $decoded_sem . '_Grade Card' . '.pdf');
+
+
      
     } else {
         redirect('admin/timeout');
@@ -2206,6 +2209,7 @@ public function pdc()
             $is_supplementary = base64_decode($is_supplementary);
             $sequence = base64_decode($sequence);
             $is_supplementary = ($is_supplementary == 1);
+            $usn = $student->usn;
         
             if ($this->session->userdata('logged_in')) {
                
@@ -2269,7 +2273,9 @@ public function pdc()
                 $this->renderPDF($pdf, $student, $marks, $decoded_semester, $is_supplementary, $sequence);
         
                 // $pdf->Output();
-        $pdf->Output('D', $decoded_semester . ' semester Grade Card' . '.pdf');
+        // $pdf->Output('D', $decoded_semester . ' semester Grade Card' . '.pdf');
+        $pdf->Output('D', $student->usn. '_' . ' Sem_' . $decoded_semester . '_Grade Card' . '.pdf');
+
 
             } else {
                 redirect('admin/timeout');
@@ -2359,7 +2365,7 @@ private function renderPDF($pdf, $student, $marks, $semester, $is_supplementary,
     $pdf->Cell(50, 10, date('d-M-Y'));
 
     // Handle result year safely
-    $result_year = $course->result_year ?? '0';
+    $result_year = $course->result_year ?? 'n/a';
     $pdf->SetFont('Times', 'B', 10);
     $pdf->SetXY(201, 67.2);
     $pdf->Cell(50, 10, date('F Y', strtotime($result_year)), 0, 1);

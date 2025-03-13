@@ -98,32 +98,78 @@
 <?php endif; ?>
         <div id="deleteContainer"></div>
         <div class="section">
-            <?php for ($semester = 1; $semester <= 8; $semester++): ?>
-            <div class="card">
-                <!-- Semester Header Section with Accordion -->
-                <div class="card-header d-flex justify-content-between align-items-center"
-                    style="background-color:#2f4050; padding: 2px 10px; font-size: 14px;">
-                    <h4 class="card-title text-white mt-2">Semester <?= $semester; ?></h4>
-                    <div class="card-tools d-flex">
-                        <!-- Print button for this semester -->
-                        <?php 
-                            $session = date("F Y", strtotime($course->result_year));
-                            echo anchor('admin/generate_student_pdf/' . base64_encode($students->id) . '/' . base64_encode($semester), 
-                                '<span class="icon"><i class="fas fa-print"></i></span>', 
-                                'class="btn btn-light btn-sm me-2 print-semester" 
-                                data-usn="' . $students->usn . '" 
-                                data-semester="' . $semester . '" 
-                                data-session="' . $session . '"'); 
-                        ?>
-                        <!-- Existing collapse button -->
-                        <button class="btn btn-link text-white" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#semester-<?= $semester; ?>" aria-expanded="false"
-                            aria-controls="semester-<?= $semester; ?>">
-                            <i class="fas fa-chevron-down"></i>
-                        </button>
-                    </div>
-                </div>
+           <!-- Legend Bar -->
+           <div class="alert alert-light border" style="font-size: 14px;">
+   
+    <span class="fw-bold">CR</span> - Credits Registered, 
+    <span class="fw-bold">CE</span> - Credits Earned, 
+    <span class="fw-bold">CCE</span> - Cumulative Credits Earned, 
+    <span class="fw-bold">SGPA</span> - Semester GPA, 
+    <span class="fw-bold">CGPA</span> - Cumulative GPA
+</div>
 
+<?php 
+$cumulative_credits_earned = 0;
+for ($semester = 1; $semester <= 8; $semester++): 
+?>
+    <?php 
+        $total_credits_actual = 0;
+        $total_credits_earned = 0;
+        $sgpa = '';
+        $cgpa = '';
+
+        if (!empty($studentmarks[$semester])) {
+            foreach ($studentmarks[$semester] as $course_summary) {
+                $total_credits_actual += $course_summary->credits_actual ?? 0;
+                $total_credits_earned += $course_summary->credits_earned ?? 0;
+                $sgpa = $course_summary->sgpa ?? '';
+                $cgpa = $course_summary->cgpa ?? '';
+            }
+        }
+
+        $cumulative_credits_earned = $total_credits_earned;
+        $session = date("F Y", strtotime($course->result_year));
+    ?>
+
+    <div class="card mb-3">
+        <!-- Semester Header -->
+        <div class="card-header d-flex justify-content-between align-items-center flex-wrap"
+            style="background-color:#2f4050; padding: 5px 15px;">
+            
+            <!-- Left: Semester Title -->
+            <div class="text-white fw-bold" style="font-size: 16px;">
+                Semester <?= $semester; ?>
+            </div>
+
+            <!-- Center: Summary Info -->
+            <div class="text-center text-white" style="flex: 1; font-size: 14px;">
+                CR: <?= $total_credits_actual; ?> &nbsp;
+                CE: <?= $total_credits_earned; ?> &nbsp;
+                CCE: <?= $cumulative_credits_earned; ?> &nbsp;
+                SGPA: <?= number_format((float)$sgpa, 2); ?> &nbsp;
+                CGPA: <?= number_format((float)$cgpa, 2); ?>
+            </div>
+
+            <!-- Right: Tools -->
+            <div class="card-tools d-flex">
+                <!-- Print button -->
+                <?= anchor(
+                    'admin/generate_student_pdf/' . base64_encode($students->id) . '/' . base64_encode($semester), 
+                    '<i class="fas fa-print"></i>', 
+                    'class="btn btn-light btn-sm me-2 print-semester" 
+                    data-usn="' . $students->usn . '" 
+                    data-semester="' . $semester . '" 
+                    data-session="' . $session . '"'
+                ); ?>
+
+                <!-- Collapse button -->
+                <button class="btn btn-link text-white" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#semester-<?= $semester; ?>" aria-expanded="false"
+                    aria-controls="semester-<?= $semester; ?>">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+        </div>
                 <!-- Semester Table Section wrapped in a collapse div -->
                 <div id="semester-<?= $semester; ?>" class="collapse">
                     <div class="table-responsive">
@@ -155,6 +201,10 @@
                                     <td><?= $course->see; ?></td>
                                     <td><?= $course->grade; ?></td>
                                     <td><?= $course->grade_points; ?></td>
+                                    <!-- <td><?= $course->credits_earned	; ?></td>
+                                    <td><?= $course->credits_actual; ?></td>
+                                    <td><?= $course->cgpa; ?></td>
+                                    <td><?= $course->sgpa; ?></td> -->
                                     <td>
                                         <a href="javascript:void(0);" class="btn btn-warning btn-sm" data-toggle="modal"
                                             data-target="#editMarksModal<?= $course->course_code; ?>">

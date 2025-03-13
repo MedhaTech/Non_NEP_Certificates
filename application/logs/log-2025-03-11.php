@@ -14918,3 +14918,31 @@ ERROR - 2025-03-11 17:33:13 --> Severity: Warning --> Undefined variable $variab
 ERROR - 2025-03-11 17:33:13 --> Severity: Warning --> Undefined variable $variable D:\Xampp\htdocs\Non_NEP_Certificates\application\libraries\Fpdf.php 1275
 INFO - 2025-03-11 17:33:13 --> Final output sent to browser
 DEBUG - 2025-03-11 17:33:13 --> Total execution time: 0.1559
+INFO - 2025-03-11 13:47:07 --> Config Class Initialized
+INFO - 2025-03-11 13:47:07 --> Hooks Class Initialized
+DEBUG - 2025-03-11 13:47:07 --> UTF-8 Support Enabled
+INFO - 2025-03-11 13:47:07 --> Utf8 Class Initialized
+INFO - 2025-03-11 13:47:07 --> URI Class Initialized
+INFO - 2025-03-11 13:47:07 --> Router Class Initialized
+INFO - 2025-03-11 13:47:07 --> Output Class Initialized
+INFO - 2025-03-11 13:47:07 --> Security Class Initialized
+DEBUG - 2025-03-11 13:47:07 --> Global POST, GET and COOKIE data sanitized
+INFO - 2025-03-11 13:47:07 --> Input Class Initialized
+INFO - 2025-03-11 13:47:07 --> Language Class Initialized
+INFO - 2025-03-11 13:47:07 --> Loader Class Initialized
+INFO - 2025-03-11 13:47:07 --> Helper loaded: url_helper
+INFO - 2025-03-11 13:47:07 --> Helper loaded: json_output_helper
+INFO - 2025-03-11 13:47:07 --> Helper loaded: file_helper
+INFO - 2025-03-11 13:47:07 --> Helper loaded: custom_helper
+INFO - 2025-03-11 13:47:07 --> Database Driver Class Initialized
+DEBUG - 2025-03-11 13:47:07 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2025-03-11 13:47:07 --> Session: Class initialized using 'files' driver.
+INFO - 2025-03-11 13:47:07 --> Table Class Initialized
+INFO - 2025-03-11 13:47:07 --> Helper loaded: form_helper
+INFO - 2025-03-11 13:47:07 --> Form Validation Class Initialized
+INFO - 2025-03-11 13:47:07 --> Controller Class Initialized
+INFO - 2025-03-11 13:47:07 --> Model "Admin_model" initialized
+DEBUG - 2025-03-11 13:47:07 --> Table class already loaded. Second attempt ignored.
+DEBUG - 2025-03-11 13:47:07 --> Form_validation class already loaded. Second attempt ignored.
+INFO - 2025-03-11 18:17:08 --> Final output sent to browser
+DEBUG - 2025-03-11 18:17:08 --> Total execution time: 1.0415
