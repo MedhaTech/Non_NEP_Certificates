@@ -28,12 +28,20 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="admission_year">Admission Year <span class="text-danger">*</span></label>
-                                    <select name="admission_year" class="form-control" id="admission_year">
-                                        <option value="">Select Admission Year</option>
-                                        <?php foreach ($admission_years as $year) { ?>
-                                            <option value="<?= $year->admission_year ?>"><?= $year->admission_year ?></option>
-                                        <?php } ?>
-                                    </select>
+                                    <?php
+// Sort admission years in descending order
+usort($admission_years, function($a, $b) {
+    return $b->admission_year - $a->admission_year;
+});
+?>
+
+<select name="admission_year" class="form-control" id="admission_year">
+    <option value="">Select Admission Year</option>
+    <?php foreach ($admission_years as $year) { ?>
+        <option value="<?= $year->admission_year ?>"><?= $year->admission_year ?></option>
+    <?php } ?>
+</select>
+
                                     <span class="text-danger"><?php echo form_error('admission_year'); ?></span>
                                 </div>
                             </div>
