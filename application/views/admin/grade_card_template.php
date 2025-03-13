@@ -114,7 +114,8 @@
                     <tbody>
                         <?php $sno = 1; ?>
                         <?php 
-                        $totalCredits = 0;
+                        $totalCredits_actual = 0;
+                        $totalCredits_earned = 0;
                         $totalGradePoints = 0;
                         foreach ($marks as $mark): ?>
                             <tr>
@@ -128,7 +129,8 @@
                                 <td><?= $mark->grade_points; ?></td>
                             </tr>
                             <?php 
-                            $totalCredits += $mark->credits_earned;
+                            $totalCredit_earned += $mark->credits_earned;
+                            $totalCredits_actual += $mark->credits_earned;
                             $totalGradePoints += ($mark->grade_points * $mark->credits_earned);
                             ?>
                         <?php endforeach; ?>
@@ -140,12 +142,16 @@
                 <div class="col-md-6">
                     <table class="table table-bordered">
                         <tr>
-                            <th>Total Credits</th>
-                            <td><?= $totalCredits ?></td>
+                            <th>Total Credits Registered</th>
+                            <td><?= $totalCredits_actual ?></td>
+                        </tr>
+                        <tr>
+                            <th>Total Credits Earned</th>
+                            <td><?= $totalCredit_earned ?></td>
                         </tr>
                         <tr>
                             <th>SGPA</th>
-                            <td><?= $totalCredits > 0 ? number_format($totalGradePoints / $totalCredits, 2) : 'N/A' ?></td>
+                            <td><?= isset($marks[0]->sgpa) ? $marks[0]->cgpa : 'N/A' ?></td>
                         </tr>
                         <tr>
                             <th>CGPA</th>

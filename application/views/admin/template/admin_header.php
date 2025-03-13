@@ -145,18 +145,6 @@
             </div>
         </div>
 
-    <script>
-    $(document).ready(function() {
-        // Add event listener for the header search field
-        $('#header-usn').on('keyup', function(e) {
-            var usn = $(this).val().trim();
-            
-            // Auto-submit the form if the USN is 10 characters long or enter key is pressed
-            if ((usn.length >= 10 && e.keyCode !== 8) || e.keyCode === 13) {
-                $(this).closest('form').submit();
-            }
-        });
-    });
-    </script>
+  
 </body>
 </html> 

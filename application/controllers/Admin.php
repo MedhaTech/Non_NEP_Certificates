@@ -1211,8 +1211,11 @@ unlink($barcodeFilePath);
             ob_end_clean();
         }
         
-        $pdf->Output('D', $decoded_semester . ' semester Grade Card' . '.pdf');
+        // $pdf->Output('D', $decoded_semester . ' Sem Grade Card' . '.pdf');
         // $pdf->Output();
+        $pdf->Output('D', $student->usn. '_' . ' Sem_' . $decoded_sem . '_Grade Card' . '.pdf');
+
+
      
     } else {
         redirect('admin/timeout');
@@ -2206,6 +2209,7 @@ public function pdc()
             $is_supplementary = base64_decode($is_supplementary);
             $sequence = base64_decode($sequence);
             $is_supplementary = ($is_supplementary == 1);
+            $usn = $student->usn;
         
             if ($this->session->userdata('logged_in')) {
                
@@ -2269,7 +2273,9 @@ public function pdc()
                 $this->renderPDF($pdf, $student, $marks, $decoded_semester, $is_supplementary, $sequence);
         
                 // $pdf->Output();
-        $pdf->Output('D', $decoded_semester . ' semester Grade Card' . '.pdf');
+        // $pdf->Output('D', $decoded_semester . ' semester Grade Card' . '.pdf');
+        $pdf->Output('D', $student->usn. '_' . ' Sem_' . $decoded_semester . '_Grade Card' . '.pdf');
+
 
             } else {
                 redirect('admin/timeout');
