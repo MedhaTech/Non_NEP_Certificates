@@ -3,9 +3,16 @@
         style="background-color:#2f4050; padding: 2px 10px; font-size: 14px;">
         <h3 class="card-title text-white mt-2">
             <?php if ($is_supplementary): ?>
-                Semester <?= $semester ?> - <?= $semester_type ?> (S<?= $sequence ?>, <?= $exam_period ?>)
+                Supplementary Attempt <?= $sequence ?>
+                <?php 
+                $semesters = explode(',', $semester);
+                $semesterText = count($semesters) > 1 ? 
+                    'Semesters ' . implode(', ', $semesters) : 
+                    'Semester ' . $semester;
+                ?>
+                
             <?php else: ?>
-                Semester <?= $semester ?> - <?= $semester_type ?> (<?= $exam_period ?>)
+                Semester <?= $semester ?> <?= $semester_type ?>
             <?php endif; ?>
         </h3>
         <div class="card-tools d-flex">

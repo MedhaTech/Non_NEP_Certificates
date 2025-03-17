@@ -113,9 +113,9 @@ $(document).ready(function() {
         selectElement.empty();
         selectElement.append('<option value="">Select a Semester/Attempt</option>');
         
-        // Regular semesters first (1-8)
+        // Regular semesters first
         var regularSemesters = options.filter(function(option) {
-            return !option.label.includes('S');
+            return option.type === 'regular';
         });
         
         // Sort regular semesters numerically
@@ -123,45 +123,35 @@ $(document).ready(function() {
             return parseInt(a.semester) - parseInt(b.semester);
         });
         
-        // Format and add regular semesters to dropdown with Odd/Even labels
         if (regularSemesters.length > 0) {
             selectElement.append('<optgroup label="Regular Semesters">');
             
             $.each(regularSemesters, function(index, option) {
-                var semesterType = parseInt(option.semester) % 2 === 1 ? 'Odd' : 'Even';
-                var formattedLabel = 'Semester ' + option.semester + ' - ' + semesterType + ' (' + option.year + ')';
+               
+                var formattedLabel = 'Semester ' + option.semester + ' (' + option.year + ')';
                 selectElement.append('<option value="' + option.label + '">' + formattedLabel + '</option>');
             });
             
             selectElement.append('</optgroup>');
         }
         
-        // Add supplementary semesters
-        var supplementarySemesters = options.filter(function(option) {
-            return option.label.includes('S');
+        // Supplementary attempts
+        var supplementaryAttempts = options.filter(function(option) {
+            return option.type === 'supplementary';
         });
         
-        if (supplementarySemesters.length > 0) {
-            // Sort supplementary semesters
-            supplementarySemesters.sort(function(a, b) {
-                var aSem = parseInt(a.semester);
-                var bSem = parseInt(b.semester);
-                
-                if (aSem === bSem) {
-                    return parseInt(a.sequence) - parseInt(b.sequence);
-                }
-                
-                return aSem - bSem;
-            });
-            
+        if (supplementaryAttempts.length > 0) {
             selectElement.append('<optgroup label="Supplementary Attempts">');
             
-            // Format and add supplementary semesters to dropdown
-            $.each(supplementarySemesters, function(index, option) {
-                var semesterType = parseInt(option.semester) % 2 === 1 ? 'Odd' : 'Even';
-                var formattedLabel = 'Semester ' + option.semester + ' - ' + semesterType + 
-                                     ' (Supplementary ' + option.sequence + ', ' + option.year + ')';
-                selectElement.append('<option value="' + option.label + '">' + formattedLabel + '</option>');
+            supplementaryAttempts.forEach(function(option) {
+                var semesterList = option.semesters.map(function(sem) {
+                    return 'Sem ' + sem;
+                }).join(', ');
+                
+                var formattedLabel = 'Supplementary ' + option.sequence + 
+                                   ' (' + option.year + ')  ' ;
+                selectElement.append('<option value="' + option.label + '">' + 
+                                   formattedLabel + '</option>');
             });
             
             selectElement.append('</optgroup>');
