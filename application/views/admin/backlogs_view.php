@@ -14,162 +14,153 @@
 
             <div class="card">
                 <div class="card-body">
-                    <!-- Flash message (if any) -->
                     <?php if ($this->session->flashdata('message')): ?>
                         <div class="alert <?php echo $this->session->flashdata('status'); ?> mt-3">
                             <?php echo $this->session->flashdata('message'); ?>
                         </div>
                     <?php endif; ?>
 
-                    <!-- Filter Form (Aligning with your teammate's design) -->
+                    <!-- Filter Form -->
                     <form class="user" id="backlog_filter_form">
                         <div class="row">
-                            <!-- Admission Year Filter -->
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="admission_year">Admission Year <span class="text-danger">*</span></label>
                                     <?php
-// Sort admission years in descending order
-usort($admission_years, function($a, $b) {
-    return $b->admission_year - $a->admission_year;
-});
-?>
-
-<select name="admission_year" class="form-control" id="admission_year">
-    <option value="">Select Admission Year</option>
-    <?php foreach ($admission_years as $year) { ?>
-        <option value="<?= $year->admission_year ?>"><?= $year->admission_year ?></option>
-    <?php } ?>
-</select>
-
+                                    usort($admission_years, function($a, $b) {
+                                        return $b->admission_year - $a->admission_year;
+                                    });
+                                    ?>
+                                    <select name="admission_year" class="form-control" id="admission_year">
+                                        <option value="">Select Admission Year</option>
+                                        <?php foreach ($admission_years as $year) { ?>
+                                            <option value="<?= $year->admission_year ?>"><?= $year->admission_year ?></option>
+                                        <?php } ?>
+                                    </select>
                                     <span class="text-danger"><?php echo form_error('admission_year'); ?></span>
                                 </div>
                             </div>
 
-                            <!-- Submit Button -->
                             <div class="col-md-3">
                                 <button type="submit" class="btn btn-primary btn-block mt-4" id="FilterBtn">Filter</button>
                             </div>
                         </div>
                     </form>
 
-                    <!-- No Data Message Section (Initially shown) -->
+                    <!-- No Data Message -->
                     <div id="no_data_message" class="text-center">
                         <img src="<?= base_url('assets/images/no_data.jpg') ?>" alt="No Data" class="img-fluid" />
                         <p>Please select the year</p>
                     </div>
 
-                    <!-- Table Section (Initially hidden) -->
+                    <!-- Table Section -->
                     <div id="table_section" style="display: none;">
                         <div class="row mt-4">
                             <div class="col-md-12">
-                            <div class="table-responsive">
-
-                                <!-- Change the table ID to "backlog-datatable" -->
-<table class="table table-bordered dt-responsive nowrap" id="backlog-datatable">
-    <thead class="thead-dark">
-        <tr>
-            <th>USN</th>
-            <th>Name</th>
-            <th>Admission Year</th>
-            <th>Programme</th>
-            <th>Branch</th>
-            <th>Subject Code</th>
-            <th>Grade</th>
-        </tr>
-    </thead>
-    <tbody>
-        <!-- Data will be inserted here by AJAX -->
-    </tbody>
-</table>
-
+                                <div class="table-responsive">
+                                    <table class="table table-bordered dt-responsive nowrap" id="backlog-datatable">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th>USN</th>
+                                                <th>Name</th>
+                                                <th>Admission Year</th>
+                                                <th>Programme</th>
+                                                <th>Branch</th>
+                                                <th>Subject Code</th>
+                                                <th>Grade</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Filled dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                                        </div>
                         </div>
                     </div>
+
                 </div>
             </div>
+        </div>
+    </div>
 
+    <!-- Loader Popup -->
+    <div id="loader-popup">
+        <div class="loader-content">
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="mt-2 mb-0">Loading, please wait...</p>
         </div>
     </div>
 
 
-<script>
-    $(document).ready(function() {
-    // Initially hide the image and show the "Please select the year" text
-    $('#no_data_message img').hide();
-    $('#no_data_message p').text("Please select the year").show();
-    $('#table_section').hide();
-
-    // Initialize DataTable with new ID "backlog-datatable"
-    var table = $('#backlog-datatable').DataTable({
-        "paging": true,
-        "lengthChange": true,
-        "searching": true,
-        "ordering": true,
-        "info": true,
-        "autoWidth": false,
-        "responsive": true,
-        "pageLength": 10,
-        "language": {
-            "paginate": {
-                "previous": "<", 
-                "next": ">"
-            }
-        }
-    });
-
-    // Filter form submit (AJAX request)
-    $('#backlog_filter_form').submit(function(e) {
-        e.preventDefault();
-        var admission_year = $('#admission_year').val();
-
-        if (!admission_year) {
+    <script>
+        $(document).ready(function () {
             $('#no_data_message img').hide();
             $('#no_data_message p').text("Please select the year").show();
             $('#table_section').hide();
-            return;
-        }
 
-        // AJAX request to fetch backlog data
-        $.ajax({
-            url: "<?= base_url('admin/fetch_backlogs') ?>",
-            type: "POST",
-            data: { admission_year: admission_year },
-            dataType: "json",
-            success: function(data) {
-                table.clear().draw(); // Clear existing data
+            let table;
 
-                if (data.length > 0) {
-                    $.each(data, function(index, student) {
-                        table.row.add([
-                            student.usn,
-                            student.student_name,
-                            student.admission_year,
-                            student.programme,
-                            student.branch,
-                            student.course_code,
-                            student.grade
-                        ]).draw();
-                    });
+            $('#backlog_filter_form').on('submit', function (e) {
+                e.preventDefault();
+                const admission_year = $('#admission_year').val();
 
-                    $('#no_data_message').hide();
-                    $('#table_section').show();
-                } else {
-                    // No backlog found, show the image and message
-                    $('#table_section').hide();
+                if (!admission_year) {
                     $('#no_data_message img').show();
-                    $('#no_data_message p').text("No backlogs found").show();
-                    $('#no_data_message').show();
+                    $('#no_data_message p').text("Please select the year").show();
+                    $('#table_section').hide();
+                    return;
                 }
-            }
+
+                $('#no_data_message').hide();
+                $('#table_section').show();
+
+                if ($.fn.DataTable.isDataTable('#backlog-datatable')) {
+                    table.ajax.reload();
+                } else {
+                    table = $('#backlog-datatable').DataTable({
+                        "processing": true,
+                        "serverSide": true,
+                        "ajax": {
+                            "url": "<?= base_url('admin/fetch_backlogs') ?>",
+                            "type": "POST",
+                            "data": function (d) {
+                                d.admission_year = $('#admission_year').val();
+                            },
+                            "beforeSend": function () {
+                                $('#loader-popup').fadeIn();
+                            },
+                            "complete": function () {
+                                $('#loader-popup').fadeOut();
+                            }
+                        },
+                        "columns": [
+                            { "data": "usn" },
+                            { "data": "student_name" },
+                            { "data": "admission_year" },
+                            { "data": "programme" },
+                            { "data": "branch" },
+                            { "data": "course_code" },
+                            { "data": "grade" }
+                        ],
+                        "pageLength": 10,
+                        "lengthChange": true,
+                        "searching": true,
+                        "ordering": true,
+                        "responsive": true,
+                        "language": {
+                            "paginate": {
+                                "previous": "<",
+                                "next": ">"
+                            },
+                            "emptyTable": "No backlogs found for selected year",
+                            "processing": "" // Remove default text
+                        }
+                    });
+                }
+            });
         });
-    });
-});
-
-</script>
-
-
+    </script>
 </body>
 
 </html>

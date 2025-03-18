@@ -10,15 +10,11 @@
                     'Semesters ' . implode(', ', $semesters) : 
                     'Semester ' . $semester;
                 ?>
-                
             <?php else: ?>
                 Semester <?= $semester ?> <?= $semester_type ?>
             <?php endif; ?>
         </h3>
         <div class="card-tools d-flex">
-            <!-- <a href="<?= base_url('admin/print_grade_card?usn=' . base64_encode($student->usn) . '&semester=' . base64_encode($semester) . '&is_supplementary=' . ($is_supplementary ? 'true' : 'false') . '&sequence=' . ($is_supplementary ? $sequence : '')) ?>" class="btn btn-light btn-sm">
-                <i class="fas fa-print"></i> Print
-            </a> -->
             <a href="<?= base_url('admin/generate_grade_card_pdf/' . base64_encode($student->usn) . '/' . base64_encode($semester) . '/' . base64_encode($is_supplementary ? '1' : '0') . '/' . base64_encode($is_supplementary && !empty($sequence) ? $sequence : '0')) ?>" class="btn btn-light btn-sm">
                 <i class="fas fa-file-pdf"></i> Generate PDF
             </a>
@@ -208,17 +204,14 @@ $(document).ready(function() {
     $('#print-grade-card').click(function() {
         var printContents = document.getElementById('grade-card-content').innerHTML;
         var originalContents = document.body.innerHTML;
-        
+
         document.body.innerHTML = '<div class="container">' + printContents + '</div>';
-        
         window.print();
-        
         document.body.innerHTML = originalContents;
-        
-        // Log the download
+
         var usn = '<?= $student->usn ?>';
         var details = 'Grade Card (Sem: <?= $semester ?><?= $is_supplementary ? ", Supplementary Attempt: $sequence" : ", Regular" ?>)';
-        
+
         $.ajax({
             url: "<?= site_url('admin/update_certificate_log') ?>",
             type: "POST",
@@ -234,5 +227,10 @@ $(document).ready(function() {
             }
         });
     });
+
+    // Remove spaces in USN input if present
+    $('#usn').on('input', function() {
+        this.value = this.value.replace(/\s+/g, '');
+    });
 });
-</script> 
+</script>

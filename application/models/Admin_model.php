@@ -63,7 +63,14 @@ class Admin_model extends CI_Model
     $this->db->where('usn', $usn);
     return $this->db->get($tableName);
   }
-
+  public function getStudentMarksOrderedByTorder($usn)
+  {
+      $this->db->where('usn', $usn);
+      $this->db->order_by('torder'); // Order by torder ascending
+      return $this->db->get('students_marks');
+  }
+  
+  
 
   function getDetailsbyfield2($id1, $value1, $id2, $value2, $tableName)
   {
@@ -255,16 +262,54 @@ public function getStudentCountByYear() {
     return $this->db->get()->result();
 }
 
+public function get_failed_students_paginated($admission_year, $search = '', $start = 0, $length = 10, $order_column = 'students.usn', $order_dir = 'asc')
+{
+    $this->db->select('students.usn, students.student_name, students.admission_year, students.programme, students.branch, students_marks.course_code, students_marks.grade');
+    $this->db->from('students');
+    $this->db->join('students_marks', 'students.usn = students_marks.usn');
+    $this->db->where('students_marks.grade', 'F');
+    $this->db->where('students.admission_year', $admission_year);
 
- public function get_failed_students($admission_year)
- {
-   $this->db->select('students.usn, students.student_name, students.admission_year, students.programme, students.branch, students_marks.course_code, students_marks.grade');
-   $this->db->from('students');
-   $this->db->join('students_marks', 'students.usn = students_marks.usn');
-   $this->db->where('students_marks.grade', 'F');
-   $this->db->where('students.admission_year', $admission_year);
-   return $this->db->get()->result();
- }
+    if (!empty($search)) {
+        $this->db->group_start();
+        $this->db->like('students.usn', $search);
+        $this->db->or_like('students.student_name', $search);
+        $this->db->or_like('students_marks.course_code', $search);
+        $this->db->group_end();
+    }
+
+    $this->db->order_by($order_column, $order_dir);
+    $this->db->limit($length, $start);
+
+    return $this->db->get()->result();
+}
+public function count_all_failed_students($admission_year)
+{
+    $this->db->from('students');
+    $this->db->join('students_marks', 'students.usn = students_marks.usn');
+    $this->db->where('students_marks.grade', 'F');
+    $this->db->where('students.admission_year', $admission_year);
+    return $this->db->count_all_results();
+}
+
+public function count_filtered_failed_students($admission_year, $search = '')
+{
+    $this->db->from('students');
+    $this->db->join('students_marks', 'students.usn = students_marks.usn');
+    $this->db->where('students_marks.grade', 'F');
+    $this->db->where('students.admission_year', $admission_year);
+
+    if (!empty($search)) {
+        $this->db->group_start();
+        $this->db->like('students.usn', $search);
+        $this->db->or_like('students.student_name', $search);
+        $this->db->or_like('students_marks.course_code', $search);
+        $this->db->group_end();
+    }
+
+    return $this->db->count_all_results();
+}
+
 
  public function get_unique_admission_years()
  {
@@ -512,5 +557,48 @@ function getStudentSupplementaryMarks($usn, $sequence)
     
     return $results;
 }
+public function updateData($table, $data, $id)
+{
+    $this->db->where('id', $id);
+    return $this->db->update($table, $data);
+}
+
+// Get existing serial from student_marks table
+public function getPdcSerialFromMarks($usn)
+{
+    $this->db->select('pdc_serial');
+    $this->db->from('students_marks');
+    $this->db->where('usn', $usn);
+    $this->db->where('pdc_serial IS NOT NULL');
+    $this->db->limit(1);
+    $query = $this->db->get();
+    return $query->num_rows() ? $query->row()->pdc_serial : false;
+}
+
+// Get the last sequence number used
+public function getLastPdcSerialNumberFromMarks($programme, $year)
+{
+    $this->db->select('pdc_serial');
+    $this->db->from('students_marks');
+    $this->db->like('pdc_serial', "{$programme}-{$year}-", 'after');
+    $this->db->order_by('pdc_serial', 'DESC');
+    $this->db->limit(1);
+    $query = $this->db->get();
+
+    if ($query->num_rows()) {
+        $serial_parts = explode('-', $query->row()->pdc_serial);
+        return intval(end($serial_parts));
+    }
+
+    return 0;
+}
+
+// Update all rows for a student with the PDC serial
+public function setPdcSerialInMarks($usn, $pdc_serial)
+{
+    $this->db->where('usn', $usn);
+    $this->db->update('students_marks', ['pdc_serial' => $pdc_serial]);
+}
+
 
 }

@@ -7,8 +7,7 @@
     <title><?= $page_title; ?> | BMSCE CERTIFY</title>
 
     <!-- App favicon -->
-    <link rel="shortcut icon" type="image/x-icon"
-        href="<?php echo base_url(); ?>assets/images/BMS_College_of_Engineering.png">
+    <link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url(); ?>assets/images/BMS_College_of_Engineering.png">
 
     <!-- App css -->
     <link href="<?php echo base_url(); ?>assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -17,24 +16,51 @@
     <link href="<?php echo base_url(); ?>assets/css/custom.css" rel="stylesheet" type="text/css" />
 
     <!-- Plugins css -->
-    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/datatables/dataTables.bootstrap4.css"
-        rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/datatables/responsive.bootstrap4.css"
-        rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/datatables/buttons.bootstrap4.css"
-        rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/datatables/select.bootstrap4.css"
-        rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/datatables/dataTables.bootstrap4.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/datatables/responsive.bootstrap4.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/datatables/buttons.bootstrap4.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/datatables/select.bootstrap4.css">
+
     <script src="<?php echo base_url(); ?>assets/js/jquery.min.js"></script>
+
+    <style>
+       #global-loader {
+    position: fixed;
+    z-index: 9999;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5); /* Dim the background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loader-container img {
+    width: 70px;
+    height: 70px;
+}
+
+    </style>
 </head>
 
 <body>
-<!-- Begin page -->
-<div id="layout-wrapper">
+    <!-- Global Loader -->
+    <div id="global-loader">
+        <div class="loader-container">
+            <img src="<?= base_url('assets/images/loader.gif'); ?>" alt="Loading...">
+        </div>
+    </div>
 
-    <div class="main-content">
+    <!-- Begin page -->
+    <div id="layout-wrapper">
 
-        <header id="page-topbar">
+        <div class="main-content">
+
+            <header id="page-topbar">
+                <!-- rest of your header remains unchanged -->
+
             <div class="navbar-header">
                 <!-- LOGO -->
                 <div class="navbar-brand-box d-flex align-items-left">
