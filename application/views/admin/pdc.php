@@ -109,13 +109,6 @@
     </div>
 </div>
 
-<!-- Loader Popup -->
-<div id="loader-popup">
-    <div class="loader-content">
-        <div class="spinner-border text-primary" role="status"></div>
-        <p class="mt-2 mb-0">Loading, please wait...</p>
-    </div>
-</div>
 
 <!-- Styles -->
 
