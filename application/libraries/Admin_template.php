@@ -13,4 +13,4 @@ class Admin_template {
     }
 }
  
-/* End of file Template.php */aad
+/* End of file Template.php */
