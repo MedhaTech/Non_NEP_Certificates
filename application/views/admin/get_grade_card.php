@@ -109,7 +109,6 @@ $(document).ready(function() {
     
     // Function to populate semester dropdown
     function populateSemesterOptions(options) {
-
         var selectElement = $('#semester_option');
         selectElement.empty();
         selectElement.append('<option value="">Select a Semester/Attempt</option>');
@@ -117,30 +116,12 @@ $(document).ready(function() {
         // Regular semesters first
         var regularSemesters = options.filter(function(option) {
             return option.type === 'regular';
-
         });
-
-        selectElement.append('</optgroup>');
-    }
-
-    // Add supplementary semesters
-    var supplementarySemesters = options.filter(function(option) {
-        return option.label.includes('S');
-    });
-
-    if (supplementarySemesters.length > 0) {
-        // Sort supplementary semesters
-        supplementarySemesters.sort(function(a, b) {
-            var aSem = parseInt(a.semester);
-            var bSem = parseInt(b.semester);
-
-            if (aSem === bSem) {
-                return parseInt(a.sequence) - parseInt(b.sequence);
-            }
-
-            return aSem - bSem;
+        
+        // Sort regular semesters numerically
+        regularSemesters.sort(function(a, b) {
+            return parseInt(a.semester) - parseInt(b.semester);
         });
-
         
         if (regularSemesters.length > 0) {
             selectElement.append('<optgroup label="Regular Semesters">');
@@ -175,10 +156,7 @@ $(document).ready(function() {
             
             selectElement.append('</optgroup>');
         }
-
     }
-}
-
     
     // Generate grade card button click
     $('#generate-btn').on('click', function() {
