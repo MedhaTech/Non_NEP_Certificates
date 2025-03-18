@@ -109,33 +109,15 @@ $(document).ready(function() {
     
     // Function to populate semester dropdown
     function populateSemesterOptions(options) {
-    var selectElement = $('#semester_option');
-    selectElement.empty();
-    selectElement.append('<option value="">Select a Semester/Attempt</option>');
 
-    // Filter only options with a valid year
-    options = options.filter(function(option) {
-        return option.year && option.year !== '0000' && option.year !== '0';
-    });
+        var selectElement = $('#semester_option');
+        selectElement.empty();
+        selectElement.append('<option value="">Select a Semester/Attempt</option>');
+        
+        // Regular semesters first
+        var regularSemesters = options.filter(function(option) {
+            return option.type === 'regular';
 
-    // Regular semesters first (1-8)
-    var regularSemesters = options.filter(function(option) {
-        return !option.label.includes('S');
-    });
-
-    // Sort regular semesters numerically
-    regularSemesters.sort(function(a, b) {
-        return parseInt(a.semester) - parseInt(b.semester);
-    });
-
-    // Format and add regular semesters to dropdown with Odd/Even labels
-    if (regularSemesters.length > 0) {
-        selectElement.append('<optgroup label="Regular Semesters">');
-
-        $.each(regularSemesters, function(index, option) {
-            var semesterType = parseInt(option.semester) % 2 === 1 ? 'Odd' : 'Even';
-            var formattedLabel = 'Semester ' + option.semester + ' - ' + semesterType + ' (' + option.year + ')';
-            selectElement.append('<option value="' + option.label + '">' + formattedLabel + '</option>');
         });
 
         selectElement.append('</optgroup>');
@@ -159,16 +141,41 @@ $(document).ready(function() {
             return aSem - bSem;
         });
 
-        selectElement.append('<optgroup label="Supplementary Attempts">');
-
-        $.each(supplementarySemesters, function(index, option) {
-            var semesterType = parseInt(option.semester) % 2 === 1 ? 'Odd' : 'Even';
-            var formattedLabel = 'Semester ' + option.semester + ' - ' + semesterType +
-                                 ' (Supplementary ' + option.sequence + ', ' + option.year + ')';
-            selectElement.append('<option value="' + option.label + '">' + formattedLabel + '</option>');
+        
+        if (regularSemesters.length > 0) {
+            selectElement.append('<optgroup label="Regular Semesters">');
+            
+            $.each(regularSemesters, function(index, option) {
+               
+                var formattedLabel = 'Semester ' + option.semester + ' (' + option.year + ')';
+                selectElement.append('<option value="' + option.label + '">' + formattedLabel + '</option>');
+            });
+            
+            selectElement.append('</optgroup>');
+        }
+        
+        // Supplementary attempts
+        var supplementaryAttempts = options.filter(function(option) {
+            return option.type === 'supplementary';
         });
+        
+        if (supplementaryAttempts.length > 0) {
+            selectElement.append('<optgroup label="Supplementary Attempts">');
+            
+            supplementaryAttempts.forEach(function(option) {
+                var semesterList = option.semesters.map(function(sem) {
+                    return 'Sem ' + sem;
+                }).join(', ');
+                
+                var formattedLabel = 'Supplementary ' + option.sequence + 
+                                   ' (' + option.year + ')  ' ;
+                selectElement.append('<option value="' + option.label + '">' + 
+                                   formattedLabel + '</option>');
+            });
+            
+            selectElement.append('</optgroup>');
+        }
 
-        selectElement.append('</optgroup>');
     }
 }
 

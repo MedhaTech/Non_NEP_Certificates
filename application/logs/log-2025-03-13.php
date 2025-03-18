@@ -4008,3 +4008,815 @@ DEBUG - 2025-03-13 07:24:56 --> Table class already loaded. Second attempt ignor
 DEBUG - 2025-03-13 07:24:56 --> Form_validation class already loaded. Second attempt ignored.
 INFO - 2025-03-13 11:54:56 --> Final output sent to browser
 DEBUG - 2025-03-13 11:54:56 --> Total execution time: 0.1720
+INFO - 2025-03-13 09:07:28 --> Config Class Initialized
+INFO - 2025-03-13 09:07:28 --> Hooks Class Initialized
+DEBUG - 2025-03-13 09:07:28 --> UTF-8 Support Enabled
+INFO - 2025-03-13 09:07:28 --> Utf8 Class Initialized
+INFO - 2025-03-13 09:07:28 --> URI Class Initialized
+INFO - 2025-03-13 09:07:28 --> Router Class Initialized
+INFO - 2025-03-13 09:07:28 --> Output Class Initialized
+INFO - 2025-03-13 09:07:28 --> Security Class Initialized
+DEBUG - 2025-03-13 09:07:28 --> Global POST, GET and COOKIE data sanitized
+INFO - 2025-03-13 09:07:28 --> Input Class Initialized
+INFO - 2025-03-13 09:07:28 --> Language Class Initialized
+INFO - 2025-03-13 09:07:28 --> Loader Class Initialized
+INFO - 2025-03-13 09:07:28 --> Helper loaded: url_helper
+INFO - 2025-03-13 09:07:28 --> Helper loaded: json_output_helper
+INFO - 2025-03-13 09:07:28 --> Helper loaded: file_helper
+INFO - 2025-03-13 09:07:28 --> Helper loaded: custom_helper
+INFO - 2025-03-13 09:07:28 --> Database Driver Class Initialized
+DEBUG - 2025-03-13 09:07:28 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2025-03-13 09:07:28 --> Session: Class initialized using 'files' driver.
+INFO - 2025-03-13 09:07:28 --> Table Class Initialized
+INFO - 2025-03-13 09:07:28 --> Helper loaded: form_helper
+INFO - 2025-03-13 09:07:28 --> Form Validation Class Initialized
+INFO - 2025-03-13 09:07:28 --> Controller Class Initialized
+INFO - 2025-03-13 09:07:28 --> Model "Admin_model" initialized
+DEBUG - 2025-03-13 09:07:28 --> Table class already loaded. Second attempt ignored.
+DEBUG - 2025-03-13 09:07:28 --> Form_validation class already loaded. Second attempt ignored.
+INFO - 2025-03-13 13:37:28 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/template/admin_header.php
+INFO - 2025-03-13 13:37:28 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/backlogs_view.php
+INFO - 2025-03-13 13:37:28 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/template/admin_footer.php
+INFO - 2025-03-13 13:37:28 --> Final output sent to browser
+DEBUG - 2025-03-13 13:37:28 --> Total execution time: 0.0394
+INFO - 2025-03-13 09:07:29 --> Config Class Initialized
+INFO - 2025-03-13 09:07:29 --> Hooks Class Initialized
+DEBUG - 2025-03-13 09:07:29 --> UTF-8 Support Enabled
+INFO - 2025-03-13 09:07:29 --> Utf8 Class Initialized
+INFO - 2025-03-13 09:07:29 --> URI Class Initialized
+INFO - 2025-03-13 09:07:29 --> Router Class Initialized
+INFO - 2025-03-13 09:07:29 --> Output Class Initialized
+INFO - 2025-03-13 09:07:29 --> Security Class Initialized
+DEBUG - 2025-03-13 09:07:29 --> Global POST, GET and COOKIE data sanitized
+INFO - 2025-03-13 09:07:29 --> Input Class Initialized
+INFO - 2025-03-13 09:07:29 --> Language Class Initialized
+INFO - 2025-03-13 09:07:29 --> Loader Class Initialized
+INFO - 2025-03-13 09:07:29 --> Helper loaded: url_helper
+INFO - 2025-03-13 09:07:29 --> Helper loaded: json_output_helper
+INFO - 2025-03-13 09:07:29 --> Helper loaded: file_helper
+INFO - 2025-03-13 09:07:29 --> Helper loaded: custom_helper
+INFO - 2025-03-13 09:07:29 --> Database Driver Class Initialized
+DEBUG - 2025-03-13 09:07:29 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2025-03-13 09:07:29 --> Session: Class initialized using 'files' driver.
+INFO - 2025-03-13 09:07:29 --> Table Class Initialized
+INFO - 2025-03-13 09:07:29 --> Helper loaded: form_helper
+INFO - 2025-03-13 09:07:29 --> Form Validation Class Initialized
+INFO - 2025-03-13 09:07:29 --> Controller Class Initialized
+INFO - 2025-03-13 09:07:29 --> Model "Admin_model" initialized
+DEBUG - 2025-03-13 09:07:29 --> Table class already loaded. Second attempt ignored.
+DEBUG - 2025-03-13 09:07:29 --> Form_validation class already loaded. Second attempt ignored.
+INFO - 2025-03-13 13:37:29 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/template/admin_header.php
+INFO - 2025-03-13 13:37:29 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/get_grade_card.php
+INFO - 2025-03-13 13:37:29 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/template/admin_footer.php
+INFO - 2025-03-13 13:37:29 --> Final output sent to browser
+DEBUG - 2025-03-13 13:37:29 --> Total execution time: 0.0284
+INFO - 2025-03-13 09:07:30 --> Config Class Initialized
+INFO - 2025-03-13 09:07:30 --> Hooks Class Initialized
+DEBUG - 2025-03-13 09:07:30 --> UTF-8 Support Enabled
+INFO - 2025-03-13 09:07:30 --> Utf8 Class Initialized
+INFO - 2025-03-13 09:07:30 --> URI Class Initialized
+INFO - 2025-03-13 09:07:30 --> Router Class Initialized
+INFO - 2025-03-13 09:07:30 --> Output Class Initialized
+INFO - 2025-03-13 09:07:30 --> Security Class Initialized
+DEBUG - 2025-03-13 09:07:30 --> Global POST, GET and COOKIE data sanitized
+INFO - 2025-03-13 09:07:30 --> Input Class Initialized
+INFO - 2025-03-13 09:07:30 --> Language Class Initialized
+INFO - 2025-03-13 09:07:30 --> Loader Class Initialized
+INFO - 2025-03-13 09:07:30 --> Helper loaded: url_helper
+INFO - 2025-03-13 09:07:30 --> Helper loaded: json_output_helper
+INFO - 2025-03-13 09:07:30 --> Helper loaded: file_helper
+INFO - 2025-03-13 09:07:30 --> Helper loaded: custom_helper
+INFO - 2025-03-13 09:07:30 --> Database Driver Class Initialized
+DEBUG - 2025-03-13 09:07:30 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2025-03-13 09:07:30 --> Session: Class initialized using 'files' driver.
+INFO - 2025-03-13 09:07:30 --> Table Class Initialized
+INFO - 2025-03-13 09:07:30 --> Helper loaded: form_helper
+INFO - 2025-03-13 09:07:30 --> Form Validation Class Initialized
+INFO - 2025-03-13 09:07:30 --> Controller Class Initialized
+INFO - 2025-03-13 09:07:30 --> Model "Admin_model" initialized
+DEBUG - 2025-03-13 09:07:30 --> Table class already loaded. Second attempt ignored.
+DEBUG - 2025-03-13 09:07:30 --> Form_validation class already loaded. Second attempt ignored.
+INFO - 2025-03-13 13:37:30 --> Final output sent to browser
+DEBUG - 2025-03-13 13:37:30 --> Total execution time: 0.0362
+INFO - 2025-03-13 09:13:10 --> Config Class Initialized
+INFO - 2025-03-13 09:13:10 --> Hooks Class Initialized
+DEBUG - 2025-03-13 09:13:10 --> UTF-8 Support Enabled
+INFO - 2025-03-13 09:13:10 --> Utf8 Class Initialized
+INFO - 2025-03-13 09:13:10 --> URI Class Initialized
+INFO - 2025-03-13 09:13:10 --> Router Class Initialized
+INFO - 2025-03-13 09:13:10 --> Output Class Initialized
+INFO - 2025-03-13 09:13:10 --> Security Class Initialized
+DEBUG - 2025-03-13 09:13:10 --> Global POST, GET and COOKIE data sanitized
+INFO - 2025-03-13 09:13:10 --> Input Class Initialized
+INFO - 2025-03-13 09:13:10 --> Language Class Initialized
+INFO - 2025-03-13 09:13:10 --> Loader Class Initialized
+INFO - 2025-03-13 09:13:10 --> Helper loaded: url_helper
+INFO - 2025-03-13 09:13:10 --> Helper loaded: json_output_helper
+INFO - 2025-03-13 09:13:10 --> Helper loaded: file_helper
+INFO - 2025-03-13 09:13:10 --> Helper loaded: custom_helper
+INFO - 2025-03-13 09:13:10 --> Database Driver Class Initialized
+DEBUG - 2025-03-13 09:13:10 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2025-03-13 09:13:10 --> Session: Class initialized using 'files' driver.
+INFO - 2025-03-13 09:13:10 --> Table Class Initialized
+INFO - 2025-03-13 09:13:10 --> Helper loaded: form_helper
+INFO - 2025-03-13 09:13:10 --> Form Validation Class Initialized
+INFO - 2025-03-13 09:13:10 --> Controller Class Initialized
+INFO - 2025-03-13 09:13:10 --> Model "Admin_model" initialized
+DEBUG - 2025-03-13 09:13:10 --> Table class already loaded. Second attempt ignored.
+DEBUG - 2025-03-13 09:13:10 --> Form_validation class already loaded. Second attempt ignored.
+INFO - 2025-03-13 13:43:10 --> Final output sent to browser
+DEBUG - 2025-03-13 13:43:10 --> Total execution time: 0.0420
+INFO - 2025-03-13 09:13:10 --> Config Class Initialized
+INFO - 2025-03-13 09:13:10 --> Hooks Class Initialized
+DEBUG - 2025-03-13 09:13:10 --> UTF-8 Support Enabled
+INFO - 2025-03-13 09:13:10 --> Utf8 Class Initialized
+INFO - 2025-03-13 09:13:10 --> URI Class Initialized
+INFO - 2025-03-13 09:13:10 --> Router Class Initialized
+INFO - 2025-03-13 09:13:10 --> Output Class Initialized
+INFO - 2025-03-13 09:13:10 --> Security Class Initialized
+DEBUG - 2025-03-13 09:13:10 --> Global POST, GET and COOKIE data sanitized
+INFO - 2025-03-13 09:13:10 --> Input Class Initialized
+INFO - 2025-03-13 09:13:10 --> Language Class Initialized
+INFO - 2025-03-13 09:13:10 --> Loader Class Initialized
+INFO - 2025-03-13 09:13:10 --> Helper loaded: url_helper
+INFO - 2025-03-13 09:13:10 --> Helper loaded: json_output_helper
+INFO - 2025-03-13 09:13:10 --> Helper loaded: file_helper
+INFO - 2025-03-13 09:13:10 --> Helper loaded: custom_helper
+INFO - 2025-03-13 09:13:10 --> Database Driver Class Initialized
+DEBUG - 2025-03-13 09:13:10 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2025-03-13 09:13:10 --> Session: Class initialized using 'files' driver.
+INFO - 2025-03-13 09:13:10 --> Table Class Initialized
+INFO - 2025-03-13 09:13:10 --> Helper loaded: form_helper
+INFO - 2025-03-13 09:13:10 --> Form Validation Class Initialized
+INFO - 2025-03-13 09:13:10 --> Controller Class Initialized
+INFO - 2025-03-13 09:13:10 --> Model "Admin_model" initialized
+DEBUG - 2025-03-13 09:13:10 --> Table class already loaded. Second attempt ignored.
+DEBUG - 2025-03-13 09:13:10 --> Form_validation class already loaded. Second attempt ignored.
+INFO - 2025-03-13 13:43:10 --> Final output sent to browser
+DEBUG - 2025-03-13 13:43:10 --> Total execution time: 0.0330
+INFO - 2025-03-13 09:13:11 --> Config Class Initialized
+INFO - 2025-03-13 09:13:11 --> Hooks Class Initialized
+DEBUG - 2025-03-13 09:13:11 --> UTF-8 Support Enabled
+INFO - 2025-03-13 09:13:11 --> Utf8 Class Initialized
+INFO - 2025-03-13 09:13:11 --> URI Class Initialized
+INFO - 2025-03-13 09:13:11 --> Router Class Initialized
+INFO - 2025-03-13 09:13:11 --> Output Class Initialized
+INFO - 2025-03-13 09:13:11 --> Security Class Initialized
+DEBUG - 2025-03-13 09:13:11 --> Global POST, GET and COOKIE data sanitized
+INFO - 2025-03-13 09:13:11 --> Input Class Initialized
+INFO - 2025-03-13 09:13:11 --> Language Class Initialized
+INFO - 2025-03-13 09:13:11 --> Loader Class Initialized
+INFO - 2025-03-13 09:13:11 --> Helper loaded: url_helper
+INFO - 2025-03-13 09:13:11 --> Helper loaded: json_output_helper
+INFO - 2025-03-13 09:13:11 --> Helper loaded: file_helper
+INFO - 2025-03-13 09:13:11 --> Helper loaded: custom_helper
+INFO - 2025-03-13 09:13:11 --> Database Driver Class Initialized
+DEBUG - 2025-03-13 09:13:11 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2025-03-13 09:13:11 --> Session: Class initialized using 'files' driver.
+INFO - 2025-03-13 09:13:11 --> Table Class Initialized
+INFO - 2025-03-13 09:13:11 --> Helper loaded: form_helper
+INFO - 2025-03-13 09:13:11 --> Form Validation Class Initialized
+INFO - 2025-03-13 09:13:11 --> Controller Class Initialized
+INFO - 2025-03-13 09:13:11 --> Model "Admin_model" initialized
+DEBUG - 2025-03-13 09:13:11 --> Table class already loaded. Second attempt ignored.
+DEBUG - 2025-03-13 09:13:11 --> Form_validation class already loaded. Second attempt ignored.
+INFO - 2025-03-13 13:43:11 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/template/admin_header.php
+INFO - 2025-03-13 13:43:11 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/get_grade_card.php
+INFO - 2025-03-13 13:43:11 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/template/admin_footer.php
+INFO - 2025-03-13 13:43:11 --> Final output sent to browser
+DEBUG - 2025-03-13 13:43:11 --> Total execution time: 0.0328
+INFO - 2025-03-13 09:13:14 --> Config Class Initialized
+INFO - 2025-03-13 09:13:14 --> Hooks Class Initialized
+DEBUG - 2025-03-13 09:13:14 --> UTF-8 Support Enabled
+INFO - 2025-03-13 09:13:14 --> Utf8 Class Initialized
+INFO - 2025-03-13 09:13:14 --> URI Class Initialized
+INFO - 2025-03-13 09:13:14 --> Router Class Initialized
+INFO - 2025-03-13 09:13:14 --> Output Class Initialized
+INFO - 2025-03-13 09:13:14 --> Security Class Initialized
+DEBUG - 2025-03-13 09:13:14 --> Global POST, GET and COOKIE data sanitized
+INFO - 2025-03-13 09:13:14 --> Input Class Initialized
+INFO - 2025-03-13 09:13:14 --> Language Class Initialized
+INFO - 2025-03-13 09:13:14 --> Loader Class Initialized
+INFO - 2025-03-13 09:13:14 --> Helper loaded: url_helper
+INFO - 2025-03-13 09:13:14 --> Helper loaded: json_output_helper
+INFO - 2025-03-13 09:13:14 --> Helper loaded: file_helper
+INFO - 2025-03-13 09:13:14 --> Helper loaded: custom_helper
+INFO - 2025-03-13 09:13:14 --> Database Driver Class Initialized
+DEBUG - 2025-03-13 09:13:14 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2025-03-13 09:13:14 --> Session: Class initialized using 'files' driver.
+INFO - 2025-03-13 09:13:14 --> Table Class Initialized
+INFO - 2025-03-13 09:13:14 --> Helper loaded: form_helper
+INFO - 2025-03-13 09:13:14 --> Form Validation Class Initialized
+INFO - 2025-03-13 09:13:14 --> Controller Class Initialized
+INFO - 2025-03-13 09:13:14 --> Model "Admin_model" initialized
+DEBUG - 2025-03-13 09:13:14 --> Table class already loaded. Second attempt ignored.
+DEBUG - 2025-03-13 09:13:14 --> Form_validation class already loaded. Second attempt ignored.
+INFO - 2025-03-13 13:43:14 --> Final output sent to browser
+DEBUG - 2025-03-13 13:43:14 --> Total execution time: 0.0638
+INFO - 2025-03-13 09:20:56 --> Config Class Initialized
+INFO - 2025-03-13 09:20:56 --> Hooks Class Initialized
+DEBUG - 2025-03-13 09:20:56 --> UTF-8 Support Enabled
+INFO - 2025-03-13 09:20:56 --> Utf8 Class Initialized
+INFO - 2025-03-13 09:20:56 --> URI Class Initialized
+INFO - 2025-03-13 09:20:56 --> Router Class Initialized
+INFO - 2025-03-13 09:20:56 --> Output Class Initialized
+INFO - 2025-03-13 09:20:56 --> Security Class Initialized
+DEBUG - 2025-03-13 09:20:56 --> Global POST, GET and COOKIE data sanitized
+INFO - 2025-03-13 09:20:56 --> Input Class Initialized
+INFO - 2025-03-13 09:20:56 --> Language Class Initialized
+INFO - 2025-03-13 09:20:56 --> Loader Class Initialized
+INFO - 2025-03-13 09:20:56 --> Helper loaded: url_helper
+INFO - 2025-03-13 09:20:56 --> Helper loaded: json_output_helper
+INFO - 2025-03-13 09:20:56 --> Helper loaded: file_helper
+INFO - 2025-03-13 09:20:56 --> Helper loaded: custom_helper
+INFO - 2025-03-13 09:20:56 --> Database Driver Class Initialized
+DEBUG - 2025-03-13 09:20:56 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2025-03-13 09:20:56 --> Session: Class initialized using 'files' driver.
+INFO - 2025-03-13 09:20:56 --> Table Class Initialized
+INFO - 2025-03-13 09:20:56 --> Helper loaded: form_helper
+INFO - 2025-03-13 09:20:56 --> Form Validation Class Initialized
+INFO - 2025-03-13 09:20:56 --> Controller Class Initialized
+INFO - 2025-03-13 09:20:56 --> Model "Admin_model" initialized
+DEBUG - 2025-03-13 09:20:56 --> Table class already loaded. Second attempt ignored.
+DEBUG - 2025-03-13 09:20:56 --> Form_validation class already loaded. Second attempt ignored.
+INFO - 2025-03-13 13:50:56 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\template/header.php
+INFO - 2025-03-13 13:50:56 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/login.php
+INFO - 2025-03-13 13:50:56 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\template/footer.php
+INFO - 2025-03-13 13:50:56 --> Final output sent to browser
+DEBUG - 2025-03-13 13:50:56 --> Total execution time: 0.0490
+INFO - 2025-03-13 09:21:12 --> Config Class Initialized
+INFO - 2025-03-13 09:21:12 --> Hooks Class Initialized
+DEBUG - 2025-03-13 09:21:12 --> UTF-8 Support Enabled
+INFO - 2025-03-13 09:21:12 --> Utf8 Class Initialized
+INFO - 2025-03-13 09:21:12 --> URI Class Initialized
+INFO - 2025-03-13 09:21:12 --> Router Class Initialized
+INFO - 2025-03-13 09:21:12 --> Output Class Initialized
+INFO - 2025-03-13 09:21:12 --> Security Class Initialized
+DEBUG - 2025-03-13 09:21:12 --> Global POST, GET and COOKIE data sanitized
+INFO - 2025-03-13 09:21:12 --> Input Class Initialized
+INFO - 2025-03-13 09:21:12 --> Language Class Initialized
+INFO - 2025-03-13 09:21:12 --> Loader Class Initialized
+INFO - 2025-03-13 09:21:12 --> Helper loaded: url_helper
+INFO - 2025-03-13 09:21:12 --> Helper loaded: json_output_helper
+INFO - 2025-03-13 09:21:12 --> Helper loaded: file_helper
+INFO - 2025-03-13 09:21:12 --> Helper loaded: custom_helper
+INFO - 2025-03-13 09:21:12 --> Database Driver Class Initialized
+DEBUG - 2025-03-13 09:21:12 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2025-03-13 09:21:12 --> Session: Class initialized using 'files' driver.
+INFO - 2025-03-13 09:21:12 --> Table Class Initialized
+INFO - 2025-03-13 09:21:12 --> Helper loaded: form_helper
+INFO - 2025-03-13 09:21:12 --> Form Validation Class Initialized
+INFO - 2025-03-13 09:21:12 --> Controller Class Initialized
+INFO - 2025-03-13 09:21:12 --> Model "Admin_model" initialized
+DEBUG - 2025-03-13 09:21:12 --> Table class already loaded. Second attempt ignored.
+DEBUG - 2025-03-13 09:21:12 --> Form_validation class already loaded. Second attempt ignored.
+INFO - 2025-03-13 13:51:12 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/template/admin_header.php
+INFO - 2025-03-13 13:51:12 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/backlogs_view.php
+INFO - 2025-03-13 13:51:12 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/template/admin_footer.php
+INFO - 2025-03-13 13:51:12 --> Final output sent to browser
+DEBUG - 2025-03-13 13:51:12 --> Total execution time: 0.0640
+INFO - 2025-03-13 09:21:14 --> Config Class Initialized
+INFO - 2025-03-13 09:21:14 --> Hooks Class Initialized
+DEBUG - 2025-03-13 09:21:14 --> UTF-8 Support Enabled
+INFO - 2025-03-13 09:21:14 --> Utf8 Class Initialized
+INFO - 2025-03-13 09:21:14 --> URI Class Initialized
+INFO - 2025-03-13 09:21:14 --> Router Class Initialized
+INFO - 2025-03-13 09:21:14 --> Output Class Initialized
+INFO - 2025-03-13 09:21:14 --> Security Class Initialized
+DEBUG - 2025-03-13 09:21:14 --> Global POST, GET and COOKIE data sanitized
+INFO - 2025-03-13 09:21:14 --> Input Class Initialized
+INFO - 2025-03-13 09:21:14 --> Language Class Initialized
+INFO - 2025-03-13 09:21:14 --> Loader Class Initialized
+INFO - 2025-03-13 09:21:14 --> Helper loaded: url_helper
+INFO - 2025-03-13 09:21:14 --> Helper loaded: json_output_helper
+INFO - 2025-03-13 09:21:14 --> Helper loaded: file_helper
+INFO - 2025-03-13 09:21:14 --> Helper loaded: custom_helper
+INFO - 2025-03-13 09:21:14 --> Database Driver Class Initialized
+DEBUG - 2025-03-13 09:21:14 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2025-03-13 09:21:14 --> Session: Class initialized using 'files' driver.
+INFO - 2025-03-13 09:21:14 --> Table Class Initialized
+INFO - 2025-03-13 09:21:14 --> Helper loaded: form_helper
+INFO - 2025-03-13 09:21:14 --> Form Validation Class Initialized
+INFO - 2025-03-13 09:21:14 --> Controller Class Initialized
+INFO - 2025-03-13 09:21:14 --> Model "Admin_model" initialized
+DEBUG - 2025-03-13 09:21:14 --> Table class already loaded. Second attempt ignored.
+DEBUG - 2025-03-13 09:21:14 --> Form_validation class already loaded. Second attempt ignored.
+INFO - 2025-03-13 13:51:14 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/template/admin_header.php
+INFO - 2025-03-13 13:51:14 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/get_grade_card.php
+INFO - 2025-03-13 13:51:14 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/template/admin_footer.php
+INFO - 2025-03-13 13:51:14 --> Final output sent to browser
+DEBUG - 2025-03-13 13:51:14 --> Total execution time: 0.0311
+INFO - 2025-03-13 09:21:16 --> Config Class Initialized
+INFO - 2025-03-13 09:21:16 --> Hooks Class Initialized
+DEBUG - 2025-03-13 09:21:16 --> UTF-8 Support Enabled
+INFO - 2025-03-13 09:21:16 --> Utf8 Class Initialized
+INFO - 2025-03-13 09:21:16 --> URI Class Initialized
+INFO - 2025-03-13 09:21:16 --> Router Class Initialized
+INFO - 2025-03-13 09:21:16 --> Output Class Initialized
+INFO - 2025-03-13 09:21:16 --> Security Class Initialized
+DEBUG - 2025-03-13 09:21:16 --> Global POST, GET and COOKIE data sanitized
+INFO - 2025-03-13 09:21:16 --> Input Class Initialized
+INFO - 2025-03-13 09:21:16 --> Language Class Initialized
+INFO - 2025-03-13 09:21:16 --> Loader Class Initialized
+INFO - 2025-03-13 09:21:16 --> Helper loaded: url_helper
+INFO - 2025-03-13 09:21:16 --> Helper loaded: json_output_helper
+INFO - 2025-03-13 09:21:16 --> Helper loaded: file_helper
+INFO - 2025-03-13 09:21:16 --> Helper loaded: custom_helper
+INFO - 2025-03-13 09:21:16 --> Database Driver Class Initialized
+DEBUG - 2025-03-13 09:21:16 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2025-03-13 09:21:16 --> Session: Class initialized using 'files' driver.
+INFO - 2025-03-13 09:21:16 --> Table Class Initialized
+INFO - 2025-03-13 09:21:16 --> Helper loaded: form_helper
+INFO - 2025-03-13 09:21:16 --> Form Validation Class Initialized
+INFO - 2025-03-13 09:21:16 --> Controller Class Initialized
+INFO - 2025-03-13 09:21:16 --> Model "Admin_model" initialized
+DEBUG - 2025-03-13 09:21:16 --> Table class already loaded. Second attempt ignored.
+DEBUG - 2025-03-13 09:21:16 --> Form_validation class already loaded. Second attempt ignored.
+INFO - 2025-03-13 13:51:16 --> Final output sent to browser
+DEBUG - 2025-03-13 13:51:16 --> Total execution time: 0.0638
+INFO - 2025-03-13 09:22:01 --> Config Class Initialized
+INFO - 2025-03-13 09:22:01 --> Hooks Class Initialized
+DEBUG - 2025-03-13 09:22:01 --> UTF-8 Support Enabled
+INFO - 2025-03-13 09:22:01 --> Utf8 Class Initialized
+INFO - 2025-03-13 09:22:01 --> URI Class Initialized
+INFO - 2025-03-13 09:22:01 --> Router Class Initialized
+INFO - 2025-03-13 09:22:01 --> Output Class Initialized
+INFO - 2025-03-13 09:22:01 --> Security Class Initialized
+DEBUG - 2025-03-13 09:22:01 --> Global POST, GET and COOKIE data sanitized
+INFO - 2025-03-13 09:22:01 --> Input Class Initialized
+INFO - 2025-03-13 09:22:01 --> Language Class Initialized
+INFO - 2025-03-13 09:22:01 --> Loader Class Initialized
+INFO - 2025-03-13 09:22:01 --> Helper loaded: url_helper
+INFO - 2025-03-13 09:22:01 --> Helper loaded: json_output_helper
+INFO - 2025-03-13 09:22:01 --> Helper loaded: file_helper
+INFO - 2025-03-13 09:22:01 --> Helper loaded: custom_helper
+INFO - 2025-03-13 09:22:01 --> Database Driver Class Initialized
+DEBUG - 2025-03-13 09:22:02 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2025-03-13 09:22:02 --> Session: Class initialized using 'files' driver.
+INFO - 2025-03-13 09:22:02 --> Table Class Initialized
+INFO - 2025-03-13 09:22:02 --> Helper loaded: form_helper
+INFO - 2025-03-13 09:22:02 --> Form Validation Class Initialized
+INFO - 2025-03-13 09:22:02 --> Controller Class Initialized
+INFO - 2025-03-13 09:22:02 --> Model "Admin_model" initialized
+DEBUG - 2025-03-13 09:22:02 --> Table class already loaded. Second attempt ignored.
+DEBUG - 2025-03-13 09:22:02 --> Form_validation class already loaded. Second attempt ignored.
+INFO - 2025-03-13 13:52:02 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/template/admin_header.php
+ERROR - 2025-03-13 13:52:02 --> Severity: Warning --> Undefined variable $action D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin\students.php 24
+INFO - 2025-03-13 13:52:02 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/students.php
+INFO - 2025-03-13 13:52:02 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/template/admin_footer.php
+INFO - 2025-03-13 13:52:02 --> Final output sent to browser
+DEBUG - 2025-03-13 13:52:02 --> Total execution time: 0.0505
+INFO - 2025-03-13 09:22:04 --> Config Class Initialized
+INFO - 2025-03-13 09:22:04 --> Hooks Class Initialized
+DEBUG - 2025-03-13 09:22:04 --> UTF-8 Support Enabled
+INFO - 2025-03-13 09:22:04 --> Utf8 Class Initialized
+INFO - 2025-03-13 09:22:04 --> URI Class Initialized
+INFO - 2025-03-13 09:22:04 --> Router Class Initialized
+INFO - 2025-03-13 09:22:04 --> Output Class Initialized
+INFO - 2025-03-13 09:22:04 --> Security Class Initialized
+DEBUG - 2025-03-13 09:22:04 --> Global POST, GET and COOKIE data sanitized
+INFO - 2025-03-13 09:22:04 --> Input Class Initialized
+INFO - 2025-03-13 09:22:04 --> Language Class Initialized
+INFO - 2025-03-13 09:22:04 --> Loader Class Initialized
+INFO - 2025-03-13 09:22:04 --> Helper loaded: url_helper
+INFO - 2025-03-13 09:22:04 --> Helper loaded: json_output_helper
+INFO - 2025-03-13 09:22:04 --> Helper loaded: file_helper
+INFO - 2025-03-13 09:22:04 --> Helper loaded: custom_helper
+INFO - 2025-03-13 09:22:04 --> Database Driver Class Initialized
+DEBUG - 2025-03-13 09:22:04 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2025-03-13 09:22:04 --> Session: Class initialized using 'files' driver.
+INFO - 2025-03-13 09:22:04 --> Table Class Initialized
+INFO - 2025-03-13 09:22:04 --> Helper loaded: form_helper
+INFO - 2025-03-13 09:22:04 --> Form Validation Class Initialized
+INFO - 2025-03-13 09:22:04 --> Controller Class Initialized
+INFO - 2025-03-13 09:22:04 --> Model "Admin_model" initialized
+DEBUG - 2025-03-13 09:22:04 --> Table class already loaded. Second attempt ignored.
+DEBUG - 2025-03-13 09:22:04 --> Form_validation class already loaded. Second attempt ignored.
+INFO - 2025-03-13 13:52:04 --> Language file loaded: language/english/form_validation_lang.php
+INFO - 2025-03-13 09:22:04 --> Config Class Initialized
+INFO - 2025-03-13 09:22:04 --> Hooks Class Initialized
+DEBUG - 2025-03-13 09:22:04 --> UTF-8 Support Enabled
+INFO - 2025-03-13 09:22:04 --> Utf8 Class Initialized
+INFO - 2025-03-13 09:22:04 --> URI Class Initialized
+INFO - 2025-03-13 09:22:04 --> Router Class Initialized
+INFO - 2025-03-13 09:22:04 --> Output Class Initialized
+INFO - 2025-03-13 09:22:04 --> Security Class Initialized
+DEBUG - 2025-03-13 09:22:04 --> Global POST, GET and COOKIE data sanitized
+INFO - 2025-03-13 09:22:04 --> Input Class Initialized
+INFO - 2025-03-13 09:22:04 --> Language Class Initialized
+INFO - 2025-03-13 09:22:04 --> Loader Class Initialized
+INFO - 2025-03-13 09:22:04 --> Helper loaded: url_helper
+INFO - 2025-03-13 09:22:04 --> Helper loaded: json_output_helper
+INFO - 2025-03-13 09:22:04 --> Helper loaded: file_helper
+INFO - 2025-03-13 09:22:04 --> Helper loaded: custom_helper
+INFO - 2025-03-13 09:22:04 --> Database Driver Class Initialized
+DEBUG - 2025-03-13 09:22:04 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2025-03-13 09:22:04 --> Session: Class initialized using 'files' driver.
+INFO - 2025-03-13 09:22:04 --> Table Class Initialized
+INFO - 2025-03-13 09:22:04 --> Helper loaded: form_helper
+INFO - 2025-03-13 09:22:04 --> Form Validation Class Initialized
+INFO - 2025-03-13 09:22:04 --> Controller Class Initialized
+INFO - 2025-03-13 09:22:04 --> Model "Admin_model" initialized
+DEBUG - 2025-03-13 09:22:04 --> Table class already loaded. Second attempt ignored.
+DEBUG - 2025-03-13 09:22:04 --> Form_validation class already loaded. Second attempt ignored.
+INFO - 2025-03-13 13:52:04 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/template/admin_header.php
+ERROR - 2025-03-13 13:52:04 --> Severity: Warning --> Undefined variable $course D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin\studentdetails.php 131
+ERROR - 2025-03-13 13:52:04 --> Severity: Warning --> Attempt to read property "result_year" on null D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin\studentdetails.php 131
+INFO - 2025-03-13 13:52:04 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/studentdetails.php
+INFO - 2025-03-13 13:52:04 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/template/admin_footer.php
+INFO - 2025-03-13 13:52:04 --> Final output sent to browser
+DEBUG - 2025-03-13 13:52:04 --> Total execution time: 0.1136
+INFO - 2025-03-13 09:22:05 --> Config Class Initialized
+INFO - 2025-03-13 09:22:05 --> Hooks Class Initialized
+DEBUG - 2025-03-13 09:22:05 --> UTF-8 Support Enabled
+INFO - 2025-03-13 09:22:05 --> Utf8 Class Initialized
+INFO - 2025-03-13 09:22:05 --> URI Class Initialized
+INFO - 2025-03-13 09:22:05 --> Router Class Initialized
+INFO - 2025-03-13 09:22:05 --> Output Class Initialized
+INFO - 2025-03-13 09:22:05 --> Security Class Initialized
+DEBUG - 2025-03-13 09:22:05 --> Global POST, GET and COOKIE data sanitized
+INFO - 2025-03-13 09:22:05 --> Input Class Initialized
+INFO - 2025-03-13 09:22:05 --> Language Class Initialized
+INFO - 2025-03-13 09:22:05 --> Loader Class Initialized
+INFO - 2025-03-13 09:22:05 --> Helper loaded: url_helper
+INFO - 2025-03-13 09:22:05 --> Helper loaded: json_output_helper
+INFO - 2025-03-13 09:22:05 --> Helper loaded: file_helper
+INFO - 2025-03-13 09:22:05 --> Helper loaded: custom_helper
+INFO - 2025-03-13 09:22:05 --> Database Driver Class Initialized
+DEBUG - 2025-03-13 09:22:05 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2025-03-13 09:22:05 --> Session: Class initialized using 'files' driver.
+INFO - 2025-03-13 09:22:05 --> Table Class Initialized
+INFO - 2025-03-13 09:22:05 --> Helper loaded: form_helper
+INFO - 2025-03-13 09:22:05 --> Form Validation Class Initialized
+INFO - 2025-03-13 09:22:05 --> Controller Class Initialized
+INFO - 2025-03-13 09:22:05 --> Model "Admin_model" initialized
+DEBUG - 2025-03-13 09:22:05 --> Table class already loaded. Second attempt ignored.
+DEBUG - 2025-03-13 09:22:05 --> Form_validation class already loaded. Second attempt ignored.
+INFO - 2025-03-13 13:52:05 --> Model "Admin_model" initialized
+INFO - 2025-03-13 13:52:05 --> Final output sent to browser
+DEBUG - 2025-03-13 13:52:05 --> Total execution time: 0.0267
+INFO - 2025-03-13 09:24:38 --> Config Class Initialized
+INFO - 2025-03-13 09:24:38 --> Hooks Class Initialized
+DEBUG - 2025-03-13 09:24:38 --> UTF-8 Support Enabled
+INFO - 2025-03-13 09:24:38 --> Utf8 Class Initialized
+INFO - 2025-03-13 09:24:38 --> URI Class Initialized
+INFO - 2025-03-13 09:24:38 --> Router Class Initialized
+INFO - 2025-03-13 09:24:38 --> Output Class Initialized
+INFO - 2025-03-13 09:24:38 --> Security Class Initialized
+DEBUG - 2025-03-13 09:24:38 --> Global POST, GET and COOKIE data sanitized
+INFO - 2025-03-13 09:24:38 --> Input Class Initialized
+INFO - 2025-03-13 09:24:38 --> Language Class Initialized
+INFO - 2025-03-13 09:24:38 --> Loader Class Initialized
+INFO - 2025-03-13 09:24:38 --> Helper loaded: url_helper
+INFO - 2025-03-13 09:24:38 --> Helper loaded: json_output_helper
+INFO - 2025-03-13 09:24:38 --> Helper loaded: file_helper
+INFO - 2025-03-13 09:24:38 --> Helper loaded: custom_helper
+INFO - 2025-03-13 09:24:38 --> Database Driver Class Initialized
+DEBUG - 2025-03-13 09:24:38 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2025-03-13 09:24:38 --> Session: Class initialized using 'files' driver.
+INFO - 2025-03-13 09:24:38 --> Table Class Initialized
+INFO - 2025-03-13 09:24:38 --> Helper loaded: form_helper
+INFO - 2025-03-13 09:24:38 --> Form Validation Class Initialized
+INFO - 2025-03-13 09:24:38 --> Controller Class Initialized
+INFO - 2025-03-13 09:24:38 --> Model "Admin_model" initialized
+DEBUG - 2025-03-13 09:24:38 --> Table class already loaded. Second attempt ignored.
+DEBUG - 2025-03-13 09:24:38 --> Form_validation class already loaded. Second attempt ignored.
+INFO - 2025-03-13 13:54:38 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/template/admin_header.php
+INFO - 2025-03-13 13:54:38 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/get_grade_card.php
+INFO - 2025-03-13 13:54:38 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/template/admin_footer.php
+INFO - 2025-03-13 13:54:38 --> Final output sent to browser
+DEBUG - 2025-03-13 13:54:38 --> Total execution time: 0.0342
+INFO - 2025-03-13 09:24:40 --> Config Class Initialized
+INFO - 2025-03-13 09:24:40 --> Hooks Class Initialized
+DEBUG - 2025-03-13 09:24:40 --> UTF-8 Support Enabled
+INFO - 2025-03-13 09:24:40 --> Utf8 Class Initialized
+INFO - 2025-03-13 09:24:40 --> URI Class Initialized
+INFO - 2025-03-13 09:24:40 --> Router Class Initialized
+INFO - 2025-03-13 09:24:40 --> Output Class Initialized
+INFO - 2025-03-13 09:24:40 --> Security Class Initialized
+DEBUG - 2025-03-13 09:24:40 --> Global POST, GET and COOKIE data sanitized
+INFO - 2025-03-13 09:24:40 --> Input Class Initialized
+INFO - 2025-03-13 09:24:40 --> Language Class Initialized
+INFO - 2025-03-13 09:24:40 --> Loader Class Initialized
+INFO - 2025-03-13 09:24:40 --> Helper loaded: url_helper
+INFO - 2025-03-13 09:24:40 --> Helper loaded: json_output_helper
+INFO - 2025-03-13 09:24:40 --> Helper loaded: file_helper
+INFO - 2025-03-13 09:24:40 --> Helper loaded: custom_helper
+INFO - 2025-03-13 09:24:40 --> Database Driver Class Initialized
+DEBUG - 2025-03-13 09:24:40 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2025-03-13 09:24:40 --> Session: Class initialized using 'files' driver.
+INFO - 2025-03-13 09:24:40 --> Table Class Initialized
+INFO - 2025-03-13 09:24:40 --> Helper loaded: form_helper
+INFO - 2025-03-13 09:24:40 --> Form Validation Class Initialized
+INFO - 2025-03-13 09:24:40 --> Controller Class Initialized
+INFO - 2025-03-13 09:24:40 --> Model "Admin_model" initialized
+DEBUG - 2025-03-13 09:24:40 --> Table class already loaded. Second attempt ignored.
+DEBUG - 2025-03-13 09:24:40 --> Form_validation class already loaded. Second attempt ignored.
+INFO - 2025-03-13 13:54:40 --> Final output sent to browser
+DEBUG - 2025-03-13 13:54:40 --> Total execution time: 0.0336
+INFO - 2025-03-13 09:24:48 --> Config Class Initialized
+INFO - 2025-03-13 09:24:48 --> Hooks Class Initialized
+DEBUG - 2025-03-13 09:24:48 --> UTF-8 Support Enabled
+INFO - 2025-03-13 09:24:48 --> Utf8 Class Initialized
+INFO - 2025-03-13 09:24:48 --> URI Class Initialized
+INFO - 2025-03-13 09:24:48 --> Router Class Initialized
+INFO - 2025-03-13 09:24:48 --> Output Class Initialized
+INFO - 2025-03-13 09:24:48 --> Security Class Initialized
+DEBUG - 2025-03-13 09:24:48 --> Global POST, GET and COOKIE data sanitized
+INFO - 2025-03-13 09:24:48 --> Input Class Initialized
+INFO - 2025-03-13 09:24:48 --> Language Class Initialized
+INFO - 2025-03-13 09:24:48 --> Loader Class Initialized
+INFO - 2025-03-13 09:24:48 --> Helper loaded: url_helper
+INFO - 2025-03-13 09:24:48 --> Helper loaded: json_output_helper
+INFO - 2025-03-13 09:24:48 --> Helper loaded: file_helper
+INFO - 2025-03-13 09:24:48 --> Helper loaded: custom_helper
+INFO - 2025-03-13 09:24:48 --> Database Driver Class Initialized
+DEBUG - 2025-03-13 09:24:48 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2025-03-13 09:24:48 --> Session: Class initialized using 'files' driver.
+INFO - 2025-03-13 09:24:48 --> Table Class Initialized
+INFO - 2025-03-13 09:24:48 --> Helper loaded: form_helper
+INFO - 2025-03-13 09:24:48 --> Form Validation Class Initialized
+INFO - 2025-03-13 09:24:48 --> Controller Class Initialized
+INFO - 2025-03-13 09:24:48 --> Model "Admin_model" initialized
+DEBUG - 2025-03-13 09:24:48 --> Table class already loaded. Second attempt ignored.
+DEBUG - 2025-03-13 09:24:48 --> Form_validation class already loaded. Second attempt ignored.
+ERROR - 2025-03-13 13:54:48 --> Severity: Warning --> Undefined variable $totalCredit_earned D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin\grade_card_template.php 132
+INFO - 2025-03-13 13:54:48 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/grade_card_template.php
+INFO - 2025-03-13 13:54:48 --> Final output sent to browser
+DEBUG - 2025-03-13 13:54:48 --> Total execution time: 0.0471
+INFO - 2025-03-13 12:51:45 --> Config Class Initialized
+INFO - 2025-03-13 12:51:45 --> Hooks Class Initialized
+DEBUG - 2025-03-13 12:51:45 --> UTF-8 Support Enabled
+INFO - 2025-03-13 12:51:45 --> Utf8 Class Initialized
+INFO - 2025-03-13 12:51:45 --> URI Class Initialized
+INFO - 2025-03-13 12:51:45 --> Router Class Initialized
+INFO - 2025-03-13 12:51:45 --> Output Class Initialized
+INFO - 2025-03-13 12:51:45 --> Security Class Initialized
+DEBUG - 2025-03-13 12:51:45 --> Global POST, GET and COOKIE data sanitized
+INFO - 2025-03-13 12:51:45 --> Input Class Initialized
+INFO - 2025-03-13 12:51:45 --> Language Class Initialized
+INFO - 2025-03-13 12:51:45 --> Loader Class Initialized
+INFO - 2025-03-13 12:51:45 --> Helper loaded: url_helper
+INFO - 2025-03-13 12:51:45 --> Helper loaded: json_output_helper
+INFO - 2025-03-13 12:51:45 --> Helper loaded: file_helper
+INFO - 2025-03-13 12:51:45 --> Helper loaded: custom_helper
+INFO - 2025-03-13 12:51:45 --> Database Driver Class Initialized
+DEBUG - 2025-03-13 12:51:45 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2025-03-13 12:51:45 --> Session: Class initialized using 'files' driver.
+INFO - 2025-03-13 12:51:45 --> Table Class Initialized
+INFO - 2025-03-13 12:51:45 --> Helper loaded: form_helper
+INFO - 2025-03-13 12:51:45 --> Form Validation Class Initialized
+INFO - 2025-03-13 12:51:45 --> Controller Class Initialized
+INFO - 2025-03-13 12:51:45 --> Model "Admin_model" initialized
+DEBUG - 2025-03-13 12:51:45 --> Table class already loaded. Second attempt ignored.
+DEBUG - 2025-03-13 12:51:45 --> Form_validation class already loaded. Second attempt ignored.
+INFO - 2025-03-13 17:21:45 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\template/header.php
+INFO - 2025-03-13 17:21:45 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/login.php
+INFO - 2025-03-13 17:21:45 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\template/footer.php
+INFO - 2025-03-13 17:21:45 --> Final output sent to browser
+DEBUG - 2025-03-13 17:21:45 --> Total execution time: 0.0778
+INFO - 2025-03-13 12:52:00 --> Config Class Initialized
+INFO - 2025-03-13 12:52:00 --> Hooks Class Initialized
+DEBUG - 2025-03-13 12:52:00 --> UTF-8 Support Enabled
+INFO - 2025-03-13 12:52:00 --> Utf8 Class Initialized
+INFO - 2025-03-13 12:52:00 --> URI Class Initialized
+INFO - 2025-03-13 12:52:00 --> Router Class Initialized
+INFO - 2025-03-13 12:52:00 --> Output Class Initialized
+INFO - 2025-03-13 12:52:00 --> Security Class Initialized
+DEBUG - 2025-03-13 12:52:00 --> Global POST, GET and COOKIE data sanitized
+INFO - 2025-03-13 12:52:00 --> Input Class Initialized
+INFO - 2025-03-13 12:52:00 --> Language Class Initialized
+INFO - 2025-03-13 12:52:00 --> Loader Class Initialized
+INFO - 2025-03-13 12:52:00 --> Helper loaded: url_helper
+INFO - 2025-03-13 12:52:00 --> Helper loaded: json_output_helper
+INFO - 2025-03-13 12:52:00 --> Helper loaded: file_helper
+INFO - 2025-03-13 12:52:00 --> Helper loaded: custom_helper
+INFO - 2025-03-13 12:52:00 --> Database Driver Class Initialized
+DEBUG - 2025-03-13 12:52:00 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2025-03-13 12:52:00 --> Session: Class initialized using 'files' driver.
+INFO - 2025-03-13 12:52:00 --> Table Class Initialized
+INFO - 2025-03-13 12:52:00 --> Helper loaded: form_helper
+INFO - 2025-03-13 12:52:00 --> Form Validation Class Initialized
+INFO - 2025-03-13 12:52:00 --> Controller Class Initialized
+INFO - 2025-03-13 12:52:00 --> Model "Admin_model" initialized
+DEBUG - 2025-03-13 12:52:00 --> Table class already loaded. Second attempt ignored.
+DEBUG - 2025-03-13 12:52:00 --> Form_validation class already loaded. Second attempt ignored.
+INFO - 2025-03-13 17:22:00 --> Language file loaded: language/english/form_validation_lang.php
+INFO - 2025-03-13 12:52:00 --> Config Class Initialized
+INFO - 2025-03-13 12:52:00 --> Hooks Class Initialized
+DEBUG - 2025-03-13 12:52:00 --> UTF-8 Support Enabled
+INFO - 2025-03-13 12:52:00 --> Utf8 Class Initialized
+INFO - 2025-03-13 12:52:00 --> URI Class Initialized
+INFO - 2025-03-13 12:52:00 --> Router Class Initialized
+INFO - 2025-03-13 12:52:00 --> Output Class Initialized
+INFO - 2025-03-13 12:52:00 --> Security Class Initialized
+DEBUG - 2025-03-13 12:52:00 --> Global POST, GET and COOKIE data sanitized
+INFO - 2025-03-13 12:52:00 --> Input Class Initialized
+INFO - 2025-03-13 12:52:00 --> Language Class Initialized
+INFO - 2025-03-13 12:52:00 --> Loader Class Initialized
+INFO - 2025-03-13 12:52:00 --> Helper loaded: url_helper
+INFO - 2025-03-13 12:52:00 --> Helper loaded: json_output_helper
+INFO - 2025-03-13 12:52:00 --> Helper loaded: file_helper
+INFO - 2025-03-13 12:52:00 --> Helper loaded: custom_helper
+INFO - 2025-03-13 12:52:00 --> Database Driver Class Initialized
+DEBUG - 2025-03-13 12:52:00 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2025-03-13 12:52:00 --> Session: Class initialized using 'files' driver.
+INFO - 2025-03-13 12:52:00 --> Table Class Initialized
+INFO - 2025-03-13 12:52:00 --> Helper loaded: form_helper
+INFO - 2025-03-13 12:52:00 --> Form Validation Class Initialized
+INFO - 2025-03-13 12:52:00 --> Controller Class Initialized
+INFO - 2025-03-13 12:52:00 --> Model "Admin_model" initialized
+DEBUG - 2025-03-13 12:52:00 --> Table class already loaded. Second attempt ignored.
+DEBUG - 2025-03-13 12:52:00 --> Form_validation class already loaded. Second attempt ignored.
+INFO - 2025-03-13 17:22:00 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/template/admin_header.php
+INFO - 2025-03-13 17:22:00 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/dashboard.php
+INFO - 2025-03-13 17:22:00 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/template/admin_footer.php
+INFO - 2025-03-13 17:22:00 --> Final output sent to browser
+DEBUG - 2025-03-13 17:22:00 --> Total execution time: 0.0752
+INFO - 2025-03-13 12:52:02 --> Config Class Initialized
+INFO - 2025-03-13 12:52:02 --> Hooks Class Initialized
+DEBUG - 2025-03-13 12:52:02 --> UTF-8 Support Enabled
+INFO - 2025-03-13 12:52:02 --> Utf8 Class Initialized
+INFO - 2025-03-13 12:52:02 --> URI Class Initialized
+INFO - 2025-03-13 12:52:02 --> Router Class Initialized
+INFO - 2025-03-13 12:52:02 --> Output Class Initialized
+INFO - 2025-03-13 12:52:02 --> Security Class Initialized
+DEBUG - 2025-03-13 12:52:02 --> Global POST, GET and COOKIE data sanitized
+INFO - 2025-03-13 12:52:02 --> Input Class Initialized
+INFO - 2025-03-13 12:52:02 --> Language Class Initialized
+INFO - 2025-03-13 12:52:02 --> Loader Class Initialized
+INFO - 2025-03-13 12:52:02 --> Helper loaded: url_helper
+INFO - 2025-03-13 12:52:02 --> Helper loaded: json_output_helper
+INFO - 2025-03-13 12:52:02 --> Helper loaded: file_helper
+INFO - 2025-03-13 12:52:02 --> Helper loaded: custom_helper
+INFO - 2025-03-13 12:52:02 --> Database Driver Class Initialized
+DEBUG - 2025-03-13 12:52:02 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2025-03-13 12:52:02 --> Session: Class initialized using 'files' driver.
+INFO - 2025-03-13 12:52:02 --> Table Class Initialized
+INFO - 2025-03-13 12:52:02 --> Helper loaded: form_helper
+INFO - 2025-03-13 12:52:02 --> Form Validation Class Initialized
+INFO - 2025-03-13 12:52:02 --> Controller Class Initialized
+INFO - 2025-03-13 12:52:02 --> Model "Admin_model" initialized
+DEBUG - 2025-03-13 12:52:02 --> Table class already loaded. Second attempt ignored.
+DEBUG - 2025-03-13 12:52:02 --> Form_validation class already loaded. Second attempt ignored.
+INFO - 2025-03-13 17:22:02 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/template/admin_header.php
+INFO - 2025-03-13 17:22:02 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/transcript.php
+INFO - 2025-03-13 17:22:02 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/template/admin_footer.php
+INFO - 2025-03-13 17:22:02 --> Final output sent to browser
+DEBUG - 2025-03-13 17:22:02 --> Total execution time: 0.0777
+INFO - 2025-03-13 12:52:03 --> Config Class Initialized
+INFO - 2025-03-13 12:52:03 --> Hooks Class Initialized
+DEBUG - 2025-03-13 12:52:03 --> UTF-8 Support Enabled
+INFO - 2025-03-13 12:52:03 --> Utf8 Class Initialized
+INFO - 2025-03-13 12:52:03 --> URI Class Initialized
+INFO - 2025-03-13 12:52:03 --> Router Class Initialized
+INFO - 2025-03-13 12:52:03 --> Output Class Initialized
+INFO - 2025-03-13 12:52:03 --> Security Class Initialized
+DEBUG - 2025-03-13 12:52:03 --> Global POST, GET and COOKIE data sanitized
+INFO - 2025-03-13 12:52:03 --> Input Class Initialized
+INFO - 2025-03-13 12:52:03 --> Language Class Initialized
+INFO - 2025-03-13 12:52:03 --> Loader Class Initialized
+INFO - 2025-03-13 12:52:03 --> Helper loaded: url_helper
+INFO - 2025-03-13 12:52:03 --> Helper loaded: json_output_helper
+INFO - 2025-03-13 12:52:03 --> Helper loaded: file_helper
+INFO - 2025-03-13 12:52:03 --> Helper loaded: custom_helper
+INFO - 2025-03-13 12:52:03 --> Database Driver Class Initialized
+DEBUG - 2025-03-13 12:52:03 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2025-03-13 12:52:03 --> Session: Class initialized using 'files' driver.
+INFO - 2025-03-13 12:52:03 --> Table Class Initialized
+INFO - 2025-03-13 12:52:03 --> Helper loaded: form_helper
+INFO - 2025-03-13 12:52:03 --> Form Validation Class Initialized
+INFO - 2025-03-13 12:52:03 --> Controller Class Initialized
+INFO - 2025-03-13 12:52:03 --> Model "Admin_model" initialized
+DEBUG - 2025-03-13 12:52:03 --> Table class already loaded. Second attempt ignored.
+DEBUG - 2025-03-13 12:52:03 --> Form_validation class already loaded. Second attempt ignored.
+INFO - 2025-03-13 17:22:03 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/template/admin_header.php
+INFO - 2025-03-13 17:22:03 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/pdc.php
+INFO - 2025-03-13 17:22:03 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/template/admin_footer.php
+INFO - 2025-03-13 17:22:03 --> Final output sent to browser
+DEBUG - 2025-03-13 17:22:03 --> Total execution time: 0.0895
+INFO - 2025-03-13 12:52:04 --> Config Class Initialized
+INFO - 2025-03-13 12:52:04 --> Hooks Class Initialized
+DEBUG - 2025-03-13 12:52:04 --> UTF-8 Support Enabled
+INFO - 2025-03-13 12:52:04 --> Utf8 Class Initialized
+INFO - 2025-03-13 12:52:04 --> URI Class Initialized
+INFO - 2025-03-13 12:52:04 --> Router Class Initialized
+INFO - 2025-03-13 12:52:04 --> Output Class Initialized
+INFO - 2025-03-13 12:52:04 --> Security Class Initialized
+DEBUG - 2025-03-13 12:52:04 --> Global POST, GET and COOKIE data sanitized
+INFO - 2025-03-13 12:52:04 --> Input Class Initialized
+INFO - 2025-03-13 12:52:04 --> Language Class Initialized
+INFO - 2025-03-13 12:52:04 --> Loader Class Initialized
+INFO - 2025-03-13 12:52:04 --> Helper loaded: url_helper
+INFO - 2025-03-13 12:52:04 --> Helper loaded: json_output_helper
+INFO - 2025-03-13 12:52:04 --> Helper loaded: file_helper
+INFO - 2025-03-13 12:52:04 --> Helper loaded: custom_helper
+INFO - 2025-03-13 12:52:04 --> Database Driver Class Initialized
+DEBUG - 2025-03-13 12:52:04 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2025-03-13 12:52:04 --> Session: Class initialized using 'files' driver.
+INFO - 2025-03-13 12:52:04 --> Table Class Initialized
+INFO - 2025-03-13 12:52:04 --> Helper loaded: form_helper
+INFO - 2025-03-13 12:52:04 --> Form Validation Class Initialized
+INFO - 2025-03-13 12:52:04 --> Controller Class Initialized
+INFO - 2025-03-13 12:52:04 --> Model "Admin_model" initialized
+DEBUG - 2025-03-13 12:52:04 --> Table class already loaded. Second attempt ignored.
+DEBUG - 2025-03-13 12:52:04 --> Form_validation class already loaded. Second attempt ignored.
+INFO - 2025-03-13 17:22:04 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/template/admin_header.php
+INFO - 2025-03-13 17:22:04 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/get_grade_card.php
+INFO - 2025-03-13 17:22:04 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/template/admin_footer.php
+INFO - 2025-03-13 17:22:04 --> Final output sent to browser
+DEBUG - 2025-03-13 17:22:04 --> Total execution time: 0.0776
+INFO - 2025-03-13 12:52:05 --> Config Class Initialized
+INFO - 2025-03-13 12:52:05 --> Hooks Class Initialized
+DEBUG - 2025-03-13 12:52:05 --> UTF-8 Support Enabled
+INFO - 2025-03-13 12:52:05 --> Utf8 Class Initialized
+INFO - 2025-03-13 12:52:05 --> URI Class Initialized
+INFO - 2025-03-13 12:52:05 --> Router Class Initialized
+INFO - 2025-03-13 12:52:05 --> Output Class Initialized
+INFO - 2025-03-13 12:52:05 --> Security Class Initialized
+DEBUG - 2025-03-13 12:52:05 --> Global POST, GET and COOKIE data sanitized
+INFO - 2025-03-13 12:52:05 --> Input Class Initialized
+INFO - 2025-03-13 12:52:05 --> Language Class Initialized
+INFO - 2025-03-13 12:52:05 --> Loader Class Initialized
+INFO - 2025-03-13 12:52:05 --> Helper loaded: url_helper
+INFO - 2025-03-13 12:52:05 --> Helper loaded: json_output_helper
+INFO - 2025-03-13 12:52:05 --> Helper loaded: file_helper
+INFO - 2025-03-13 12:52:05 --> Helper loaded: custom_helper
+INFO - 2025-03-13 12:52:05 --> Database Driver Class Initialized
+DEBUG - 2025-03-13 12:52:05 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2025-03-13 12:52:05 --> Session: Class initialized using 'files' driver.
+INFO - 2025-03-13 12:52:05 --> Table Class Initialized
+INFO - 2025-03-13 12:52:05 --> Helper loaded: form_helper
+INFO - 2025-03-13 12:52:05 --> Form Validation Class Initialized
+INFO - 2025-03-13 12:52:05 --> Controller Class Initialized
+INFO - 2025-03-13 12:52:05 --> Model "Admin_model" initialized
+DEBUG - 2025-03-13 12:52:05 --> Table class already loaded. Second attempt ignored.
+DEBUG - 2025-03-13 12:52:05 --> Form_validation class already loaded. Second attempt ignored.
+INFO - 2025-03-13 17:22:05 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/template/admin_header.php
+INFO - 2025-03-13 17:22:05 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/backlogs_view.php
+INFO - 2025-03-13 17:22:05 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/template/admin_footer.php
+INFO - 2025-03-13 17:22:05 --> Final output sent to browser
+DEBUG - 2025-03-13 17:22:05 --> Total execution time: 0.0813
+INFO - 2025-03-13 12:52:06 --> Config Class Initialized
+INFO - 2025-03-13 12:52:06 --> Hooks Class Initialized
+DEBUG - 2025-03-13 12:52:06 --> UTF-8 Support Enabled
+INFO - 2025-03-13 12:52:06 --> Utf8 Class Initialized
+INFO - 2025-03-13 12:52:06 --> URI Class Initialized
+INFO - 2025-03-13 12:52:06 --> Router Class Initialized
+INFO - 2025-03-13 12:52:06 --> Output Class Initialized
+INFO - 2025-03-13 12:52:06 --> Security Class Initialized
+DEBUG - 2025-03-13 12:52:06 --> Global POST, GET and COOKIE data sanitized
+INFO - 2025-03-13 12:52:06 --> Input Class Initialized
+INFO - 2025-03-13 12:52:06 --> Language Class Initialized
+INFO - 2025-03-13 12:52:06 --> Loader Class Initialized
+INFO - 2025-03-13 12:52:06 --> Helper loaded: url_helper
+INFO - 2025-03-13 12:52:06 --> Helper loaded: json_output_helper
+INFO - 2025-03-13 12:52:06 --> Helper loaded: file_helper
+INFO - 2025-03-13 12:52:06 --> Helper loaded: custom_helper
+INFO - 2025-03-13 12:52:06 --> Database Driver Class Initialized
+DEBUG - 2025-03-13 12:52:06 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2025-03-13 12:52:06 --> Session: Class initialized using 'files' driver.
+INFO - 2025-03-13 12:52:06 --> Table Class Initialized
+INFO - 2025-03-13 12:52:06 --> Helper loaded: form_helper
+INFO - 2025-03-13 12:52:06 --> Form Validation Class Initialized
+INFO - 2025-03-13 12:52:06 --> Controller Class Initialized
+INFO - 2025-03-13 12:52:06 --> Model "Admin_model" initialized
+DEBUG - 2025-03-13 12:52:06 --> Table class already loaded. Second attempt ignored.
+DEBUG - 2025-03-13 12:52:06 --> Form_validation class already loaded. Second attempt ignored.
+INFO - 2025-03-13 17:22:06 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/template/admin_header.php
+ERROR - 2025-03-13 17:22:06 --> Severity: Warning --> Undefined variable $action D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin\students.php 24
+INFO - 2025-03-13 17:22:06 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/students.php
+INFO - 2025-03-13 17:22:06 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/template/admin_footer.php
+INFO - 2025-03-13 17:22:06 --> Final output sent to browser
+DEBUG - 2025-03-13 17:22:06 --> Total execution time: 0.0675
+INFO - 2025-03-13 12:52:06 --> Config Class Initialized
+INFO - 2025-03-13 12:52:06 --> Hooks Class Initialized
+DEBUG - 2025-03-13 12:52:06 --> UTF-8 Support Enabled
+INFO - 2025-03-13 12:52:06 --> Utf8 Class Initialized
+INFO - 2025-03-13 12:52:06 --> URI Class Initialized
+INFO - 2025-03-13 12:52:06 --> Router Class Initialized
+INFO - 2025-03-13 12:52:06 --> Output Class Initialized
+INFO - 2025-03-13 12:52:06 --> Security Class Initialized
+DEBUG - 2025-03-13 12:52:06 --> Global POST, GET and COOKIE data sanitized
+INFO - 2025-03-13 12:52:06 --> Input Class Initialized
+INFO - 2025-03-13 12:52:06 --> Language Class Initialized
+INFO - 2025-03-13 12:52:06 --> Loader Class Initialized
+INFO - 2025-03-13 12:52:06 --> Helper loaded: url_helper
+INFO - 2025-03-13 12:52:06 --> Helper loaded: json_output_helper
+INFO - 2025-03-13 12:52:06 --> Helper loaded: file_helper
+INFO - 2025-03-13 12:52:06 --> Helper loaded: custom_helper
+INFO - 2025-03-13 12:52:06 --> Database Driver Class Initialized
+DEBUG - 2025-03-13 12:52:06 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+INFO - 2025-03-13 12:52:06 --> Session: Class initialized using 'files' driver.
+INFO - 2025-03-13 12:52:06 --> Table Class Initialized
+INFO - 2025-03-13 12:52:06 --> Helper loaded: form_helper
+INFO - 2025-03-13 12:52:06 --> Form Validation Class Initialized
+INFO - 2025-03-13 12:52:06 --> Controller Class Initialized
+INFO - 2025-03-13 12:52:06 --> Model "Admin_model" initialized
+DEBUG - 2025-03-13 12:52:06 --> Table class already loaded. Second attempt ignored.
+DEBUG - 2025-03-13 12:52:06 --> Form_validation class already loaded. Second attempt ignored.
+INFO - 2025-03-13 17:22:06 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/template/admin_header.php
+INFO - 2025-03-13 17:22:06 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/courses.php
+INFO - 2025-03-13 17:22:06 --> File loaded: D:\Xampp\htdocs\Non_NEP_Certificates\application\views\admin/template/admin_footer.php
+INFO - 2025-03-13 17:22:06 --> Final output sent to browser
+DEBUG - 2025-03-13 17:22:06 --> Total execution time: 0.0878

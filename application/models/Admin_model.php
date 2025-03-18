@@ -444,6 +444,8 @@ function getStudentRegularMarks($usn, $semester)
   $this->db->where('semester', $semester);
   // For regular exams, typically not in July
   $this->db->where('MONTH(result_year) !=', 7);
+  // Add ordering by suborder
+  $this->db->order_by('suborder', 'ASC');
   $query = $this->db->get('students_marks');
   
   $results = $query->result();
@@ -456,59 +458,59 @@ function getStudentRegularMarks($usn, $semester)
   return $results;
 }
 
-function getStudentSupplementaryMarks($usn, $semester, $sequence)
+function getStudentSupplementaryMarks($usn, $sequence)
 {
-  $this->db->where('usn', $usn);
-  $this->db->where('semester', $semester);
-  // For supplementary exams, typically in July
-  $this->db->where('MONTH(result_year)', 7);
-  $this->db->order_by('result_year', 'ASC');
-  $query = $this->db->get('students_marks');
-  
-  $allResults = $query->result();
-  
-  if (empty($allResults)) {
-    return [];
-  }
-  
-  // Group all results by year to create sequences
-  $yearGroups = [];
-  foreach ($allResults as $result) {
-    $year = date('Y', strtotime($result->result_year));
-    if (!isset($yearGroups[$year])) {
-      $yearGroups[$year] = [];
+    $this->db->select('*, YEAR(result_year) as exam_year');
+    $this->db->where('usn', $usn);
+    $this->db->where('MONTH(result_year)', 7);
+    $this->db->order_by('result_year', 'ASC');
+    $this->db->order_by('suborder', 'ASC'); // Add suborder sorting
+    $query = $this->db->get('students_marks');
+    
+    $allResults = $query->result();
+    
+    if (empty($allResults)) {
+        return [];
     }
     
-    // Add the course to this year's group
-    $courseCode = $result->course_code;
-    if (!isset($yearGroups[$year][$courseCode])) {
-      $yearGroups[$year][$courseCode] = $result;
+    // Group results by year
+    $yearGroups = [];
+    foreach ($allResults as $result) {
+        $year = $result->exam_year;
+        if (!isset($yearGroups[$year])) {
+            $yearGroups[$year] = [];
+        }
+        $yearGroups[$year][] = $result;
     }
-  }
-  
-  // Sort year groups chronologically
-  ksort($yearGroups);
-  
-  // Assign sequence numbers (S1, S2, etc.) to each year group
-  $sequenceYears = array_keys($yearGroups);
-  
-  // If the requested sequence is invalid, return empty array
-  if (!isset($sequenceYears[$sequence-1])) {
-    return [];
-  }
-  
-  // Get the year corresponding to the requested sequence
-  $targetYear = $sequenceYears[$sequence-1];
-  
-  // Return the results for the requested sequence
-  $results = array_values($yearGroups[$targetYear]);
-  
-  // Add course names to the results
-  foreach ($results as $result) {
-    $result->course_name = $this->getCourseNameByCode($result->course_code);
-  }
-  
-  return $results;
+    
+    // Sort years chronologically
+    ksort($yearGroups);
+    
+    // Get years as array
+    $years = array_keys($yearGroups);
+    
+    // If sequence is invalid, return empty array
+    if (!isset($years[$sequence-1])) {
+        return [];
+    }
+    
+    // Get the year for requested sequence
+    $targetYear = $years[$sequence-1];
+    
+    // Get results for that year
+    $results = $yearGroups[$targetYear];
+    
+    // Add course names to the results
+    foreach ($results as $result) {
+        $result->course_name = $this->getCourseNameByCode($result->course_code);
+    }
+    
+    // Sort by suborder instead of semester
+    usort($results, function($a, $b) {
+        return $a->suborder - $b->suborder;
+    });
+    
+    return $results;
 }
 
 }
