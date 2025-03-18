@@ -46,12 +46,7 @@
 </head>
 
 <body>
-    <!-- Global Loader -->
-    <div id="global-loader">
-        <div class="loader-container">
-            <img src="<?= base_url('assets/images/loader.gif'); ?>" alt="Loading...">
-        </div>
-    </div>
+
 
     <!-- Begin page -->
     <div id="layout-wrapper">
@@ -171,6 +166,76 @@
             </div>
         </div>
 
-  
+  <!-- Loader Overlay & Popup -->
+<div id="loader-overlay">
+    <div id="loader-popup">
+        <div class="loader-content">
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+            <p class="mt-3 mb-0">Please wait...</p>
+        </div>
+    </div>
+</div>
+
 </body>
+<!-- jQuery (required) -->
+<!-- jQuery (Required) -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    // Show loader with optional message
+    function showLoader(message = 'Please wait...') {
+        const $overlay = $('#loader-overlay');
+        const $message = $('#loader-popup p');
+
+        if ($overlay.length) {
+            $overlay.fadeIn(200);
+        }
+
+        if ($message.length && message) {
+            $message.text(message);
+        }
+    }
+
+    // Hide loader
+    function hideLoader() {
+        const $overlay = $('#loader-overlay');
+        if ($overlay.length) {
+            $overlay.fadeOut(300);
+        }
+    }
+
+    // Show loader initially when DOM is ready (optional)
+    document.addEventListener("DOMContentLoaded", function () {
+        showLoader("Loading page...");
+    });
+
+    // Ensure loader is hidden once everything finishes loading
+    window.addEventListener("load", function () {
+        // Add a slight delay to make transition smooth
+        setTimeout(hideLoader, 300);
+    });
+
+    // Fallback: Force hide after 5 seconds if something hangs
+    setTimeout(() => {
+        hideLoader();
+    }, 5000);
+
+    // Handle form submissions
+    $(document).on('submit', 'form', function () {
+        showLoader();
+    });
+
+    // AJAX global loader
+    $(document).ajaxStart(function () {
+        showLoader();
+    });
+
+    $(document).ajaxStop(function () {
+        hideLoader();
+    });
+</script>
+
+
 </html> 
