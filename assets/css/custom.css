@@ -28,3 +28,45 @@
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
 }
+
+#loader-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 30px 40px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.loader-content .spinner-border {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.loader-content p {
+    font-weight: 500;
+    font-size: 16px;
+}
+#loader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5); /* dimmed background */
+    z-index: 9999; /* above everything */
+    display: none; /* hidden by default */
+    align-items: center;
+    justify-content: center;
+}
+
+#loader-overlay .spinner-border {
+    width: 4rem;
+    height: 4rem;
+}
