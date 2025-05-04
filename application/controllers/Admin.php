@@ -1688,7 +1688,7 @@ public function generate_transcript_pdf_preview($id)
 
     // Email configuration
 
-    $this->email->from('roreplayreplay@gmail.com', 'BMSCE CERTIFY 2008'); 
+    $this->email->from('roreplayreplay@gmail.com', 'BMSCE CERTIFY NON-NEP'); 
 
     $this->email->to($email);
     $this->email->subject($subject);
@@ -1742,7 +1742,7 @@ public function generate_transcript_pdf_preview($id)
 //     ";
 
 //     // Email configuration
-//     $this->email->from('nandeeshjkalakatti@gmail.com', 'BMSCE CERTIFY 2008'); 
+//     $this->email->from('nandeeshjkalakatti@gmail.com', 'BMSCE CERTIFY NON-NEP'); 
 //     $this->email->to($email);
 //     $this->email->subject($subject);
 //     $this->email->message($message);

@@ -10,7 +10,7 @@
                                             <div class="p-5">
                                                 <div class="text-center mb-5">
                                                     <a class="text-dark font-size-22 font-family-secondary">
-                                                        <b>BMSCE CERTIFY 2008</b>
+                                                        <b>BMSCE CERTIFY NON-NEP</b>
                                                     </a>
                                                 </div>
                                                 <h1 class="h5 mb-1">Welcome Back!</h1>
