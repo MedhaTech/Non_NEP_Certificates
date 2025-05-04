@@ -244,6 +244,9 @@ public function get_certificate_logs($usn)
 
 public function getStudentCountByYear() {
     $this->db->select('branch, programme, 
+        COUNT(CASE WHEN admission_year = 2005 THEN id END) AS `2005`, 
+        COUNT(CASE WHEN admission_year = 2006 THEN id END) AS `2006`, 
+        COUNT(CASE WHEN admission_year = 2007 THEN id END) AS `2007`,     
         COUNT(CASE WHEN admission_year = 2008 THEN id END) AS `2008`, 
         COUNT(CASE WHEN admission_year = 2009 THEN id END) AS `2009`, 
         COUNT(CASE WHEN admission_year = 2010 THEN id END) AS `2010`, 
