@@ -191,7 +191,7 @@
                                 <td> <strong> <?php echo $total_2007; ?></strong> </td>
                                 <td> <strong> <?php echo $total_2008; ?></strong> </td>
                                 <td> <strong> <?php echo $total_2009; ?></strong> </td>
-                                <td> <strong> <?php echo $total_2011; ?></strong> </td>
+                                <td> <strong> <?php echo $total_2010; ?></strong> </td>
                                 <td> <strong> <?php echo $total_2011; ?></strong> </td>
                                 <td> <strong> <?php echo $total_2012; ?></strong> </td>
                                 <td> <strong> <?php echo $total_2013; ?></strong> </td>
