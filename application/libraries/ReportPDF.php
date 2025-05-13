@@ -10,4 +10,7 @@ class ReportPDF extends FPDF {
         // You can leave it blank or add a hidden text to reserve space
         $this->Cell(0, 10, '', 0, 0, 'C'); 
     }
+    function AddCharmFont() {
+        $this->AddFont('Charm-Bold', '', 'Charm-Bold.php'); // Must match file name
+    }
 }
