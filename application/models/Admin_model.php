@@ -65,12 +65,12 @@ class Admin_model extends CI_Model
   }
   public function getStudentMarksOrderedByTorder($usn)
   {
-      $this->db->where('usn', $usn);
-      $this->db->order_by('torder'); // Order by torder ascending
-      return $this->db->get('students_marks');
+    $this->db->where('usn', $usn);
+    $this->db->order_by('torder'); // Order by torder ascending
+    return $this->db->get('students_marks');
   }
-  
-  
+
+
 
   function getDetailsbyfield2($id1, $value1, $id2, $value2, $tableName)
   {
@@ -173,76 +173,78 @@ class Admin_model extends CI_Model
 
   public function updateDetails1($id, $details, $tableName)
   {
-      if (empty($id)) {
-          return false;  
-      }
-      $this->db->where('id', $id);
-      $this->db->update($tableName, $details);
-      return $this->db->affected_rows() > 0;
+    if (empty($id)) {
+      return false;
+    }
+    $this->db->where('id', $id);
+    $this->db->update($tableName, $details);
+    return $this->db->affected_rows() > 0;
   }
-  
+
   public function deleteCourse($id)
   {
-      $this->db->where('id', $id);
-      $this->db->delete('courses');
-      return $this->db->affected_rows() > 0;
+    $this->db->where('id', $id);
+    $this->db->delete('courses');
+    return $this->db->affected_rows() > 0;
   }
 
   public function deleteStudent($id)
   {
-      $this->db->where('id', $id);
-      $this->db->delete('students');
-      return $this->db->affected_rows() > 0;
+    $this->db->where('id', $id);
+    $this->db->delete('students');
+    return $this->db->affected_rows() > 0;
   }
 
   public function getstudentDetail($table, $conditions = [])
-{
+  {
     if (!empty($conditions)) {
-        $this->db->where($conditions);
+      $this->db->where($conditions);
     }
     return $this->db->get($table);
-}
-public function getStudentMarksBySemester($usn, $semester)
-{
+  }
+  public function getStudentMarksBySemester($usn, $semester)
+  {
     // Select necessary columns from students_marks and courses
     $this->db->select('
         c.course_code, c.course_name, sm.id, sm.cie, sm.see, sm.cie_see, sm.grade, sm.grade_points,
         sm.sgpa, sm.credits_earned, sm.credits_actual, sm.cgpa, sm.result_year, sm.grade, sm.barcode, 
         sm.exam_period, sm.semester, sm.ci, sm.suborder, sm.reexamyear, sm.gcno, sm.torder, sm.texam_period
     ');
-    
+
     // Join students_marks (sm) table with courses (c) table on the appropriate field
     $this->db->from('students_marks sm');
     $this->db->join('courses c', 'sm.course_code = c.course_code');  // Assuming 'course_id' in students_marks table
     $this->db->where('sm.usn', $usn);
     $this->db->where('sm.semester', $semester);
-    
+
     // Execute the query
     $query = $this->db->get();
 
     // Return the result of the query
     return $query->result();  // This will return an array of result objects
-}
-public function insertCertificateLog($usn, $details) {
-  $data = array(
+  }
+  public function insertCertificateLog($usn, $details)
+  {
+    $data = array(
       'usn' => $usn,
       'details' => $details,
       'download_at' => date('Y-m-d H:i:s') // Current timestamp
-  );
+    );
 
-  return $this->db->insert('certificates_logs', $data);
-}
+    return $this->db->insert('certificates_logs', $data);
+  }
 
-public function get_certificate_logs($usn)
-{
+  public function get_certificate_logs($usn)
+  {
     $this->db->select('id, details, download_at');
     $this->db->from('certificates_logs');
     $this->db->where('usn', $usn);
     $this->db->order_by('download_at', 'DESC'); // Show latest first
     return $this->db->get()->result();
-}
+  }
 
-public function getStudentCountByYear() {
+  public function getStudentCountByYear()
+  {
     $this->db->select('branch, programme, 
         COUNT(CASE WHEN admission_year = 2005 THEN id END) AS `2005`, 
         COUNT(CASE WHEN admission_year = 2006 THEN id END) AS `2006`, 
@@ -263,10 +265,10 @@ public function getStudentCountByYear() {
     $this->db->from('students');
     $this->db->group_by('branch, programme');
     return $this->db->get()->result();
-}
+  }
 
-public function get_failed_students_paginated($admission_year, $search = '', $start = 0, $length = 10, $order_column = 'students.usn', $order_dir = 'asc')
-{
+  public function get_failed_students_paginated($admission_year, $search = '', $start = 0, $length = 10, $order_column = 'students.usn', $order_dir = 'asc')
+  {
     $this->db->select('students.usn, students.student_name, students.admission_year, students.programme, students.branch, students_marks.course_code, students_marks.grade');
     $this->db->from('students');
     $this->db->join('students_marks', 'students.usn = students_marks.usn');
@@ -274,89 +276,90 @@ public function get_failed_students_paginated($admission_year, $search = '', $st
     $this->db->where('students.admission_year', $admission_year);
 
     if (!empty($search)) {
-        $this->db->group_start();
-        $this->db->like('students.usn', $search);
-        $this->db->or_like('students.student_name', $search);
-        $this->db->or_like('students_marks.course_code', $search);
-        $this->db->group_end();
+      $this->db->group_start();
+      $this->db->like('students.usn', $search);
+      $this->db->or_like('students.student_name', $search);
+      $this->db->or_like('students_marks.course_code', $search);
+      $this->db->group_end();
     }
 
     $this->db->order_by($order_column, $order_dir);
     $this->db->limit($length, $start);
 
     return $this->db->get()->result();
-}
-public function count_all_failed_students($admission_year)
-{
+  }
+  public function count_all_failed_students($admission_year)
+  {
     $this->db->from('students');
     $this->db->join('students_marks', 'students.usn = students_marks.usn');
     $this->db->where('students_marks.grade', 'F');
     $this->db->where('students.admission_year', $admission_year);
     return $this->db->count_all_results();
-}
+  }
 
-public function count_filtered_failed_students($admission_year, $search = '')
-{
+  public function count_filtered_failed_students($admission_year, $search = '')
+  {
     $this->db->from('students');
     $this->db->join('students_marks', 'students.usn = students_marks.usn');
     $this->db->where('students_marks.grade', 'F');
     $this->db->where('students.admission_year', $admission_year);
 
     if (!empty($search)) {
-        $this->db->group_start();
-        $this->db->like('students.usn', $search);
-        $this->db->or_like('students.student_name', $search);
-        $this->db->or_like('students_marks.course_code', $search);
-        $this->db->group_end();
+      $this->db->group_start();
+      $this->db->like('students.usn', $search);
+      $this->db->or_like('students.student_name', $search);
+      $this->db->or_like('students_marks.course_code', $search);
+      $this->db->group_end();
     }
 
     return $this->db->count_all_results();
-}
+  }
 
 
- public function get_unique_admission_years()
- {
-   $this->db->distinct();
-   $this->db->select('admission_year');
-   $this->db->from('students');
-   $this->db->order_by('admission_year', 'DESC');
-   return $this->db->get()->result();
- }
+  public function get_unique_admission_years()
+  {
+    $this->db->distinct();
+    $this->db->select('admission_year');
+    $this->db->from('students');
+    $this->db->order_by('admission_year', 'DESC');
+    return $this->db->get()->result();
+  }
 
- public function getDistinctValues($column, $table)
-{
+  public function getDistinctValues($column, $table)
+  {
     $this->db->distinct();
     $this->db->select($column);
     $this->db->from($table);
     return $this->db->get()->result();
-}
+  }
 
-public function getAllStudents() {
-  // Fetch all students from the database without applying any filters
-  $this->db->select('*');
-  $this->db->from('students');
-  $query = $this->db->get();
+  public function getAllStudents()
+  {
+    // Fetch all students from the database without applying any filters
+    $this->db->select('*');
+    $this->db->from('students');
+    $query = $this->db->get();
 
-  return $query;
-}
+    return $query;
+  }
 
-public function getFilteredStudents($filter_conditions = [])
-{
+  public function getFilteredStudents($filter_conditions = [])
+  {
     // Start the query for fetching students
     $this->db->select('*');
     $this->db->from('students');
 
     // Apply filters based on the conditions passed
     if (isset($filter_conditions['admission_year']) && !empty($filter_conditions['admission_year'])) {
-        $this->db->where('admission_year', $filter_conditions['admission_year']);
+      $this->db->where('admission_year', $filter_conditions['admission_year']);
     }
-    
+
     if (isset($filter_conditions['programme']) && !empty($filter_conditions['programme'])) {
-        $this->db->where('programme', $filter_conditions['programme']);
+      $this->db->where('programme', $filter_conditions['programme']);
     }
 
     if (isset($filter_conditions['branch']) && !empty($filter_conditions['branch'])) {
-        $this->db->where('branch', $filter_conditions['branch']);
+      $this->db->where('branch', $filter_conditions['branch']);
     }
 
     // You can also add any other filtering logic based on your requirements
@@ -366,70 +369,77 @@ public function getFilteredStudents($filter_conditions = [])
 
     // Return the result as an array of students
     return $query;
-}
-public function getFilteredCourses($programme = null, $semester = null, $branch = null)
-{
+  }
+  public function getFilteredCourses($programme = null, $semester = null, $branch = null)
+  {
     $this->db->select('*');
     $this->db->from('courses');
 
     // Only apply filters if at least one of them is NOT null
     if ($programme !== null || $semester !== null || $branch !== null) {
-        if (!empty($programme)) {
-            $this->db->where('programme', $programme);
-        }
-        if (!empty($semester)) {
-            $this->db->where('semester', $semester);
-        }
-        if (!empty($branch)) {
-            $this->db->where('branch', $branch);
-        }
+      if (!empty($programme)) {
+        $this->db->where('programme', $programme);
+      }
+      if (!empty($semester)) {
+        $this->db->where('semester', $semester);
+      }
+      if (!empty($branch)) {
+        $this->db->where('branch', $branch);
+      }
     }
 
     return $this->db->get();
-}
+  }
 
 
 
-public function getAllCourses() {
-  $this->db->select('*');
-  $this->db->from('courses');
-  return $this->db->get();
-}
+  public function getAllCourses()
+  {
+    $this->db->select('*');
+    $this->db->from('courses');
+    return $this->db->get();
+  }
 
 
 
-  public function get_user_by_email($email) {
-        return $this->db->get_where('users', ['email' => $email])->row();
-    }
+  public function get_user_by_email($email)
+  {
+    return $this->db->get_where('users', ['email' => $email])->row();
+  }
 
-    public function store_reset_token($user_id, $token, $expiry) {
-        $data = [
-            'reset_token' => $token,
-            'token_expiry' => $expiry
-        ];
-        $this->db->where('user_id', $user_id);
-        $this->db->update('users', $data);
-    }
+  public function store_reset_token($user_id, $token, $expiry)
+  {
+    $data = [
+      'reset_token' => $token,
+      'token_expiry' => $expiry
+    ];
+    $this->db->where('user_id', $user_id);
+    $this->db->update('users', $data);
+  }
 
 
 
-public function verify_reset_token($token) {
-  $this->db->where('reset_token', $token);
-  $this->db->where('token_expiry >=', date("Y-m-d H:i:s"));
-  return $this->db->get('users')->row();
-}
+  public function verify_reset_token($token)
+  {
+    $this->db->where('reset_token', $token);
+    $this->db->where('token_expiry >=', date("Y-m-d H:i:s"));
+    return $this->db->get('users')->row();
+  }
 
-public function update_password($user_id, $hashed_password) {
-  $this->db->where('user_id', $user_id);
-  $this->db->update('users', ['password' => $hashed_password]);
-}
+  public function update_password($user_id, $hashed_password)
+  {
+    $this->db->where('user_id', $user_id);
+    $this->db->update('users', ['password' => $hashed_password]);
+  }
 
-public function invalidate_reset_token($token) {
-  $this->db->where('reset_token', $token);
-  $this->db->update('users', ['reset_token' => null, 'token_expiry' => null]);
-}
+  public function invalidate_reset_token($token)
+  {
+    $this->db->where('reset_token', $token);
+    $this->db->update('users', ['reset_token' => null, 'token_expiry' => null]);
+  }
 
-public function update_marks($course_id, $data) {
+  public function update_marks($course_id, $data)
+  {
     // Fetch existing data
     $this->db->where('id', $course_id);
     $query = $this->db->get('students_marks');
@@ -437,138 +447,140 @@ public function update_marks($course_id, $data) {
 
     // Check if the data is different
     if ($existing_data && $existing_data === $data) {
-        return 'no_change'; // No data change
+      return 'no_change'; // No data change
     } else {
-        // Update the record
-        $this->db->where('id', $course_id);
-        $this->db->update('students_marks', $data);
-        
-        if ($this->db->affected_rows() > 0) {
-            return 'updated'; // Data updated successfully
-        } else {
-            return 'failed'; // No rows affected
-        }
+      // Update the record
+      $this->db->where('id', $course_id);
+      $this->db->update('students_marks', $data);
+
+      if ($this->db->affected_rows() > 0) {
+        return 'updated'; // Data updated successfully
+      } else {
+        return 'failed'; // No rows affected
+      }
     }
-}
+  }
 
 
 
 
 
-public function get_course_marks($course_id)
-{
-  $this->db->where('id', $course_id);
-  return $this->db->get('students_marks')->row();
-}
+  public function get_course_marks($course_id)
+  {
+    $this->db->where('id', $course_id);
+    return $this->db->get('students_marks')->row();
+  }
 
 
-public function deletemarks($course_id, $student_id) {
-  $this->db->where('id', $course_id);
-  $this->db->delete('students_marks');
-  return $this->db->affected_rows() > 0; // Return true if a row was deleted
-}
-public function getCourseNameByCode($course_code) {
-  $this->db->select('course_name');
-  $this->db->from('courses'); // Assuming your course table is named 'courses'
-  $this->db->where('course_code', $course_code);
-  $query = $this->db->get();
+  public function deletemarks($course_id, $student_id)
+  {
+    $this->db->where('id', $course_id);
+    $this->db->delete('students_marks');
+    return $this->db->affected_rows() > 0; // Return true if a row was deleted
+  }
+  public function getCourseNameByCode($course_code)
+  {
+    $this->db->select('course_name');
+    $this->db->from('courses'); // Assuming your course table is named 'courses'
+    $this->db->where('course_code', $course_code);
+    $query = $this->db->get();
 
-  if ($query->num_rows() > 0) {
+    if ($query->num_rows() > 0) {
       return $query->row()->course_name; // Return the course name
+    }
+    return null; // Return null if no course found
   }
-  return null; // Return null if no course found
-}
 
-function getStudentByUSN($usn)
-{
-  $this->db->where('usn', $usn);
-  $query = $this->db->get('students');
-  return $query->row();
-}
-
-function getStudentRegularMarks($usn, $semester)
-{
-  $this->db->where('usn', $usn);
-  $this->db->where('semester', $semester);
-  // For regular exams, typically not in July
-  $this->db->where('MONTH(result_year) !=', 7);
-  // Add ordering by suborder
-  $this->db->order_by('suborder', 'ASC');
-  $query = $this->db->get('students_marks');
-  
-  $results = $query->result();
-  
-  // Add course names to the results
-  foreach ($results as $result) {
-    $result->course_name = $this->getCourseNameByCode($result->course_code);
+  function getStudentByUSN($usn)
+  {
+    $this->db->where('usn', $usn);
+    $query = $this->db->get('students');
+    return $query->row();
   }
-  
-  return $results;
-}
 
-function getStudentSupplementaryMarks($usn, $sequence)
-{
+  function getStudentRegularMarks($usn, $semester)
+  {
+    $this->db->where('usn', $usn);
+    $this->db->where('semester', $semester);
+    // For regular exams, typically not in July
+    $this->db->where('MONTH(result_year) !=', 7);
+    // Add ordering by suborder
+    $this->db->order_by('suborder', 'ASC');
+    $query = $this->db->get('students_marks');
+
+    $results = $query->result();
+
+    // Add course names to the results
+    foreach ($results as $result) {
+      $result->course_name = $this->getCourseNameByCode($result->course_code);
+    }
+
+    return $results;
+  }
+
+  function getStudentSupplementaryMarks($usn, $sequence)
+  {
     $this->db->select('*, YEAR(result_year) as exam_year');
     $this->db->where('usn', $usn);
     $this->db->where('MONTH(result_year)', 7);
     $this->db->order_by('result_year', 'ASC');
     $this->db->order_by('suborder', 'ASC'); // Add suborder sorting
     $query = $this->db->get('students_marks');
-    
+
     $allResults = $query->result();
-    
+
     if (empty($allResults)) {
-        return [];
+      return [];
     }
-    
+
     // Group results by year
     $yearGroups = [];
     foreach ($allResults as $result) {
-        $year = $result->exam_year;
-        if (!isset($yearGroups[$year])) {
-            $yearGroups[$year] = [];
-        }
-        $yearGroups[$year][] = $result;
+      $year = $result->exam_year;
+      if (!isset($yearGroups[$year])) {
+        $yearGroups[$year] = [];
+      }
+      $yearGroups[$year][] = $result;
     }
-    
+
     // Sort years chronologically
     ksort($yearGroups);
-    
+
     // Get years as array
     $years = array_keys($yearGroups);
-    
+
     // If sequence is invalid, return empty array
-    if (!isset($years[$sequence-1])) {
-        return [];
+    if (!isset($years[$sequence - 1])) {
+      return [];
     }
-    
+
     // Get the year for requested sequence
-    $targetYear = $years[$sequence-1];
-    
+    $targetYear = $years[$sequence - 1];
+
     // Get results for that year
     $results = $yearGroups[$targetYear];
-    
+
     // Add course names to the results
     foreach ($results as $result) {
-        $result->course_name = $this->getCourseNameByCode($result->course_code);
+      $result->course_name = $this->getCourseNameByCode($result->course_code);
     }
-    
+
     // Sort by suborder instead of semester
-    usort($results, function($a, $b) {
-        return $a->suborder - $b->suborder;
+    usort($results, function ($a, $b) {
+      return $a->suborder - $b->suborder;
     });
-    
+
     return $results;
-}
-public function updateData($table, $data, $id)
-{
+  }
+  public function updateData($table, $data, $id)
+  {
     $this->db->where('id', $id);
     return $this->db->update($table, $data);
-}
+  }
 
-// Get existing serial from student_marks table
-public function getPdcSerialFromMarks($usn)
-{
+  // Get existing serial from student_marks table
+  public function getPdcSerialFromMarks($usn)
+  {
     $this->db->select('pdc_serial');
     $this->db->from('students_marks');
     $this->db->where('usn', $usn);
@@ -576,11 +588,11 @@ public function getPdcSerialFromMarks($usn)
     $this->db->limit(1);
     $query = $this->db->get();
     return $query->num_rows() ? $query->row()->pdc_serial : false;
-}
+  }
 
-// Get the last sequence number used
-public function getLastPdcSerialNumberFromMarks($programme, $year)
-{
+  // Get the last sequence number used
+  public function getLastPdcSerialNumberFromMarks($programme, $year)
+  {
     $this->db->select('pdc_serial');
     $this->db->from('students_marks');
     $this->db->like('pdc_serial', "{$programme}-{$year}-", 'after');
@@ -589,19 +601,35 @@ public function getLastPdcSerialNumberFromMarks($programme, $year)
     $query = $this->db->get();
 
     if ($query->num_rows()) {
-        $serial_parts = explode('-', $query->row()->pdc_serial);
-        return intval(end($serial_parts));
+      $serial_parts = explode('-', $query->row()->pdc_serial);
+      return intval(end($serial_parts));
     }
 
     return 0;
-}
+  }
 
-// Update all rows for a student with the PDC serial
-public function setPdcSerialInMarks($usn, $pdc_serial)
-{
+  // Update all rows for a student with the PDC serial
+  public function setPdcSerialInMarks($usn, $pdc_serial)
+  {
     $this->db->where('usn', $usn);
     $this->db->update('students_marks', ['pdc_serial' => $pdc_serial]);
-}
+  }
 
+  function getStudentRegularMarksdetails($usn, $resultDate)
+  {
+    $this->db->where('usn', $usn);
+    $this->db->where('result_year', $resultDate);
+    // Add ordering by suborder
+    $this->db->order_by('suborder', 'ASC');
+    $query = $this->db->get('students_marks');
 
+    $results = $query->result();
+
+    // Add course names to the results
+    foreach ($results as $result) {
+      $result->course_name = $this->getCourseNameByCode($result->course_code);
+    }
+
+    return $results;
+  }
 }
