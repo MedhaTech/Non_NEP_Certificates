@@ -1971,16 +1971,25 @@ class Admin extends CI_Controller
             require_once APPPATH . 'libraries/ReportPDF.php';
             $pdf = new ReportPDF('P', 'mm', 'A4');
             $pdf->AddPage();
+            $pdf->AddCharmFont();
 
             // Background Image
             $pdf->Image(base_url('assets/images/DEMO_PDC.png'), 0, 0, 210, 297);
-            $pdf->SetFont('Times', 'B', 13);
-            $pdf->SetTextColor(0, 0, 0);
+             $studentImagePath = FCPATH . "assets/student_pics/{$student->admission_year}/{$student->usn}.jpg";
+            $defaultImagePath = FCPATH . "assets/student_pics/default.png";
+
+            // Try to resolve the real path of the student image first
+            $studentFilePath = file_exists($studentImagePath) ? realpath($studentImagePath) : realpath($defaultImagePath);
+            $pdf->Image($studentFilePath, 90, 85, 28);
+            $pdf->SetFont('Charm-Bold', '', 23);
+            $pdf->SetTextColor(8, 8, 255);
 
             // Student Info
             $pdf->SetXY(78, 131.5);
-            $pdf->Cell(50, 6, $student->student_name);
+            $pdf->Cell(45, 8, $student->student_name, 0, 1, 'C');
             $pdf->SetXY(111.5, 144);
+            $pdf->SetTextColor(0, 0, 0);
+            $pdf->SetFont('Arial', 'B', 13);
             $pdf->Cell(50, 6, $student->usn);
 
             // CGPA (from 8th sem)
@@ -1993,20 +2002,28 @@ class Admin extends CI_Controller
             // Date
             $current_date = date('d-m-Y');
             $pdf->SetXY(94, 258.5);
+            $pdf->SetTextColor(8, 8, 255);
+            $pdf->SetFont('Arial', '', 11);
             $pdf->Cell(50, 6, $current_date);
 
             // PDC Serial
             $pdf->SetXY(151, 62.5); // adjust as needed
+            $pdf->SetTextColor(0, 0, 0);
+            $pdf->SetFont('Arial', 'B', 11);
             $pdf->Cell(50, 6, "$pdc_serial", 0, 1, 'C');
             // ➕ Programme Full Form using globals
             $programme_levels = $this->globals->programme_levels();
             $programme_key = strtolower(trim($student->programme)); // ensure lowercase match
             $programme_full_form = isset($programme_levels[$programme_key]) ? $programme_levels[$programme_key] : $student->programme;
-
+            $branch = $this->admin_model->get_department_name_by_short($student->branch);
             // Add programme full form text to PDF
-            $pdf->SetFont('Times', 'B', 14); // Set bold Times font, size 14
+            $pdf->SetFont('Charm-Bold', '', 14);
+            $pdf->SetTextColor(8, 8, 255);
+            $pdf->SetXY(55, 162); // Adjust position as needed
+            $pdf->Cell(110, 5, $programme_full_form, 0, 1, 'C'); // Convert to uppercase
             $pdf->SetXY(55, 167); // Adjust position as needed
-            $pdf->Cell(110, 10, strtoupper($programme_full_form), 0, 1, 'C'); // Convert to uppercase
+            $pdf->SetFont('Charm-Bold', '', 17);
+            $pdf->Cell(110, 15, strtoupper($branch), 0, 1, 'C');
 
 
 
@@ -2047,16 +2064,24 @@ class Admin extends CI_Controller
             require_once APPPATH . 'libraries/ReportPDF.php';
             $pdf = new ReportPDF('P', 'mm', 'A4');
             $pdf->AddPage();
-
+            $pdf->AddCharmFont();
             // Background Image
             $pdf->Image(base_url('assets/images/DEMO_PDC.png'), 0, 0, 210, 297);
-            $pdf->SetFont('Times', 'B', 13);
-            $pdf->SetTextColor(0, 0, 0);
+            $studentImagePath = FCPATH . "assets/student_pics/{$student->admission_year}/{$student->usn}.jpg";
+            $defaultImagePath = FCPATH . "assets/student_pics/default.png";
+
+            // Try to resolve the real path of the student image first
+            $studentFilePath = file_exists($studentImagePath) ? realpath($studentImagePath) : realpath($defaultImagePath);
+            $pdf->Image($studentFilePath, 90, 85, 28);
+            $pdf->SetFont('Charm-Bold', '', 23);
+            $pdf->SetTextColor(8, 8, 255);
 
             // Student Info
             $pdf->SetXY(78, 131.5);
-            $pdf->Cell(50, 6, $student->student_name);
+            $pdf->Cell(45, 8, $student->student_name, 0, 1, 'C');
             $pdf->SetXY(111.5, 144);
+            $pdf->SetTextColor(0, 0, 0);
+            $pdf->SetFont('Arial', 'B', 13);
             $pdf->Cell(50, 6, $student->usn);
 
             // CGPA (from 8th sem)
@@ -2069,20 +2094,28 @@ class Admin extends CI_Controller
             // Date
             $current_date = date('d-m-Y');
             $pdf->SetXY(94, 258.5);
+            $pdf->SetTextColor(8, 8, 255);
+            $pdf->SetFont('Arial', '', 11);
             $pdf->Cell(50, 6, $current_date);
 
             // PDC Serial
             $pdf->SetXY(151, 62.5); // adjust as needed
+            $pdf->SetTextColor(0, 0, 0);
+            $pdf->SetFont('Arial', 'B', 11);
             $pdf->Cell(50, 6, "$pdc_serial", 0, 1, 'C');
             // ➕ Programme Full Form using globals
             $programme_levels = $this->globals->programme_levels();
             $programme_key = strtolower(trim($student->programme)); // ensure lowercase match
             $programme_full_form = isset($programme_levels[$programme_key]) ? $programme_levels[$programme_key] : $student->programme;
-
+            $branch = $this->admin_model->get_department_name_by_short($student->branch);
             // Add programme full form text to PDF
-            $pdf->SetFont('Times', 'B', 14); // Set bold Times font, size 14
+            $pdf->SetFont('Charm-Bold', '', 14);
+            $pdf->SetTextColor(8, 8, 255);
+            $pdf->SetXY(55, 162); // Adjust position as needed
+            $pdf->Cell(110, 5, $programme_full_form, 0, 1, 'C'); // Convert to uppercase
             $pdf->SetXY(55, 167); // Adjust position as needed
-            $pdf->Cell(110, 10, strtoupper($programme_full_form), 0, 1, 'C'); // Convert to uppercase
+            $pdf->SetFont('Charm-Bold', '', 17);
+            $pdf->Cell(110, 15, strtoupper($branch), 0, 1, 'C');
 
 
 

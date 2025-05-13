@@ -632,4 +632,16 @@ class Admin_model extends CI_Model
 
     return $results;
   }
+
+   public function get_department_name_by_short($short_name) {
+        $this->db->select('department_name');
+        $this->db->from('departments');
+        $this->db->where('short_name', $short_name);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->row()->department_name;
+        }
+
+        return null;
+    }
 }
