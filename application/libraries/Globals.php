@@ -1577,7 +1577,7 @@ class Globals
     function programme_levels()
 {
     return array(
-        "ug" => "Bachelor of Engineering In ",
+        "ug" => "Bachelor of Engineering",
         "pg" => "Master of Computer Application"
     );
 }

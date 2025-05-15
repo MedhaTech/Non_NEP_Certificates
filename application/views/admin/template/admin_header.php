@@ -149,6 +149,11 @@
                                     <i class="mdi mdi-file-download-outline mr-2"></i>Grade Card
                                 </a>
                             </li>
+                             <li class="nav-item">
+                                <a class="nav-link" href="<?= base_url('admin/branch_grade_card') ?>">
+                                    <i class="mdi mdi-file-download-outline mr-2"></i>Global Grade Card
+                                </a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="<?= base_url('admin/transcript') ?>">
                                     <i class="mdi mdi-file-download-outline mr-2"></i>Transcript

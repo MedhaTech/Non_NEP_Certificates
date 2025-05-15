@@ -66,7 +66,8 @@ class Admin_model extends CI_Model
   public function getStudentMarksOrderedByTorder($usn)
   {
     $this->db->where('usn', $usn);
-    $this->db->order_by('torder'); // Order by torder ascending
+    $this->db->order_by('torder');
+    $this->db->order_by('result_year'); // Order by torder ascending
     return $this->db->get('students_marks');
   }
 
@@ -633,15 +634,83 @@ class Admin_model extends CI_Model
     return $results;
   }
 
-   public function get_department_name_by_short($short_name) {
-        $this->db->select('department_name');
-        $this->db->from('departments');
-        $this->db->where('short_name', $short_name);
-        $query = $this->db->get();
-        if ($query->num_rows() > 0) {
-            return $query->row()->department_name;
-        }
-
-        return null;
+  public function get_department_name_by_short($short_name)
+  {
+    $this->db->select('department_name');
+    $this->db->from('departments');
+    $this->db->where('short_name', $short_name);
+    $query = $this->db->get();
+    if ($query->num_rows() > 0) {
+      return $query->row()->department_name;
     }
+
+    return null;
+  }
+  public function get_dropdown_data()
+  {
+    // Get distinct result_year from your table, excluding NULL and '0000-00-00'
+    $this->db->select('result_year');
+    $this->db->where('result_year !=', '0000-00-00');  // Exclude invalid date
+    $this->db->where('result_year IS NOT NULL');  // Exclude NULL date
+    $this->db->group_by('result_year');  // Ensure distinct results
+    $this->db->order_by('result_year', 'ASC');  // Sort in ascending order
+    $query = $this->db->get('students_marks');  // Replace with your actual table name
+    $dates = $query->result_array();
+
+    $dropdown_data = [];
+
+    foreach ($dates as $date) {
+      $date_value = $date['result_year'];  // This should be in 'YYYY-MM-DD' format
+      $year = date('Y', strtotime($date_value));  // Extract year
+      $month = date('m', strtotime($date_value));  // Extract month
+
+      // Determine the label based on the month
+      if ($month == 1) {
+        $label = 'Odd ' . $year;
+      } elseif ($month == 6) {
+        $label = 'Even ' . $year;
+      } elseif ($month == 7) {
+        $label = 'Supply ' . $year;
+      }
+
+      // Add the value (date) and label to the dropdown data array
+      $dropdown_data[] = [
+        'value' => $date_value,  // Date as value for the option
+        'label' => $label        // Label for display in dropdown
+      ];
+    }
+
+    // Remove duplicates from the dropdown data based on 'value'
+    $dropdown_data = $this->remove_duplicates($dropdown_data);
+
+    return $dropdown_data;
+  }
+
+  // Helper function to remove duplicates based on the 'value' (date)
+  private function remove_duplicates($data)
+  {
+    $unique_data = [];
+    $seen_values = [];
+
+    foreach ($data as $item) {
+      if (!in_array($item['value'], $seen_values)) {
+        $unique_data[] = $item;
+        $seen_values[] = $item['value'];
+      }
+    }
+
+    return $unique_data;
+  }
+  public function get_students_by_branch_programme($branch, $programme, $result_year)
+  {
+    $this->db->select('students.usn, students.student_name, students.branch, students.programme, students_marks.result_year, students_marks.sgpa, students_marks.cgpa');
+    $this->db->from('students');
+    $this->db->join('students_marks', 'students_marks.usn = students.usn');
+    $this->db->where('students.branch', $branch);
+    $this->db->where('students.programme', $programme);
+    $this->db->where('students_marks.result_year', $result_year);
+    $this->db->group_by('students.usn');  // Group by 'usn' to get distinct usn
+    $query = $this->db->get();
+    return $query;
+  }
 }
