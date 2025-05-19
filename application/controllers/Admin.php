@@ -1284,110 +1284,122 @@ class Admin extends CI_Controller
             $pdf->SetFont('Arial', 'B', 9);
             $pdf->Cell(50, 5, $completion_sem . ' Years');
 
-            $ordered_sems = [[1, 5], [2, 6], [3, 7], [4, 8]];
-            $max_y = 280;
+            $sem_order = [1, 5, 2, 6, 3, 7, 4, 8];
+            $max_y = 290;
+            $footer_buffer = 32; // Reserve space for final footer
             $left_x = 10;
-            $right_x = 104; // Updated as requested
-            $table_width = 89.5; // Updated as requested
-            $start_y = 88;
+            $right_x = 104;
+            $table_width = 89.5;
+            $left_y = $right_y = 88;
             $page_no = 1;
+            $row_height = 4.0;
+            $header_footer_height = 9;
+            $col_toggle = 'left'; // Alternate columns
 
-            foreach ($ordered_sems as $pair) {
-                $left_data = $studentmarks[$pair[0]] ?? [];
-                $right_data = $studentmarks[$pair[1]] ?? [];
+            foreach ($sem_order as $sem) {
+                if (!isset($studentmarks[$sem])) continue;
 
-                $left_height = count(array_unique(array_column($left_data, 'course_code'))) * 4.5 + 9;
-                $right_height = count(array_unique(array_column($right_data, 'course_code'))) * 4.5 + 9;
-                $required_height = max($left_height, $right_height);
+                $x = $col_toggle === 'left' ? $left_x : $right_x;
+                $y = $col_toggle === 'left' ? $left_y : $right_y;
 
-                if ($start_y + $required_height > $max_y) {
+                $sem_data = $studentmarks[$sem];
+                $exam_period = $sem_data[0]->exam_period ?? 'N/A';
+
+                // Group by course code
+                $grouped_courses = [];
+                foreach ($sem_data as $course) {
+                    $grouped_courses[$course->course_code][] = $course;
+                }
+
+                $block_height = count($grouped_courses) * $row_height + $header_footer_height + $row_height;
+
+                // Check if block fits, including footer buffer
+                if ($y + $block_height + $footer_buffer > $max_y) {
                     $pdf->AddPage();
                     $page_no++;
-
-                    if ($page_no == 1) {
-                        $pdf->Image(base_url('assets/images/transcript.png'), 0, 0, 210, 297);
+                    if ($page_no === 1) {
+                        $pdf->Image(base_url('assets/images/transcript.png'), 0, 0, 210, 287);
                     }
-
-                    $start_y = 25;
-                    $pdf->SetFont('Arial', '', 6); // Reset font
+                    $left_y = $right_y = 25;
+                    $y = $col_toggle === 'left' ? $left_y : $right_y;
                 }
 
-                foreach (['left' => $pair[0], 'right' => $pair[1]] as $side => $sem) {
-                    if (!isset($studentmarks[$sem])) continue;
+                // Draw semester header
+                $pdf->SetFont('Arial', 'B', 6.5);
+                $pdf->SetXY($x, $y);
+                $pdf->Cell($table_width, $row_height, '', 1);
+                $pdf->SetXY($x + 1.5, $y);
+                $pdf->Cell(0, $row_height, "Semester: $sem", 0, 0, 'L');
+                $right_text = "Session: $exam_period";
+                $pdf->SetXY($x + $table_width - 1.5 - $pdf->GetStringWidth($right_text), $y);
+                $pdf->SetTextColor(174, 111, 150);
+                $pdf->Cell(0, $row_height, $right_text, 0, 0, 'L');
+                $pdf->SetTextColor(0, 0, 0);
 
-                    $x = $side === 'left' ? $left_x : $right_x;
-                    $y = $start_y;
+                $row_y = $y + $row_height;
+                $pdf->SetFont('Arial', '', 5.5);
+                $count = 1;
 
-                    $sem_data = $studentmarks[$sem];
-                    $exam_period = $sem_data[0]->exam_period ?? 'N/A';
+                foreach ($grouped_courses as $code => $attempts) {
+                    $course_name = $attempts[0]->course_name;
+                    $credits = $attempts[0]->credits_earned;
 
-                    // Header row with Semester and Session
-                    $pdf->SetFont('Arial', 'B', 7);
-                    $pdf->SetXY($x, $y);
-                    $pdf->Cell($table_width, 4.5, '', 1); // Bordered row
-
-                    $pdf->SetXY($x + 1.5, $y);
-                    $pdf->Cell(0, 4.5, "Semester: $sem", 0, 0, 'L');
-
-                    $right_text = "Session: $exam_period";
-                    $pdf->SetXY($x + $table_width - 1.5 - $pdf->GetStringWidth($right_text), $y);
-                    $pdf->SetTextColor(174, 111, 150);
-                    $pdf->Cell(0, 4.5, $right_text, 0, 0, 'L');
-                    $pdf->SetTextColor(0, 0, 0);
-                    $row_y = $y + 4.5;
-                    $pdf->SetFont('Arial', '', 6);
-
-                    // Group courses by code
-                    $grouped_courses = [];
-                    foreach ($sem_data as $course) {
-                        $code = $course->course_code;
-                        if (!isset($grouped_courses[$code])) {
-                            $grouped_courses[$code] = [];
-                        }
-                        $grouped_courses[$code][] = $course;
+                    $fail_count = 1;
+                    foreach ($attempts as $a) {
+                        if (strtoupper($a->grade) === 'F') $fail_count++;
                     }
 
-                    $count = 1;
-                    foreach ($grouped_courses as $code => $attempts) {
-                        $course_name = $attempts[0]->course_name;
-                        $credits = $attempts[0]->credits_earned;
-
-                        $fail_count = 1;
-                        foreach ($attempts as $a) {
-                            if (strtoupper($a->grade) === 'F') $fail_count++;
-                        }
-
-                        $final_result = ($fail_count === 1) ? 'P' :  'P#' . $fail_count;
-                        $last_grade = strtoupper(end($attempts)->grade);
-                        if ($fail_count > 1) {
-                            $credits = strtoupper(end($attempts)->credits_earned);
-                        }
-
-                        $pdf->SetXY($x, $row_y);
-                        $pdf->Cell(2.5, 4.5, $count++, 1, 0, 'C');
-                        $pdf->Cell(70, 4.5, $course_name, 1, 0, 'L');
-                        $pdf->Cell(5, 4.5, $credits, 1, 0, 'C');
-                        $pdf->Cell(5, 4.5, $last_grade, 1, 0, 'C');
-                        $pdf->Cell(7, 4.5, $final_result, 1, 0, 'C'); // Adjusted to fit width
-                        $row_y += 4.5;
+                    $final_result = ($fail_count === 1) ? 'P' : 'P#' . $fail_count;
+                    $last_grade = strtoupper(end($attempts)->grade);
+                    if ($fail_count > 1) {
+                        $credits = strtoupper(end($attempts)->credits_earned);
                     }
-
-                    // Footer: SGPA, CGPA, Result
-                    $pdf->SetFont('Arial', 'B', 6.5);
-                    $sgpa = number_format($sem_data[0]->sgpa ?? 0, 2);
-                    $cgpa = number_format($sem_data[0]->cgpa ?? 0, 2);
-                    $result = 'PASS';
 
                     $pdf->SetXY($x, $row_y);
-                    $pdf->Cell($table_width, 4.5, "SGPA: $sgpa     CGPA: $cgpa                            $result", 1);
-                    $row_y += 4.5;
-
-                    if ($side === 'left') $left_end_y = $row_y;
-                    else $right_end_y = $row_y;
+                    $pdf->Cell(2.5, $row_height, $count++, 1, 0, 'C');
+                    $pdf->Cell(70, $row_height, $course_name, 1, 0, 'L');
+                    $pdf->Cell(5, $row_height, $credits, 1, 0, 'C');
+                    $pdf->Cell(5, $row_height, $last_grade, 1, 0, 'C');
+                    $pdf->Cell(7, $row_height, $final_result, 1, 0, 'C');
+                    $row_y += $row_height;
                 }
 
-                $start_y = max($left_end_y ?? $start_y, $right_end_y ?? $start_y);
+                // Draw SGPA/CGPA/footer line
+                $pdf->SetFont('Arial', 'B', 6);
+                $sgpa = number_format($sem_data[0]->sgpa ?? 0, 2);
+                $cgpa = number_format($sem_data[0]->cgpa ?? 0, 2);
+                $result = 'PASS';
+                $pdf->SetXY($x, $row_y);
+                $pdf->Cell($table_width, $row_height, "SGPA: $sgpa     CGPA: $cgpa                            $result", 1);
+                $row_y += $row_height;
+
+                // Update next Y position
+                if ($col_toggle === 'left') {
+                    $left_y = $row_y;
+                    $col_toggle = 'right';
+                } else {
+                    $right_y = $row_y;
+                    $col_toggle = 'left';
+                }
             }
+
+          
+            $footer_y = max($left_y, $right_y);
+            $buffered_footer_y = $footer_y + 5;
+            $pdf->SetXY(10, $buffered_footer_y);
+            $pdf->Cell(0, 3, '# Cleared in Subsequent Exams', 0, 1);
+            $pdf->Cell(0, 3, 'P- Passed in Credit Mandatory Course', 0, 1);
+            $pdf->Cell(0, 3, 'PP- Passed in Non Credit Mandatory Course', 0, 1);
+
+            $pdf->SetFont('Arial', 'B', 7);
+            $pdf->SetXY(10, $footer_y + 12);
+            $pdf->Cell(190, 3, 'Authentic', 0, 1, 'R');
+
+            $pdf->SetXY(10, $footer_y + 25);
+            $issue_date = date('d-M-Y'); // Example: 15-May-2025
+            $pdf->Cell(63, 3, 'Issue Date: ' . $issue_date . '     Checked By', 0, 0, 'L');
+            $pdf->Cell(64, 3, 'Controller of Examinations', 0, 0, 'C');
+            $pdf->Cell(63, 3, 'Principal', 0, 1, 'R');
 
             $pdf->Output('D', $student->usn . ' Transcript' . '.pdf');
         } else {
@@ -3272,7 +3284,7 @@ class Admin extends CI_Controller
                 }
             }
 
-            // ✅ After all semesters — print footer
+          
             $footer_y = max($left_y, $right_y);
             $buffered_footer_y = $footer_y + 5;
             $pdf->SetXY(10, $buffered_footer_y);
@@ -3289,11 +3301,6 @@ class Admin extends CI_Controller
             $pdf->Cell(63, 3, 'Issue Date: ' . $issue_date . '     Checked By', 0, 0, 'L');
             $pdf->Cell(64, 3, 'Controller of Examinations', 0, 0, 'C');
             $pdf->Cell(63, 3, 'Principal', 0, 1, 'R');
-
-
-
-
-
 
             $pdf->Output($student->usn . '_transcript.pdf', 'I');
         } else {
