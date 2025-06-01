@@ -71,12 +71,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | the query builder class.
 */
 $active_group = 'default';
-
+echo $_SERVER['HTTP_HOST'];
 if($_SERVER['HTTP_HOST']=="127.0.0.1" || $_SERVER['HTTP_HOST']=="localhost"){
 	$active_group = 'default';
 }
 
-if($_SERVER['HTTP_HOST']==""){
+if($_SERVER['HTTP_HOST']=="certify2008.bmsce.in"){
 	$active_group = 'prod';
 }
 
@@ -87,7 +87,7 @@ $db['default'] = array(
 	'hostname' => 'localhost',
 	'username' => 'root',
 	'password' => '',
-	'database' => 'certify2008bmsce_non-nep',
+	'database' => 'nep_cert',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -106,14 +106,14 @@ $db['default'] = array(
 
 $db['prod'] = array(
 	'dsn'	=> '',
-	'hostname' => '',
-	'username' => '',
-	'password' => '',
-	'database' => '',
+	'hostname' => 'localhost',
+	'username' => 'certify2008bmsce_Non-NEP	',
+	'password' => 'certify2008bmsce_Non-NEP	',
+	'database' => 'certify2008bmsce_Non-NEP	',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
-	'db_debug' => (ENVIRONMENT !== 'development'),
+	'db_debug' => (ENVIRONMENT !== 'production'),
 	'cache_on' => FALSE,
 	'cachedir' => '',
 	'char_set' => 'utf8',
