@@ -650,7 +650,7 @@ class Admin_model extends CI_Model
   {
     // Get distinct result_year from your table, excluding NULL and '0000-00-00'
     $this->db->select('result_year');
-    $this->db->where('result_year !=', '0000-00-00');  // Exclude invalid date
+    $this->db->where('result_year <>', '0000-00-00');  // Exclude invalid date
     $this->db->where('result_year IS NOT NULL');  // Exclude NULL date
     $this->db->group_by('result_year');  // Ensure distinct results
     $this->db->order_by('result_year', 'ASC');  // Sort in ascending order
