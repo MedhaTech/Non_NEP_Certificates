@@ -3245,37 +3245,45 @@ class Admin extends CI_Controller
                 //  if($sem==5)
                 //     {
                 //         echo "<pre>";
-                //         print_r($grouped_courses);
+                        // print_r($grouped_courses);
                 //     }
 
                 foreach ($grouped_courses as $code => $attempts) {
-                    $course_name = $attempts[0]->course_name;
-                    $credits = $attempts[0]->credits_earned;
+                $course_name = $attempts[0]->course_name;
 
-                    $fail_count = 1;
-                    foreach ($attempts as $a) {
-                        if (strtoupper($a->grade) === 'F') $fail_count++;
-                    }
-                    
+                $fail_count = 0;
+                $latest_pass_credits = 0;
+                $last_grade = '';
 
-                    $final_result = ($fail_count === 1) ? 'P' : 'P#' . $fail_count;
-                    $last_grade = strtoupper(end($attempts)->grade);
-                    if ($fail_count > 1) {
-                        $credits = strtoupper(end($attempts)->credits_earned);
-                    }
-                    if($last_grade=='PP' && $credits==NULL)
-                    {
-                        $credits = 0;
-                    }
+                foreach ($attempts as $a) {
+                    $grade = strtoupper($a->grade);
 
-                    $pdf->SetXY($x, $row_y);
-                    $pdf->Cell(2.5, $row_height, $count++, 1, 0, 'C');
-                    $pdf->Cell(70, $row_height, $course_name, 1, 0, 'L');
-                    $pdf->Cell(5, $row_height, $credits, 1, 0, 'C');
-                    $pdf->Cell(5, $row_height, $last_grade, 1, 0, 'C');
-                    $pdf->Cell(7, $row_height, $final_result, 1, 0, 'C');
-                    $row_y += $row_height;
+                    if ($grade === 'F') {
+                        
+                    } else {
+                        $latest_pass_credits = $a->credits_earned;
+                        $last_grade = $grade;
+                    }
+                    $fail_count++;
                 }
+
+                // Handle special case: PP grade with NULL credits
+                if ($last_grade === 'PP' && (is_null($latest_pass_credits) || $latest_pass_credits === '')) {
+                    $latest_pass_credits = 0;
+                }
+
+                $final_result = ($fail_count === 1) ? 'P' : 'P#' . $fail_count;
+
+                $pdf->SetXY($x, $row_y);
+                $pdf->Cell(2.5, $row_height, $count++, 1, 0, 'C');
+                $pdf->Cell(70, $row_height, $course_name, 1, 0, 'L');
+                $pdf->Cell(5, $row_height, $latest_pass_credits, 1, 0, 'C');
+                $pdf->Cell(5, $row_height, $last_grade, 1, 0, 'C');
+                $pdf->Cell(7, $row_height, $final_result, 1, 0, 'C');
+
+                $row_y += $row_height;
+            }
+
 
                 // Draw SGPA/CGPA/footer line
                 $pdf->SetFont('Arial', 'B', 6);
